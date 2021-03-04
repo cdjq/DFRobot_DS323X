@@ -82,13 +82,13 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief get day of week
    *@return day of week
    */
-  uint8_t  dayOfTheWeek() const ;
+  uint8_t  dayOfTheWeek();
   
   /*!
    *@brief Set mode
    *@param ehours:e24hours, eAM, ePM. default is e24hours
    */
-  void setMode(ehours mode = e24hours)
+  void setMode(ehours mode = e24hours);
   
   /*!
    *@brief Set time  
@@ -220,7 +220,7 @@ micro:bit        |      √       |              |             |
 
 ## History
 
-- Data 2019-8-19
+- Data 2021-3-1
 - Version V0.1
 
 
