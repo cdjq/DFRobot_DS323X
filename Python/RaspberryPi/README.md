@@ -53,12 +53,6 @@ Download this library into RaspberryPi, and run demo with Python
   '''
   def get_date()
   
-  /*!
-   *@brief get hour
-   *@return hour
-   */
-  def hour()
-  
   '''
   @brief get minute of now time
   @return minute

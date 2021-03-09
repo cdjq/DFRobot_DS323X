@@ -152,14 +152,14 @@ class DFRobot_DS323X:
         
         self.write_reg(self._REG_CONTROL, ctrl);
     
-    '''
-    @brief get day of week
-    @return day of week
-    '''
     def day_of_the_week(self):
         day = self.date2days(self._y, self._m, self._d)
         return (day + 6) % 7
     
+    '''
+    @brief get day of week
+    @return day of week
+    '''
     def get_day_of_the_week(self):
         return self.days_of_the_week[self.day_of_the_week()]
 
@@ -292,9 +292,10 @@ class DFRobot_DS323X:
     
     '''
     @brief check if rtc has been lost power
+    @return If retrun true, power down, time needs to reset; false, work well.
     '''
     def is_lost_power(self):
-        status = self.read_reg(_REG_STATUS)
+        status = self.read_reg(self._REG_STATUS)
         return status >> 7
 
     '''
@@ -341,10 +342,6 @@ class DFRobot_DS323X:
                 buffer = self.read_reg(self._REG_ALM1_DAY)
                 buffer |= 0x40
                 self.write_reg(self._REG_ALM1_DAY, buffer)
-            if state == True:
-                buffer = self.read_reg(self._REG_CONTROL)
-                buffer |= 1
-                self.write_reg(self._REG_CONTROL, buffer)
             else:
                 buffer = self.read_reg(self._REG_CONTROL)
                 buffer &= 0xFE
@@ -359,7 +356,7 @@ class DFRobot_DS323X:
                 self.write_reg(self._REG_ALM2_DAY, days)
             if alarmType < self.MinutesHoursDateMatch:
                 buffer = self.read_reg(self._REG_ALM2_DAY)
-                buffer |= 0x80;
+                buffer |= 0x80
                 self.write_reg(self._REG_ALM2_DAY, buffer)
             if alarmType < self.MinutesHoursMatch:
                 buffer = self.read_reg(self._REG_ALM2_HOUR)
@@ -369,15 +366,10 @@ class DFRobot_DS323X:
                 buffer = self.read_reg(self._REG_ALM2_MIN,)
                 buffer |= 0x80
                 self.write_reg(self._REG_ALM2_MIN, buffer)
-            if state == True:
-                buffer = self.read_reg(self._REG_CONTROL)
-                buffer |= 2
-                self.write_reg(self._REG_CONTROL, buffer)
             else:
                 buffer = self.read_reg(self._REG_CONTROL)
                 buffer &= 0xFD
                 self.write_reg(self._REG_CONTROL, buffer)
-        buf = self.read_reg(self._REG_ALM1_MIN)
         self.clear_alarm()
         return
     
@@ -415,6 +407,7 @@ class DFRobot_DS323X:
     
     '''
     @brief check if alarm flag has been trigger
+    @return True, triggered; False, not trigger 
     '''
     def is_alarm(self):
         staReg = self.read_reg(self._REG_STATUS)
@@ -450,15 +443,14 @@ class DFRobot_DS323X:
     @param data
     '''
     def write_SRAM(self, reg, data):
-        self.write_reg(reg, data, 1)
+        self.write_reg(reg, data)
 
     '''
     @brief read data of the SRAM
     @param reg, address of SRAM
     '''
     def read_SRAM(self, reg):
-        self.read_reg(reg, buf, 1)
-        return buf
+        return self.read_reg(reg)
 
     '''
     @brief clear the SRAM

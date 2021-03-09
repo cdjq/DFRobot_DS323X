@@ -11,7 +11,7 @@
 @author [LuoYufeng](yufeng.luo@dfrobot.com)
 @url https://github.com/DFRobot/DFRobot_DS323X
 @version  V1.0
-@date  2021-2-25s
+@date  2021-3-4
 '''
 import sys
 sys.path.append('../')
@@ -66,25 +66,9 @@ rtc.set_time(year=2021,month=2,date=28,hour=11,minute=59,second=55)
 def main():
     while True:
         temp = rtc.get_temperature_C()
-        #如果您不是很熟悉python，可以这样打印
-        '''
-        print(rtc.get_year()),
-        print("/"),
-        print(rtc.get_month()),
-        print("/"),
-        print(rtc.get_date()),
-        print(","),
-        print(rtc.get_day_of_the_week()),
-        print(","),
-        print(rtc.get_hour()),
-        print(":"),
-        print(rtc.get_minute()),
-        print(":"),
-        print(rtc.get_second()),
-        print(","),
-        print(rtc.get_AM_or_PM())
-        '''
-        #5.如果您很熟悉python，可以这样打印数据
+        #temp = rtc.get_temperature_F()
+        if rtc.is_lost_power() == 1:
+            print("RTC lost power, plrase reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
         rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         

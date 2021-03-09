@@ -11,7 +11,7 @@ file set_alarm_in_query.py
 @author [LuoYufeng](yufeng.luo@dfrobot.com)
 @url https://github.com/DFRobot/DFRobot_DS323X
 @version  V1.0
-@date  2021-2-25
+@date  2021-3-4
 '''
 import sys
 sys.path.append('../')
@@ -66,7 +66,8 @@ rtc.set_time(2021,2,28,23,59,55)
 @param minutes   Alarm clock (minute)
 @param seconds   Alarm clock (second)
 '''
-rtc.set_alarm(alarmType=rtc.SecondsMinutesHoursDayMatch,date=1,hour=0,minute=0,second=10)
+rtc.set_alarm(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
+rtc.set_alarm(alarmType=rtc.MinutesHoursDayMatch,date=1,hour=0,minute=0,second=5)
 '''
 @brief disable the 32k output (default is enable)
 '''
@@ -79,31 +80,13 @@ rtc.set_alarm(alarmType=rtc.SecondsMinutesHoursDayMatch,date=1,hour=0,minute=0,s
 
 def main():
     while True:
-        if rtc.is_alarm() == True:
-            print("Alarm clock is triggered.")
-            rtc.clear_alarm()
-        #如果您不是很熟悉python，可以这样打印
-        '''
-        print(rtc.get_year()),
-        print("/"),
-        print(rtc.get_month()),
-        print("/"),
-        print(rtc.get_date()),
-        print(","),
-        print(rtc.get_day_of_the_week()),
-        print(","),
-        print(rtc.get_hour()),
-        print(":"),
-        print(rtc.get_minute()),
-        print(":"),
-        print(rtc.get_second()),
-        print(","),
-        print(rtc.get_AM_or_PM())
-        '''
-        #如果您很熟悉python，可以这样打印数据
+        if rtc.is_lost_power() == 1:
+            print("RTC lost power, plrase reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
         rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
-        
+        if rtc.is_alarm() != 0:
+            print("Alarm clock is triggered.")
+            rtc.clear_alarm()
         print(" ")
         time.sleep(1)
 

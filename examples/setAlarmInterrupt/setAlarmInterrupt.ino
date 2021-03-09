@@ -89,7 +89,34 @@ void setup(void)
      */
     if (rtc.lostPower())
         rtc.setTime(/*year,1900-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
-    attachInterrupt(0, interrupt, FALLING);
+    #if defined(ESP32) || defined(ESP8266)||defined(ARDUINO_SAM_ZERO)
+    attachInterrupt(digitalPinToInterrupt(D6)/*Query the interrupt number of the D6 pin*/,interEvent,CHANGE);
+    #else
+    /*    The Correspondence Table of AVR Series Arduino Interrupt Pins And Terminal Numbers
+    * ---------------------------------------------------------------------------------------
+    * |                                        |  DigitalPin  | 2  | 3  |                   |
+    * |    Uno, Nano, Mini, other 328-based    |--------------------------------------------|
+    * |                                        | Interrupt No | 0  | 1  |                   |
+    * |-------------------------------------------------------------------------------------|
+    * |                                        |    Pin       | 2  | 3  | 21 | 20 | 19 | 18 |
+    * |               Mega2560                 |--------------------------------------------|
+    * |                                        | Interrupt No | 0  | 1  | 2  | 3  | 4  | 5  |
+    * |-------------------------------------------------------------------------------------|
+    * |                                        |    Pin       | 3  | 2  | 0  | 1  | 7  |    |
+    * |    Leonardo, other 32u4-based          |--------------------------------------------|
+    * |                                        | Interrupt No | 0  | 1  | 2  | 3  | 4  |    |
+    * |--------------------------------------------------------------------------------------
+    */
+    /*                      The Correspondence Table of micro:bit Interrupt Pins And Terminal Numbers
+    * ---------------------------------------------------------------------------------------------------------------------------------------------
+    * |             micro:bit                       | DigitalPin |P0-P20 can be used as an external interrupt                                     |
+    * |  (When using as an external interrupt,      |---------------------------------------------------------------------------------------------|
+    * |no need to set it to input mode with pinMode)|Interrupt No|Interrupt number is a pin digital value, such as P0 interrupt number 0, P1 is 1 |
+    * |-------------------------------------------------------------------------------------------------------------------------------------------|
+    */
+    attachInterrupt(/*Interrupt No*/0,interEvent,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
+    //UNO(2), Mega2560(2), Leonardo(3), microbit(P0).
+    #endif
 }
 void loop() {
     /*!

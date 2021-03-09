@@ -11,7 +11,7 @@
 @author [LuoYufeng](yufeng.luo@dfrobot.com)
 @url https://github.com/DFRobot/DFRobot_DS323X
 @version  V1.0
-@date  2020-2-12
+@date  2021-3-4
 '''
 import sys
 sys.path.append('../')
@@ -24,25 +24,23 @@ rtc = DFRobot_DS323X(bus=1)
 while not rtc.begin():
     time.sleep(2)
 i = 0
-j = 0
 
 data1 = [22,1,15,78,65,49,56,49,25,47,89]
 
 '''
 @brief clear the SRAM
 '''
-for reg in (0x14,0x1F):
-    rtc.clear_SRAM(reg, data[i])
-    i++
+for reg in range(0x14,0x1F):
+    rtc.clear_SRAM(reg)
 
 '''
 @brief write data into the SRAM
 @param reg, address of SRAM
 @param data
 '''
-for reg in (0x14,0x1F):
-    rtc.write_SRAM(reg, data[j])
-    j++
+for reg in range(0x14,0x1F):
+    rtc.write_SRAM(reg, data1[i])
+    i += 1
 
 '''
 @brief read data of the SRAM
@@ -50,8 +48,9 @@ for reg in (0x14,0x1F):
 '''
 def main():
     while True:
-    for reg in (0x14,0x1F):
-        print(rtc.read(reg))
+        for reg in range(0x14,0x1F):
+            print(rtc.read_SRAM(reg))
+            time.sleep(0.1)
 
 if __name__ == "__main__":
     main()

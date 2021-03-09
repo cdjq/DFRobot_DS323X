@@ -14,7 +14,7 @@
 
 DFRobot_DS323X rtc;
 uint8_t buffer[] = {0x10,0x11,0x24,0x36,0x45,0x65,0x17,0x30,0x78,0xA4,0x89};
-int i = 0,j = 0;
+int i = 0;
 
 void setup(void)
 {
@@ -26,11 +26,10 @@ void setup(void)
     }
     for (uint8_t reg = 0x14; reg < 0x1F; reg++){
         rtc.clearSRAM(reg);
-        i++;
     }
     for (uint8_t reg = 0x14; reg < 0x1F; reg++){
-        rtc.writeSRAM(reg,buffer[j]);
-        j++;
+        rtc.writeSRAM(reg,buffer[i]);
+        i++;
     }
     delay(1000);
 }

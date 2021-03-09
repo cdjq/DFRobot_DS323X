@@ -11,7 +11,7 @@
 @author [LuoYufeng](yufeng.luo@dfrobot.com)
 @url https://github.com/DFRobot/DFRobot_DS323X
 @version  V1.0
-@date  2020-2-12
+@date  2021-3-4
 '''
 import sys
 sys.path.append('../')
@@ -30,9 +30,12 @@ while not rtc.begin():
     time.sleep(2)
 
 '''
-@brief enable the interrupt of alarm1
+@brief enable the interrupt of alarm
 '''
 rtc.enable_alarm1_int();#@enable Alarm1 interrupt
+#rtc.disable_alarm1_int();#@disable Alarm1 interrupt
+#rtc.enable_alarm2_int();#@enable Alarm2 interrupt
+#rtc.disable_alarm2_int();#@disable Alarm2 interrupt
 '''
 @brief Set the vaule of pin sqw
 @param mode OFF             = 0x01 # Not output square wave, enter interrupt mode
@@ -105,25 +108,8 @@ GPIO.add_event_detect(IO1, GPIO.FALLING, callback = IO1_callback)
 
 def main():
     while True:
-        #如果您不是很熟悉python，可以这样打印
-        '''
-        print(rtc.get_year()),
-        print("/"),
-        print(rtc.get_month()),
-        print("/"),
-        print(rtc.get_date()),
-        print(","),
-        print(rtc.get_day_of_the_week()),
-        print(","),
-        print(rtc.get_hour()),
-        print(":"),
-        print(rtc.get_minute()),
-        print(":"),
-        print(rtc.get_second()),
-        print(","),
-        print(rtc.get_AM_or_PM())
-        '''
-        #如果您很熟悉python，可以这样打印数据
+        if rtc.is_lost_power() == 1:
+            print("RTC lost power, plrase reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
         rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         

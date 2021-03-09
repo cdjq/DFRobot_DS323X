@@ -218,11 +218,6 @@ void DFRobot_DS323X::setAlarm(eAlarmTypes alarmType, int16_t date,int8_t hour,
             buffer[0] |= 0x40;
             writeReg(DS323X_REG_ALM1_DAY, buffer, 1);
         }
-        if (state){
-            readReg(DS323X_REG_CONTROL, buffer, 1);
-            buffer[0] |= 1;
-            writeReg(DS323X_REG_CONTROL, buffer, 1);
-        }
         else{
             readReg(DS323X_REG_CONTROL, buffer, 1);
             buffer[0] &= 0xFE;
@@ -252,11 +247,6 @@ void DFRobot_DS323X::setAlarm(eAlarmTypes alarmType, int16_t date,int8_t hour,
             readReg(DS323X_REG_ALM2_MIN, buffer, 1);
             buffer[0] |= 0x80;
             writeReg(DS323X_REG_ALM2_MIN, buffer, 1);
-        }
-        if (state){
-            readReg(DS323X_REG_CONTROL, buffer, 1);
-            buffer[0] |= 2;
-            writeReg(DS323X_REG_CONTROL, buffer, 1);
         }
         else{
             readReg(DS323X_REG_CONTROL, buffer, 1);
