@@ -1,6 +1,6 @@
 /*!
  * @file readwriteSRAM.ino
- * @brief Show current time 
+ * @brief read and write data in SRAM, only work on DS3232 
  * @n Experiment phenomenon: read data every 1 seconds and print it on serial port. 
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)

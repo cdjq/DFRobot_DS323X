@@ -1,6 +1,6 @@
 /*!
  * @file getTimefromNTP.ino
- * @brief Get time from ntpServer and show current time 
+ * @brief Get time from ntpServer and show current time ,only work on ESP32
  * @n Experiment phenomenon: read data every second and print it on serial port. 
  * @n                        This demo only works on mpython
  *

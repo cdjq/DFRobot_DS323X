@@ -2,7 +2,7 @@
 '''
 @file get_time_and_temp.py
 
-@brief Through the example, you can get the time and temperature:
+@brief Through the example, you can read and write data on SRAM:
 @n     Experiment phenomenon: read data every 1 second and print it on terminal .
 
 @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
