@@ -12,18 +12,13 @@
 #ifndef _DFRobot_DS323X_H
 #define _DFRobot_DS323X_H
 
-#if ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 #include <Wire.h>
 
 
 /*I2C ADDRESS*/
 #define DS323X_IIC_ADDRESS          0x68
 
-#define SECONDS_FROM_1970_TO_2000    946684800
 #define DS323X_REG_RTC_SEC          0X00
 #define DS323X_REG_RTC_MIN          0X01
 #define DS323X_REG_RTC_HOUR         0X02
@@ -51,43 +46,45 @@
 #define DBG(...)
 #endif
 
-typedef enum{
-    eDS323X_OFF             = 0x01, // Not output square wave, enter interrupt mode 
-    eDS323X_SquareWave_1Hz  = 0x00, // 1Hz square wave
-    eDS323X_SquareWave_1kHz = 0x08, // 1kHz square wave
-    eDS323X_SquareWave_4kHz = 0x10, // 4kHz square wave
-    eDS323X_SquareWave_8kHz = 0x18  // 8kHz square wave
-}eDs3231MSqwPinMode_t;
 
 
-typedef enum{
-    e24hours = 0,
-    eAM = 2,
-    ePM = 3
-}ehours;
-
-typedef enum{
-    eEverySecond,                  //repeat in every second
-    eSecondsMatch,                 //repeat in every minute
-    eSecondsMinutesMatch,          //repeat in every hour
-    eSecondsMinutesHoursMatch,     //repeat in every day
-    eSecondsMinutesHoursDateMatch, //repeat in every month
-    eSecondsMinutesHoursDayMatch,  //repeat in every week
-    //Alarm1
-    
-    eEveryMinute,                  //repeat in every minute
-    eMinutesMatch,                 //repeat in every hour
-    eMinutesHoursMatch,            //repeat in every day
-    eMinutesHoursDateMatch,        //repeat in every month
-    eMinutesHoursDayMatch,         //repeat in every week
-    //Alarm2
-    
-    eUnknownAlarm
-}eAlarmTypes;
 
 class DFRobot_DS323X
 {
 public:
+
+    typedef enum{
+        eOFF             = 0x1C, // Not output square wave, enter interrupt mode 
+        eSquareWave_1Hz  = 0x00, // 1Hz square wave
+        eSquareWave_1kHz = 0x08, // 1kHz square wave
+        eSquareWave_4kHz = 0x10, // 4kHz square wave
+        eSquareWave_8kHz = 0x18  // 8kHz square wave
+    }eSqwPinMode_t;
+
+    typedef enum{
+        e24hours = 0,
+        eAM = 2,
+        ePM = 3
+    }ehours;
+    
+    typedef enum{
+        eEverySecond,                  //repeat in every second
+        eSecondsMatch,                 //repeat in every minute
+        eSecondsMinutesMatch,          //repeat in every hour
+        eSecondsMinutesHoursMatch,     //repeat in every day
+        eSecondsMinutesHoursDateMatch, //repeat in every month
+        eSecondsMinutesHoursDayMatch,  //repeat in every week
+        //Alarm1
+        
+        eEveryMinute,                  //repeat in every minute
+        eMinutesMatch,                 //repeat in every hour
+        eMinutesHoursMatch,            //repeat in every day
+        eMinutesHoursDateMatch,        //repeat in every month
+        eMinutesHoursDayMatch,         //repeat in every week
+        //Alarm2
+        eUnknownAlarm
+    }eAlarmTypes;
+
     /**
      * @brief Constructor 
      * @param Input Wire address
@@ -100,39 +97,35 @@ public:
      */
     bool begin(void);
     /*!
-     *@brief Get current time data
-     */
-    void getNowTime();
-    /*!
      *@brief Get year
      *@return Year
      */
-    uint16_t year()         const { return _y; }
+    uint16_t getYear();
     /*!
      *@brief Get month
      *@return Month
      */
-    uint8_t  month()        const { return _m; }
+    uint8_t  getMonth();
     /*!
-     *@brief Get day
-     *@return Day
+     *@brief Get date
+     *@return Date
      */
-    uint8_t  day()          const { return _d; }
+    uint8_t  getDate(); 
     /*!
      *@brief Get hour
      *@return Hour
      */
-    uint8_t  hour()         const { return _hh; }
+    uint8_t  getHour();
     /*!
      *@brief Get minute
      *@return Minute
      */
-    uint8_t  minute()       const { return _mm; }
+    uint8_t  getMinute();
     /*!
      *@brief Get second
      *@return Second
      */
-    uint8_t  second()       const { return _ss; }
+    uint8_t  getSecond();
     
     /*!
      *@brief Set mode
@@ -155,10 +148,11 @@ public:
      *@brief get day of week
      *@return day of week
      */
-    const char* getDayOfTheWeek();
+    const char* getDayOfWeek();
     
     /*!
-     *@brief Adjust current time 
+     *@brief Get current temperature, 
+     *@return temperature, unit:℃
      */
     float getTemperatureC();
     
@@ -166,23 +160,23 @@ public:
      *@brief Judge if it is power-down 
      *@return If retrun true, power down, time needs to reset; false, work well. 
      */
-    bool lostPower(void);
+    bool isLostPower(void);
     
     /*!
      *@brief Read the value of pin sqw
-     *@return Explanation of the readings in enumeration variable eDs3231MSqwPinMode_t
+     *@return Explanation of the readings in enumeration variable eDS323XSqwPinMode_t
      */
-    eDs3231MSqwPinMode_t readSqwPinMode();
+    eSqwPinMode_t readSqwPinMode();
     
     /*!
      *@brief Set the vaule of pin sqw
-     *@param dt Explanation of the witten value in enumeration variable eDs3231MSqwPinMode_t
+     *@param dt Explanation of the witten value in enumeration variable eDS323XSqwPinMode_t
      */
-    void writeSqwPinMode(eDs3231MSqwPinMode_t mode);
+    void writeSqwPinMode(eSqwPinMode_t mode);
     
     /*!
      *@brief Set the last compiled time as the current time
-     *@param comSec  default is 0
+     *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
      */
     void getCompileTime(uint8_t comSec = 0);
     
@@ -195,15 +189,15 @@ public:
      *@param seconds Alarm clock (second)
      *@param state   enable Alram clock interrupt, default is true.
      */
-    void setAlarm(eAlarmTypes alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds, const bool state  = true);
+    void setAlarm(eAlarmTypes alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
     
     /*!
      *@brief enable or disable the interrupt of alarm 
      */
-    void enAbleAlarm1Int();
-    void disAbleAlarm1Int();
-    void enAbleAlarm2Int();
-    void disAbleAlarm2Int();
+    void enableAlarm1Int();
+    void disableAlarm1Int();
+    void enableAlarm2Int();
+    void disableAlarm2Int();
     
     /*!
      *@brief output AM or PM of time 
@@ -215,22 +209,22 @@ public:
      *@brief Judge if the alarm clock is triggered
      *@return true, triggered; false, not trigger
      */
-    uint8_t isAlarm();
+    uint8_t isAlarmTrig();
     
     /*!
-     *@brief Clear trigger 
+     *@brief Clear alarm flag 
      */
     void clearAlarm();
     
     /*!
      *@brief enable the 32k output 
      */
-    void enAble32k();
+    void enable32k();
     
     /*!
      *@brief disable the 32k output 
      */
-    void disAble32k();
+    void disable32k();
     
     /*!
      *@brief write, read and clear the SRAM
@@ -241,32 +235,12 @@ public:
     uint8_t readSRAM(uint8_t reg);
     void clearSRAM(uint8_t reg);
     
-    
-    
-    uint8_t rtc[7];
-    /*!
-     *@brief Write init time 
-     *@param date Write init date 
-     *@param time Write init time 
-     */
-    
-    uint8_t  dayOfTheWeek() const ;
 
 protected:
     virtual void writeReg(uint8_t reg, const void* pBuf, size_t size);
     virtual uint8_t readReg(uint8_t reg, const void* pBuf, size_t size);
     
-    /*!
-     *@brief BCD code to BIN code
-     *@param val Input BCD code
-     *@return Return BIN code
-     */
     static uint8_t bcd2bin(uint8_t val);
-    /*!
-     *@brief BIN code to BCD code
-     *@param val Input BIN code
-     *@return Return BCD code
-     */
     static uint8_t bin2bcd(uint8_t val);
 
     uint8_t y,    ///< Year Offset
@@ -281,11 +255,12 @@ private:
     uint8_t _deviceAddr = DS323X_IIC_ADDRESS;
     uint8_t rtc_bcd[7];
     uint8_t bcd[7];
+    uint8_t  dayOfTheWeek() const ;
     ehours _mode;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;
-    const char* daysOfTheWeek[7] = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 
-    const char* hourOfAM[4] = {"", "", "AM", "PM"}; 
+    const char* daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 
+    const char* hourOfAM[4]PROGMEM = {"", "", "AM", "PM"}; 
 };
 
 #endif

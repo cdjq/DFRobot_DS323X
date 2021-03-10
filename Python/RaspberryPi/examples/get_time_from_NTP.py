@@ -23,10 +23,9 @@ from DFRobot_DS323X import *
 rtc = DFRobot_DS323X(bus=1)
 
 #begin return True if succeed, otherwise return False
-'''
 while not rtc.begin():
     time.sleep(2)
-'''
+
 client = ntplib.NTPClient()
 response = client.request('ntp.ntsc.ac.cn')
 ntptime = datetime.datetime.fromtimestamp(response.tx_time)
@@ -39,9 +38,6 @@ second = ntptime.second #Set the second from NTP server
 
 rtc.set_time(year, month, date, hour, minute, second)
 
-#rtc.disAble32k();#disable the 32k output (default is enable)
-
-#rtc.enAble32k();#enable the 32k output 
 
 def main():
     while True:

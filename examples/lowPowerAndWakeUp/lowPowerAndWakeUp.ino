@@ -37,10 +37,10 @@ void setup(void)
      *@n          eDS323X_SquareWave_8kHz = 0x18 // 8kHz square wave
      */
     rtc.writeSqwPinMode(eDS323X_OFF);
-    rtc.enAbleAlarm1Int();
-    //rtc.disAbleAlarm1Int();
-    //rtc.enAbleAlarm2Int();
-    rtc.disAbleAlarm2Int();
+    rtc.enableAlarm1Int();
+    //rtc.disableAlarm1Int();
+    //rtc.enableAlarm2Int();
+    rtc.disableAlarm2Int();
     //rtc.setMode();    //Set time mode, default is the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set alarm clock 
@@ -112,20 +112,19 @@ void loop() {
         rtc.clearAlarm();
         alarmFlag = 0;
         while (t < 10){
-            rtc.getNowTime();
-            Serial.print(rtc.year(), DEC);
+            Serial.print(rtc.getYear(), DEC);
             Serial.print('/');
-            Serial.print(rtc.month(), DEC);
+            Serial.print(rtc.getMonth(), DEC);
             Serial.print('/');
-            Serial.print(rtc.day(), DEC);
+            Serial.print(rtc.getDate(), DEC);
             Serial.print(" (");
             Serial.print(rtc.getDayOfTheWeek());
             Serial.print(") ");
-            Serial.print(rtc.hour(), DEC);
+            Serial.print(rtc.getHour(), DEC);
             Serial.print(':');
-            Serial.print(rtc.minute(), DEC);
+            Serial.print(rtc.getMinute(), DEC);
             Serial.print(':');
-            Serial.print(rtc.second(), DEC);
+            Serial.print(rtc.getSecond(), DEC);
             Serial.print(' ');
             /*if rtc works in 24hours mode,this function doesn't print anything*/
             Serial.print(rtc.getAMorPM());
@@ -141,7 +140,7 @@ void loop() {
      *@brief Judge if it is power-down 
      *@return if return true, power-down, time needs to reset; false, work well
      */
-    if (rtc.lostPower()) {
+    if (rtc.isLostPower()) {
         Serial.println("RTC lost power, please reset the time!");
     }
     sleep_enable();

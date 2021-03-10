@@ -23,15 +23,6 @@ void setup(void)
         Serial.println("failed to init chip, please check if the chip connection is fine");
         delay(1000);
     }
-    /*!
-     *@brief Set the vaule of pin sqw
-     *@param mode eDS323X_OFF             = 0x01 // Not output square wave, enter interrupt mode
-     *@n          eDS323X_SquareWave_1Hz  = 0x00 // 1Hz square wave
-     *@n          eDS323X_SquareWave_1kHz = 0x08 // 1kHz square wave
-     *@n          eDS323X_SquareWave_4kHz = 0x10 // 4kHz square wave
-     *@n          eDS323X_SquareWave_8kHz = 0x18 // 8kHz square wave
-     */
-    rtc.writeSqwPinMode(eDS323X_OFF);
     //rtc.setMode();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set alarm clock
@@ -57,45 +48,40 @@ void setup(void)
      */
     rtc.setAlarm(eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
     rtc.setAlarm(eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/5);//Alarm2
-    if (rtc.lostPower())
+    if (rtc.isLostPower())
         rtc.setTime(/*year,1901-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,\
                     /*second,0-59, this argument doesn't work in Alarm2*/55);//Set Set initial time .
 }
 void loop() {
     /*!
-     *@brief Get current time data 
-     *@return Current time data
-     */
-    rtc.getNowTime();
-    /*!
      *@brief Judge if the alarm clock is triggered
      *@return true, triggered; false, not triggered
      */
-    if (rtc.isAlarm()){ // If the alarm bit is set
+    if (rtc.isAlarmTrig()){ // If the alarm bit is set
         Serial.println("Alarm clock is triggered.");
         /*!
          *@brief Clear trigger flag
          */
         rtc.clearAlarm();
     }
-    Serial.print(rtc.year(), DEC);
+    Serial.print(rtc.getYear(), DEC);
     Serial.print('/');
-    Serial.print(rtc.month(), DEC);
+    Serial.print(rtc.getMonth(), DEC);
     Serial.print('/');
-    Serial.print(rtc.day(), DEC);
+    Serial.print(rtc.getDate(), DEC);
     Serial.print(" (");
     Serial.print(rtc.getDayOfTheWeek());
     Serial.print(") ");
-    Serial.print(rtc.hour(), DEC);
+    Serial.print(rtc.getHour(), DEC);
     Serial.print(':');
-    Serial.print(rtc.minute(), DEC);
+    Serial.print(rtc.getMinute(), DEC);
     Serial.print(':');
-    Serial.print(rtc.second(), DEC);
+    Serial.print(rtc.getSecond(), DEC);
     Serial.print(' ');
     /*if rtc works in 24hours mode,this function doesn't print anything*/
     Serial.print(rtc.getAMorPM());
     Serial.println();
-    if (rtc.lostPower()) {
+    if (rtc.isLostPower()) {
         Serial.println("RTC lost power, please reset the time!");
     }
     delay(1000);

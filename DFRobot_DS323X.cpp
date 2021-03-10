@@ -34,42 +34,72 @@ DFRobot_DS323X::~DFRobot_DS323X() {}
 
 bool DFRobot_DS323X::begin(void)
 {
-    Wire.begin();
+    _pWire->begin();
     delay(100);
-    Wire.beginTransmission(_deviceAddr);
-    if(Wire.endTransmission() == 0)
+    _pWire->beginTransmission(_deviceAddr);
+    if(_pWire->endTransmission() == 0)
         return true;
     else
         return false;
 }
 
+/*!
+ *@brief BCD code to BIN code
+ *@param val Input BCD code
+ *@return Return BIN code
+ */
 uint8_t DFRobot_DS323X::bcd2bin(uint8_t val){
     return val - 6 * (val >> 4);
 }
 
+/*!
+ *@brief BIN code to BCD code
+ *@param val Input BIN code
+ *@return Return BCD code
+ */
 uint8_t DFRobot_DS323X::bin2bcd (uint8_t val){
     return val + 6 * (val / 10);
 }
 
-eDs3231MSqwPinMode_t DFRobot_DS323X::readSqwPinMode(){
-    int mode[1];
-    readReg(DS323X_REG_CONTROL, mode, 1);
-    mode[0] &= 0x93;
-    return static_cast<eDs3231MSqwPinMode_t>(mode[0]);
+/*!
+ *@brief Read the value of pin sqw
+ *@return eOFF             = 0x1C // Off
+ *@n      eSquareWave_1Hz  = 0x00 // 1Hz square wave
+ *@n      eSquareWave_1kHz = 0x08 // 1kHz square wave
+ *@n      eSquareWave_4kHz = 0x10 // 4kHz square wave
+ *@n      eSquareWave_8kHz = 0x18 // 8kHz square wave
+ */
+DFRobot_DS323X::eSqwPinMode_t DFRobot_DS323X::readSqwPinMode(){
+    uint8_t mode;
+    readReg(DS323X_REG_CONTROL, &mode, 1);
+    mode &= 0x1C;
+    if (mode & 0x04){
+        mode = eOFF;
+    }
+    return static_cast<eSqwPinMode_t>(mode);
 }
 
-void DFRobot_DS323X::writeSqwPinMode(eDs3231MSqwPinMode_t mode){
-    uint8_t ctrl[1];
-    readReg(DS323X_REG_CONTROL, ctrl, 1);
-    ctrl[0] &= ~0x04;
-    ctrl[0] &= ~0x18;
-    if (mode == eDS323X_OFF) 
-        ctrl[0] |= 0x04;
-    else
-        ctrl[0] |= mode;
-    writeReg(DS323X_REG_CONTROL, ctrl, 1);
+/*!
+ *@brief Set the vaule of pin sqw
+ *@param mode eOFF             = 0x01 // Off
+ *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
+ *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
+ *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
+ *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
+ */
+void DFRobot_DS323X::writeSqwPinMode(eSqwPinMode_t mode){
+    uint8_t ctrl;
+    readReg(DS323X_REG_CONTROL, &ctrl, 1);
+    ctrl &= ~0x04;
+    ctrl &= ~0x18;
+    ctrl |= mode;
+    writeReg(DS323X_REG_CONTROL, &ctrl, 1);
 }
 
+/*!
+ *@brief Set the last compiled time as the current time
+ *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
+ */
 void DFRobot_DS323X::getCompileTime (uint8_t comTime){
     char buff[11];
     uint8_t min = 0;
@@ -98,10 +128,10 @@ void DFRobot_DS323X::getCompileTime (uint8_t comTime){
     mm = conv2d(buff + 3) + min;
     uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfTheWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
     writeReg(DS323X_REG_RTC_SEC, buffer, 7);
-    uint8_t statreg[1];
-    readReg(DS323X_REG_STATUS, statreg, 1);
-    statreg[0] &= ~0x80; // flip OSF bit
-    writeReg(DS323X_REG_STATUS, statreg, 1);
+    uint8_t statreg;
+    readReg(DS323X_REG_STATUS, &statreg, 1);
+    statreg &= ~0x80; // flip OSF bit
+    writeReg(DS323X_REG_STATUS, &statreg, 1);
 }
 
 uint8_t DFRobot_DS323X::dayOfTheWeek() const {
@@ -109,10 +139,23 @@ uint8_t DFRobot_DS323X::dayOfTheWeek() const {
   return (day + 6) % 7;                 // Jan 1, 2000 is a Saturday
 } 
 
-const char* DFRobot_DS323X::getDayOfTheWeek(){
+/*!
+ *@brief get day of week
+ *@return day of week
+ */
+const char* DFRobot_DS323X::getDayOfWeek(){
     return daysOfTheWeek[dayOfTheWeek()];
 }
 
+/*!
+ *@brief Set time  
+ *@param Year
+ *@param Month
+ *@param Date
+ *@param hour:1-12 in 12hours,0-23 in 24hours
+ *@param Minute 
+ *@param Second
+ */
 void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
     if (year >=2000){
         y = year - 2000;
@@ -128,12 +171,16 @@ void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t
     ss = second;
     uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfTheWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
     writeReg(DS323X_REG_RTC_SEC, buffer, 7);
-    uint8_t statreg[1];
-    readReg(DS323X_REG_STATUS, statreg, 1);
-    statreg[0] &= ~0x80; // flip OSF bit
-    writeReg(DS323X_REG_STATUS, statreg, 1);
+    uint8_t statreg;
+    readReg(DS323X_REG_STATUS, &statreg, 1);
+    statreg &= ~0x80; // flip OSF bit
+    writeReg(DS323X_REG_STATUS, &statreg, 1);
 }
 
+/*!
+ *@brief output AM or PM of time 
+ *@return AM or PM, 24 hours mode return null
+ */
 const char* DFRobot_DS323X::getAMorPM(){
     uint8_t buffer[1];
     readReg(DS323X_REG_RTC_HOUR, buffer, 1);
@@ -142,192 +189,310 @@ const char* DFRobot_DS323X::getAMorPM(){
     return hourOfAM[buffer[0]];
 }
 
-void DFRobot_DS323X::getNowTime(){
-    readReg(DS323X_REG_RTC_SEC, bcd, 7);
-    _ss = bcd2bin(bcd[0] & 0x7F);
-    _mm = bcd2bin(bcd[1]);
-    if(bcd[2]&0x40){
-        bcd[2] = bcd[2] << 3;
-        _hh = bcd2bin(bcd[2] >> 3);
-    }
-    else{
-        bcd[2] = bcd[2] << 2;
-        _hh = bcd2bin(bcd[2] >> 2);
-    }
-    _d = bcd2bin(bcd[4]);
-    _m = bcd2bin(bcd[5]);
-    _y = bcd2bin(bcd[6]) + 1900;
-    if(bcd[5] > 80){
+/*!
+ *@brief Get year of now time
+ *@return Year
+ */
+uint16_t DFRobot_DS323X::getYear(){
+    uint8_t buf[2];
+    readReg(DS323X_REG_RTC_MONTH, buf, 2);
+    _y = bcd2bin(buf[1]) + 1900;
+    if(buf[0] > 80)
         _y += 100;
-        _m -= 80;
-    }
+    return _y;
 }
 
+/*!
+ *@brief Get month of now time
+ *@return Month
+ */
+uint8_t DFRobot_DS323X::getMonth(){
+    readReg(DS323X_REG_RTC_MONTH, &_m, 1);
+    _m = bcd2bin(_m);
+    if(_m > 80)
+        _m -= 80;
+    return _m;
+}
+
+/*!
+ *@brief Get date of now time
+ *@return Date
+ */
+uint8_t DFRobot_DS323X::getDate(){
+    readReg(DS323X_REG_RTC_DATE, &_d, 1);
+    _d = bcd2bin(_d);
+    return _d;
+}
+
+/*!
+ *@brief Get hour of now time
+ *@return Hour
+ */
+uint8_t DFRobot_DS323X::getHour(){
+    readReg(DS323X_REG_RTC_HOUR, &_hh, 1);
+    if(_hh&0x40){
+        _hh = _hh << 3;
+        _hh = bcd2bin(_hh >> 3);
+    }
+    else{
+        _hh = _hh << 2;
+        _hh = bcd2bin(_hh >> 2);
+    }
+    return _hh;
+}
+
+/*!
+ *@brief Get minute of now time
+ *@return Minute
+ */
+uint8_t DFRobot_DS323X::getMinute(){
+    readReg(DS323X_REG_RTC_MIN, &_mm, 1);
+    _mm = bcd2bin(_mm);
+    return _mm;
+}
+
+/*!
+ *@brief Get second of now time
+ *@return Second
+ */
+uint8_t DFRobot_DS323X::getSecond(){
+    readReg(DS323X_REG_RTC_SEC, &_ss, 1);
+    _ss = bcd2bin(_ss);
+    return _ss;
+}
+
+/*!
+ *@brief Get current temperature, 
+ *@return temperature, unit:℃
+ */
 float DFRobot_DS323X::getTemperatureC(){
     uint8_t buf[2];
     readReg(DS323X_REG_TEMPERATURE, buf, 2);
-    return ((float)buf[0] + (buf[1]>>6)*0.25f);
+    return (buf[0] + (buf[1]>>6)*0.25f);
 }
 
-bool DFRobot_DS323X::lostPower(void) {
-    uint8_t status[1];
-    readReg(DS323X_REG_STATUS, status, 1);
-    return status[0] >> 7;
+/*!
+ *@brief Judge if it is power-down 
+ *@return If retrun true, power down, time needs to reset; false, work well. 
+ */
+bool DFRobot_DS323X::isLostPower(void) {
+    uint8_t status;
+    readReg(DS323X_REG_STATUS, &status, 1);
+    return status >> 7;
 }
 
+/*!
+ *@brief Set alarm clock
+ *@param alarmType Alarm clock working mode typedef enum{
+ *@n                                  eEverySecond,
+ *@n                                  eSecondsMatch,
+ *@n                                  eSecondsMinutesMatch,
+ *@n                                  eSecondsMinutesHoursMatch,
+ *@n                                  eSecondsMinutesHoursDateMatch,
+ *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
+ *@n                                  eEveryMinute,
+ *@n                                  eMinutesMatch,
+ *@n                                  eMinutesHoursMatch,
+ *@n                                  eMinutesHoursDateMatch,
+ *@n                                  eMinutesHoursDayMatch,        //Alarm2
+ *@n                                  eUnknownAlarm
+ *@n                                  }eAlarmTypes;
+ *@param days    Alarm clock Day (day)
+ *@param hours   Alarm clock Hour (hour)
+ *@param mode:   e24hours, eAM, ePM
+ *@param minutes Alarm clock (minute)
+ *@param seconds Alarm clock (second)
+ */
 void DFRobot_DS323X::setAlarm(eAlarmTypes alarmType, int16_t date,int8_t hour,
-                               int8_t minute,int8_t second, const bool state ){
-    int16_t dates[] = {bin2bcd(date)};
-    int8_t hours[] = {_mode << 5|bin2bcd(hour)};
-    int8_t minutes[] = {bin2bcd(minute)};
-    int8_t seconds[] = {bin2bcd(second)};
-    uint8_t days[] = {bin2bcd(dayOfTheWeek())};
-    uint8_t buffer[1];
+                               int8_t minute,int8_t second){
+    int16_t dates = bin2bcd(date);
+    int8_t hours = _mode << 5|bin2bcd(hour);
+    int8_t minutes = bin2bcd(minute);
+    int8_t seconds = bin2bcd(second);
+    uint8_t days = bin2bcd(dayOfTheWeek());
+    uint8_t buffer;
     if (alarmType >= eUnknownAlarm)
         return;
     if (alarmType < eEveryMinute){
-        writeReg(DS323X_REG_ALM1_SEC, seconds, 1);
-        writeReg(DS323X_REG_ALM1_MIN, minutes, 1);
-        writeReg(DS323X_REG_ALM1_HOUR, hours, 1);
+        writeReg(DS323X_REG_ALM1_SEC, &seconds, 1);
+        writeReg(DS323X_REG_ALM1_MIN, &minutes, 1);
+        writeReg(DS323X_REG_ALM1_HOUR, &hours, 1);
         if (alarmType == eSecondsMinutesHoursDateMatch)
-            writeReg(DS323X_REG_ALM1_DAY, dates, 1);
+            writeReg(DS323X_REG_ALM1_DAY, &dates, 1);
         else
-            writeReg(DS323X_REG_ALM1_DAY, days, 1);
+            writeReg(DS323X_REG_ALM1_DAY, &days, 1);
         if(alarmType<eSecondsMinutesHoursDateMatch){
-            readReg(DS323X_REG_ALM1_DAY, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM1_DAY, buffer, 1);
+            readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
         }
         if(alarmType<eSecondsMinutesHoursMatch){
-            readReg(DS323X_REG_ALM1_HOUR, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM1_HOUR, buffer, 1);
+            readReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
         }
         if(alarmType<eSecondsMinutesMatch){
-            readReg(DS323X_REG_ALM1_MIN, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM1_MIN, buffer, 1);
+            readReg(DS323X_REG_ALM1_MIN, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM1_MIN, &buffer, 1);
         }
         if(alarmType==eEverySecond){
-            readReg(DS323X_REG_ALM1_SEC, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM1_SEC, buffer, 1);
+            readReg(DS323X_REG_ALM1_SEC, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM1_SEC, &buffer, 1);
         }
         if(alarmType==eSecondsMinutesHoursDayMatch){
-            readReg(DS323X_REG_ALM1_DAY, buffer, 1);
-            buffer[0] |= 0x40;
-            writeReg(DS323X_REG_ALM1_DAY, buffer, 1);
+            readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
+            buffer |= 0x40;
+            writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
         }
         else{
-            readReg(DS323X_REG_CONTROL, buffer, 1);
-            buffer[0] &= 0xFE;
-            writeReg(DS323X_REG_CONTROL, buffer, 1);
+            readReg(DS323X_REG_CONTROL, &buffer, 1);
+            buffer &= 0xFE;
+            writeReg(DS323X_REG_CONTROL, &buffer, 1);
         }
     }
     else{
-        writeReg(DS323X_REG_ALM2_MIN, minutes, 1);
-        writeReg(DS323X_REG_ALM2_HOUR, hours, 1);
+        writeReg(DS323X_REG_ALM2_MIN, &minutes, 1);
+        writeReg(DS323X_REG_ALM2_HOUR, &hours, 1);
         if(alarmType == eMinutesHoursDateMatch)
-            writeReg(DS323X_REG_ALM2_DAY, dates, 1);
+            writeReg(DS323X_REG_ALM2_DAY, &dates, 1);
         else if (alarmType == eMinutesHoursDayMatch){
-            days[0] |= 0x80;
-            writeReg(DS323X_REG_ALM2_DAY, days, 1);
+            days |= 0x80;
+            writeReg(DS323X_REG_ALM2_DAY, &days, 1);
         }
         if(alarmType < eMinutesHoursDateMatch){
-            readReg(DS323X_REG_ALM2_DAY, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM2_DAY, buffer, 1);
+            readReg(DS323X_REG_ALM2_DAY, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM2_DAY, &buffer, 1);
         }
         if(alarmType < eMinutesHoursMatch){
-            readReg(DS323X_REG_ALM2_HOUR, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM2_HOUR, buffer, 1);
+            readReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
         }
         if(alarmType == eEveryMinute){
-            readReg(DS323X_REG_ALM2_MIN, buffer, 1);
-            buffer[0] |= 0x80;
-            writeReg(DS323X_REG_ALM2_MIN, buffer, 1);
+            readReg(DS323X_REG_ALM2_MIN, &buffer, 1);
+            buffer |= 0x80;
+            writeReg(DS323X_REG_ALM2_MIN, &buffer, 1);
         }
         else{
-            readReg(DS323X_REG_CONTROL, buffer, 1);
-            buffer[0] &= 0xFD;
-            writeReg(DS323X_REG_CONTROL, buffer, 1);
+            readReg(DS323X_REG_CONTROL, &buffer, 1);
+            buffer &= 0xFD;
+            writeReg(DS323X_REG_CONTROL, &buffer, 1);
         }
     } // of if-then-else use alarm 1 or 2
     clearAlarm(); // Clear the alarm state
     return;
 }
 
-void DFRobot_DS323X::enAbleAlarm1Int(){
-    uint8_t crtl[1];
-    readReg(DS323X_REG_CONTROL, crtl, 1);
-    crtl[0] |= 0x01;
-    writeReg(DS323X_REG_CONTROL, crtl, 1);
+/*!
+ *@brief enable the interrupt of alarm1 
+ */
+void DFRobot_DS323X::enableAlarm1Int(){
+    uint8_t crtl;
+    readReg(DS323X_REG_CONTROL, &crtl, 1);
+    crtl |= 0x01;
+    writeReg(DS323X_REG_CONTROL, &crtl, 1);
 }
 
-void DFRobot_DS323X::disAbleAlarm1Int(){
-    uint8_t crtl[1];
-    readReg(DS323X_REG_CONTROL, crtl, 1);
-    crtl[0] &= 0xFE;
-    writeReg(DS323X_REG_CONTROL, crtl, 1);
+/*!
+ *@brief disable the interrupt of alarm1 
+ */
+void DFRobot_DS323X::disableAlarm1Int(){
+    uint8_t crtl;
+    readReg(DS323X_REG_CONTROL, &crtl, 1);
+    crtl &= 0xFE;
+    writeReg(DS323X_REG_CONTROL, &crtl, 1);
 }
 
-void DFRobot_DS323X::enAbleAlarm2Int(){
-    uint8_t crtl[1];
-    readReg(DS323X_REG_CONTROL, crtl, 1);
-    crtl[0] |= 0x02;
-    writeReg(DS323X_REG_CONTROL, crtl, 1);
+/*!
+ *@brief enable the interrupt of alarm2 
+ */
+void DFRobot_DS323X::enableAlarm2Int(){
+    uint8_t crtl;
+    readReg(DS323X_REG_CONTROL, &crtl, 1);
+    crtl |= 0x02;
+    writeReg(DS323X_REG_CONTROL, &crtl, 1);
 }
 
-void DFRobot_DS323X::disAbleAlarm2Int(){
-    uint8_t crtl[1];
-    readReg(DS323X_REG_CONTROL, crtl, 1);
-    crtl[0] &= 0xFD;
-    writeReg(DS323X_REG_CONTROL, crtl, 1);
+/*!
+ *@brief disable the interrupt of alarm2 
+ */
+void DFRobot_DS323X::disableAlarm2Int(){
+    uint8_t crtl;
+    readReg(DS323X_REG_CONTROL, &crtl, 1);
+    crtl &= 0xFD;
+    writeReg(DS323X_REG_CONTROL, &crtl, 1);
 }
 
-uint8_t DFRobot_DS323X::isAlarm() {
-    uint8_t status[1];
-    readReg(DS323X_REG_STATUS, status, 1);
-    return status[0]&3; // Alarm if either of 2 LSBits set
+/*!
+ *@brief Judge if the alarm clock is triggered
+ *@return true, triggered; false, not trigger
+ */
+uint8_t DFRobot_DS323X::isAlarmTrig() {
+    uint8_t status;
+    readReg(DS323X_REG_STATUS, &status, 1);
+    return status&3; // Alarm if either of 2 LSBits set
 }
 
+/*!
+ *@brief Clear alarm flag 
+ */
 void DFRobot_DS323X::clearAlarm(){
-    uint8_t status[1];
-    readReg(DS323X_REG_STATUS, status, 1);
-    status[0] &= 0xFC;
-    writeReg(DS323X_REG_STATUS, status, 1);
+    uint8_t status;
+    readReg(DS323X_REG_STATUS, &status, 1);
+    status &= 0xFC;
+    writeReg(DS323X_REG_STATUS, &status, 1);
 } 
 
-void DFRobot_DS323X::enAble32k(){
-    uint8_t status[1];
-    readReg(DS323X_REG_STATUS, status, 1);
-    status[0] |= 0x08;
-    writeReg(DS323X_REG_STATUS, status, 1);
+/*!
+ *@brief enable the 32k output 
+ */
+void DFRobot_DS323X::enable32k(){
+    uint8_t status;
+    readReg(DS323X_REG_STATUS, &status, 1);
+    status |= 0x08;
+    writeReg(DS323X_REG_STATUS, &status, 1);
 }
 
-void DFRobot_DS323X::disAble32k(){
-    uint8_t status[1];
-    readReg(DS323X_REG_STATUS, status, 1);
-    status[0] &= 0xF7;
-    writeReg(DS323X_REG_STATUS, status, 1);
+/*!
+ *@brief disable the 32k output 
+ */
+void DFRobot_DS323X::disable32k(){
+    uint8_t status;
+    readReg(DS323X_REG_STATUS, &status, 1);
+    status &= 0xF7;
+    writeReg(DS323X_REG_STATUS, &status, 1);
 }
 
-
+/*!
+ *@brief write data into the SRAM
+ *@param addr 0x14~0xFF
+ *@param data uint8_t HEX
+ */
 void DFRobot_DS323X::writeSRAM(uint8_t reg, uint8_t data){
-    uint8_t buf[1] = {data};
-    writeReg(reg, buf, 1);
+    writeReg(reg, &data, 1);
 }
 
+/*!
+ *@brief read  the SRAM
+ *@param addr 0x14~0xFF
+ *@return data store in the SRAM
+ */
 uint8_t DFRobot_DS323X::readSRAM(uint8_t reg){
-    uint8_t buf[1];
-    readReg(reg, buf, 1);
-    return buf[0];
+    uint8_t buf;
+    readReg(reg, &buf, 1);
+    return buf;
 }
 
+/*!
+ *@brief clear the SRAM
+ *@param addr 0x14~0xFF
+ */
 void DFRobot_DS323X::clearSRAM(uint8_t reg){
-    uint8_t buf[1] = {0x00};
-    writeReg(reg, buf, 1);
+    uint8_t buf = 0x00;
+    writeReg(reg, &buf, 1);
 }
 
 void DFRobot_DS323X::writeReg(uint8_t reg, const void* pBuf, size_t size)

@@ -22,7 +22,7 @@ import time
 
 class DFRobot_DS323X:
     
-    OFF                = 0x01
+    OFF                = 0x1C
     SquareWave_1Hz     = 0x00
     SquareWave_1kHz    = 0x08
     SquareWave_4kHz    = 0x10
@@ -49,7 +49,6 @@ class DFRobot_DS323X:
 
     _IIC_ADDRESS        = 0x68
 
-    _SECONDS_FROM_1970_TO_2000  = 946684800
     _REG_RTC_SEC        = 0X00
     _REG_RTC_MIN        = 0X01
     _REG_RTC_HOUR       = 0X02
@@ -122,20 +121,22 @@ class DFRobot_DS323X:
 
     '''
     @brief Read the value of pin sqw
-    @return mode OFF             = 0x01 # Off
+    @return mode OFF             = 0x1C # Off
     @n           SquareWave_1Hz  = 0x00 # 1Hz square wave
     @n           SquareWave_1kHz = 0x08 # 1kHz square wave
     @n           SquareWave_4kHz = 0x10 # 4kHz square wave
     @n           SquareWave_8kHz = 0x18 # 8kHz square wave
     '''
     def read_sqw_pin_mode(self):        #Read the value of pin sqw
-        mode = self.Control()
         mode = self.read_reg(self._REG_CONTROL)
-        return mode.BBSQW
+        mode &= 0x1C;
+        if (mode & 0x04):
+            mode = OFF
+        return mode
 
     '''
     @brief Set the vaule of pin sqw
-    @param mode OFF             = 0x01 # Not output square wave, enter interrupt mode
+    @param mode OFF             = 0x1C # Not output square wave, enter interrupt mode
     @n          SquareWave_1Hz  = 0x00 # 1Hz square wave
     @n          SquareWave_1kHz = 0x08 # 1kHz square wave
     @n          SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -145,10 +146,7 @@ class DFRobot_DS323X:
         ctrl = self.read_reg(self._REG_CONTROL)
         ctrl &= 0x04
         ctrl &= 0x18
-        if mode == self.OFF:
-            ctrl |= 0x04
-        else:
-            ctrl |= mode
+        ctrl |= mode
         
         self.write_reg(self._REG_CONTROL, ctrl);
     
@@ -306,7 +304,7 @@ class DFRobot_DS323X:
     @param minutes   Alarm clock (minute)
     @param seconds   Alarm clock (second)
     '''
-    def set_alarm(self, alarmType, date, hour, minute, second, state = True):
+    def set_alarm(self, alarmType, date, hour, minute, second):
         dates = self.bin2bcd(date)
         hours = self._mode >> 6|self.bin2bcd(hour)
         minutes = self.bin2bcd(minute)
@@ -409,7 +407,7 @@ class DFRobot_DS323X:
     @brief check if alarm flag has been trigger
     @return True, triggered; False, not trigger 
     '''
-    def is_alarm(self):
+    def is_alarm_trig(self):
         staReg = self.read_reg(self._REG_STATUS)
         return staReg&3
     
@@ -426,7 +424,7 @@ class DFRobot_DS323X:
     '''
     def enable_32k(self):
         staReg = self.read_reg(self._REG_STATUS)
-        staReg.en32kHZ = 1
+        staReg|= 0x08
         self.write_reg(self._REG_STATUS, staReg)
     
     '''
@@ -434,7 +432,7 @@ class DFRobot_DS323X:
     '''
     def disable_32k(self):
         staReg = self.read_reg(self._REG_STATUS)
-        staReg.en32kHZ = 0
+        staReg &= 0xF7
         self.write_reg(self._REG_STATUS, staReg)
 
     '''

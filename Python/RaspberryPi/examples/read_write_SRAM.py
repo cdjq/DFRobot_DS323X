@@ -35,7 +35,7 @@ for reg in range(0x14,0x1F):
 
 '''
 @brief write data into the SRAM
-@param reg, address of SRAM
+@param reg, address of SRAM 0x14~0xFF
 @param data
 '''
 for reg in range(0x14,0x1F):
@@ -44,7 +44,8 @@ for reg in range(0x14,0x1F):
 
 '''
 @brief read data of the SRAM
-@param reg, address of SRAM
+@param reg, address of SRAM 0x14~0xFF
+@return data stored in SRAM
 '''
 def main():
     while True:

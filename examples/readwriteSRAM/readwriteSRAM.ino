@@ -24,21 +24,36 @@ void setup(void)
         Serial.println("Failed to init chip, please check if the chip connection is fine. ");
         delay(1000);
     }
-    for (uint8_t reg = 0x14; reg < 0x1F; reg++){
-        rtc.clearSRAM(reg);
+    /*!
+     *@brief clear the SRAM
+     *@param addr 0x14~0xFF
+     */
+    for (uint8_t addr = 0x14; addr < 0x1F; addr++){
+        rtc.clearSRAM(addr);
     }
-    for (uint8_t reg = 0x14; reg < 0x1F; reg++){
-        rtc.writeSRAM(reg,buffer[i]);
+    /*!
+     *@brief write data into the SRAM
+     *@param addr 0x14~0xFF
+     *@param data uint8_t HEX
+     */
+    for (uint8_t addr = 0x14; addr < 0x1F; addr++){
+        rtc.writeSRAM(addr,buffer[i]);
         i++;
     }
     delay(1000);
 }
 
 void loop() {
-    for (uint8_t reg = 0x14; reg < 0x1F; reg++){
-        Serial.print(rtc.readSRAM(reg),HEX);
+    /*!
+     *@brief read  the SRAM
+     *@param addr 0x14~0xFF
+     *@return data store in the SRAM
+     */
+    for (uint8_t addr = 0x14; addr < 0x1F; addr++){
+        Serial.print(rtc.readSRAM(addr),HEX);
         Serial.print(" ");
-        delay(1000);
+        delay(200);
     }
+    delay(1000);
     Serial.println();
 }

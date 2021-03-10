@@ -27,33 +27,33 @@ void setup(void)
     }
     /*!
      *@brief Set the value of pin sqw
-     *@param mode eDS323X_OFF             = 0x01 // Not output square wave, enter interrupt mode
-     *@n          eDS323X_SquareWave_1Hz  = 0x00 // 1Hz square wave
-     *@n          eDS323X_SquareWave_1kHz = 0x08 // 1kHz square wave
-     *@n          eDS323X_SquareWave_4kHz = 0x10 // 4kHz square wave
-     *@n          eDS323X_SquareWave_8kHz = 0x18 // 8kHz square wave
+     *@param mode eOFF             = 0x01 // Not output square wave, enter interrupt mode
+     *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
+     *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
+     *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
+     *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
      */
-    rtc.writeSqwPinMode(eDS323X_OFF);
+    rtc.writeSqwPinMode(eOFF);
     
     /*!
      *@brief enable Alarm1 interrupt
      */
-    rtc.enAbleAlarm1Int();
+    rtc.enableAlarm1Int();
     
     /*!
      *@brief disable Alarm1 interrupt
      */
-    //rtc.disAbleAlarm1Int();
+    //rtc.disableAlarm1Int();
     
     /*!
      *@brief enable Alarm2 interrupt
      */
-    rtc.enAbleAlarm2Int();
+    rtc.enableAlarm2Int();
     
     /*!
      *@brief disable Alarm2 interrupt
      */
-    //rtc.disAbleAlarm2Int();
+    //rtc.disableAlarm2Int();
     
     /*!
      *@brief Set alarm clock 
@@ -87,7 +87,7 @@ void setup(void)
      *@brief Judge if it is power-down 
      *@return if return true, power-down, time needs to reset; false, work well
      */
-    if (rtc.lostPower())
+    if (rtc.isLostPower())
         rtc.setTime(/*year,1900-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
     #if defined(ESP32) || defined(ESP8266)||defined(ARDUINO_SAM_ZERO)
     attachInterrupt(digitalPinToInterrupt(D6)/*Query the interrupt number of the D6 pin*/,interEvent,CHANGE);
@@ -119,24 +119,19 @@ void setup(void)
     #endif
 }
 void loop() {
-    /*!
-     *@brief Judge if the alarm clock is triggered
-     *@return true, triggered; false, not triggered
-     */
-    rtc.getNowTime();
-    Serial.print(rtc.year(), DEC);
+    Serial.print(rtc.getYear(), DEC);
     Serial.print('/');
-    Serial.print(rtc.month(), DEC);
+    Serial.print(rtc.getMonth(), DEC);
     Serial.print('/');
-    Serial.print(rtc.day(), DEC);
+    Serial.print(rtc.getDate(), DEC);
     Serial.print(" (");
     Serial.print(rtc.getDayOfTheWeek());
     Serial.print(") ");
-    Serial.print(rtc.hour(), DEC);
+    Serial.print(rtc.getHour(), DEC);
     Serial.print(':');
-    Serial.print(rtc.minute(), DEC);
+    Serial.print(rtc.getMinute(), DEC);
     Serial.print(':');
-    Serial.print(rtc.second(), DEC);
+    Serial.print(rtc.getSecond(), DEC);
     Serial.print(' ');
     /*if rtc works in 24hours mode,this function doesn't print anything*/
     Serial.print(rtc.getAMorPM());
@@ -149,7 +144,7 @@ void loop() {
     }
     else
         delay(1000);
-    if (rtc.lostPower()) {
+    if (rtc.isLostPower()) {
         Serial.println("RTC lost power, please reset the time!");
     }
 }

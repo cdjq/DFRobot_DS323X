@@ -1,6 +1,6 @@
 /*!
  * @file getTimeFromPC.ino
- * @brief get time when the PC compile.
+ * @brief get time when the PC compile。 由第一次上传后串口打印的时间减去PC系统时间所得的值作为补偿时间传入函数中，再次上传，将编译时间写入模块中
  * @n Experiment phenomenon: You need to close the IDE and recompile, otherwise the correct system time cannot be obtained。 
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -26,19 +26,10 @@ void setup(void)
     //rtc.setMode();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set the last compiled time as the current time
-     *@param comSec  default is 0
+     *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
      */
     rtc.getCompileTime();//Set the last compiled time as the current time
 
-    /*!
-     *@brief enable the 32k output (default is enable)
-     */
-    //rtc.disAble32k();
-
-    /*!
-     *@brief disable the 32k output 
-     */
-    //rtc.enAble32k();
 }
 
 void loop() {
@@ -47,19 +38,19 @@ void loop() {
      *@return Current time data
      */
     rtc.getNowTime();
-    Serial.print(rtc.year(), DEC);//year
+    Serial.print(rtc.getYear(), DEC);//year
     Serial.print('/');
-    Serial.print(rtc.month(), DEC);//month
+    Serial.print(rtc.geMonth(), DEC);//month
     Serial.print('/');
-    Serial.print(rtc.day(), DEC);//date
+    Serial.print(rtc.getDate(), DEC);//date
     Serial.print(" (");
     Serial.print(rtc.getDayOfTheWeek());//day of week
     Serial.print(") ");
-    Serial.print(rtc.hour(), DEC);//hour
+    Serial.print(rtc.gethour(), DEC);//hour
     Serial.print(':');
-    Serial.print(rtc.minute(), DEC);//minute
+    Serial.print(rtc.getMinute(), DEC);//minute
     Serial.print(':');
-    Serial.print(rtc.second(), DEC);//second
+    Serial.print(rtc.getSecond(), DEC);//second
     Serial.print(' ');
     /*if rtc works in 24hours mode,this function doesn't print anything*/
     Serial.print(rtc.getAMorPM());
@@ -76,7 +67,7 @@ void loop() {
      *@brief Judge if it is power-down
      *@return If retrun true, power down, needs to reset time; false, work well.
      */
-    if (rtc.lostPower()) {
+    if (rtc.isLostPower()) {
         Serial.println("RTC lost power, plrase reset the time!");
     }
 }

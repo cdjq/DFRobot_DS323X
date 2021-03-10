@@ -105,7 +105,7 @@ Download this library into RaspberryPi, and run demo with Python
   
   '''
   @brief Read the value of pin sqw
-  @return mode OFF             = 0x01 # Off
+  @return mode OFF             = 0x1C # Off
   @n           SquareWave_1Hz  = 0x00 # 1Hz square wave
   @n           SquareWave_1kHz = 0x08 # 1kHz square wave
   @n           SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -115,7 +115,7 @@ Download this library into RaspberryPi, and run demo with Python
   
   '''
   @brief Set the vaule of pin sqw
-  @param mode OFF             = 0x01 # Not output square wave, enter interrupt mode
+  @param mode OFF             = 0x1C # Not output square wave, enter interrupt mode
   @n          SquareWave_1Hz  = 0x00 # 1Hz square wave
   @n          SquareWave_1kHz = 0x08 # 1kHz square wave
   @n          SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -147,7 +147,7 @@ Download this library into RaspberryPi, and run demo with Python
   '''
   @brief check if alarm flag has been trigger
   '''
-  def is_alarm()
+  def is_alarm_trig()
   
   '''
   @brief clear alarm flag trigger

@@ -18,9 +18,10 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* Read the time the program was last compiled. <br>
-* Set a alarm clock to trigger at a specified time. <br>
-* Measure ambient temperature. <br>
+* 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
+* 设置闹钟，用户可设置两个闹钟，并在串口或中断引脚读取串口触发flag <br>
+* 测量气温，读取气温的功能仅作参考 <br>
+* 读写SRAM，仅用于DS3232,有236字节的SRAM可供读写 <br>
 
 ## Installation
 
@@ -122,29 +123,29 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Judge if it is power-down 
-   *@return If retrun true, power down, time needs to reset; false, work well. 
+   *@return If retrun true, power down, user needs to reset time; false, work well. 
    */
-  bool lostPower(void);
+  bool isLostPower(void);
   
   /*!
    *@brief Read the value of pin sqw
-   *@return eDS323XM_OFF             = 0x01 // Off
-   *@n      eDS323XM_SquareWave_1Hz  = 0x00 // 1Hz square wave
-   *@n      eDS323XM_SquareWave_1kHz = 0x08 // 1kHz square wave
-   *@n      eDS323XM_SquareWave_4kHz = 0x10 // 4kHz square wave
-   *@n      eDS323XM_SquareWave_8kHz = 0x18 // 8kHz square wave
+   *@return eOFF             = 0x1C // Off
+   *@n      eSquareWave_1Hz  = 0x00 // 1Hz square wave
+   *@n      eSquareWave_1kHz = 0x08 // 1kHz square wave
+   *@n      eSquareWave_4kHz = 0x10 // 4kHz square wave
+   *@n      eSquareWave_8kHz = 0x18 // 8kHz square wave
    */
-  eDs3231MSqwPinMode_t readSqwPinMode();
+  eDS323XSqwPinMode_t readSqwPinMode();
   
   /*!
    *@brief Set the vaule of pin sqw
-   *@param mode eDS323XM_OFF             = 0x01 // Off
-   *@n          eDS323XM_SquareWave_1Hz  = 0x00 // 1Hz square wave
-   *@n          eDS323XM_SquareWave_1kHz = 0x08 // 1kHz square wave
-   *@n          eDS323XM_SquareWave_4kHz = 0x10 // 4kHz square wave
-   *@n          eDS323XM_SquareWave_8kHz = 0x18 // 8kHz square wave
+   *@param mode eOFF             = 0x1C // Off
+   *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
+   *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
+   *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
+   *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
    */
-  void writeSqwPinMode(eDs3231MSqwPinMode_t mode);
+  void writeSqwPinMode(eDS323XSqwPinMode_t mode);
   
   /*!
    *@brief Set alarm clock
@@ -169,13 +170,13 @@ To use this library, first download the library file, paste it into the \Arduino
    *@param seconds Alarm clock (second)
    */
   void setAlarm(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
-                int8_t minutes,int8_t seconds, const bool state  = true);
+                int8_t minutes,int8_t seconds);
   
   /*!
    *@brief Judge if the alarm clock is triggered 
    *@return true, triggered; false, not trigger
    */
-  bool isAlarm();
+  bool isAlarmTrig();
   /*!
    *@brief Clear trigger flag
    */
@@ -184,20 +185,20 @@ To use this library, first download the library file, paste it into the \Arduino
   /*!
    *@brief enable or disable the interrupt of alarm 
    */
-  void enAbleAlarm1Int();
-  void disAbleAlarm1Int();
-  void enAbleAlarm2Int();
-  void disAbleAlarm2Int();
+  void enableAlarm1Int();
+  void disableAlarm1Int();
+  void enableAlarm2Int();
+  void disableAlarm2Int();
   
   /*!
    *@brief enable the 32k output 
    */
-  void enAble32k();
+  void enable32k();
   
   /*!
    *@brief disable the 32k output 
    */
-  void disAble32k();
+  void disable32k();
     
   /*!
    *@brief write, read and clear the SRAM, only work on DS3232

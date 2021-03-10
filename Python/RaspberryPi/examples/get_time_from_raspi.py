@@ -36,10 +36,6 @@ second = t_time.tm_sec#Set the seconds from NTP server
 
 rtc.set_time(year, month, date, hour, minute, second)
 
-#rtc.disAble32k();#disable the 32k output (default is enable)
-
-#rtc.enAble32k();#enable the 32k output 
-
 def main():
     while True:
         if rtc.is_lost_power() == 1:

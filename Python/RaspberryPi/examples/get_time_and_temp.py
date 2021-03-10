@@ -25,24 +25,6 @@ while not rtc.begin():
     time.sleep(2)
 
 '''
-@brief Set the vaule of pin sqw
-@param mode OFF             = 0x01 # Not output square wave, enter interrupt mode
-@n          SquareWave_1Hz  = 0x00 # 1Hz square wave
-@n          SquareWave_1kHz = 0x08 # 1kHz square wave
-@n          SquareWave_4kHz = 0x10 # 4kHz square wave
-@n          SquareWave_8kHz = 0x18 # 8kHz square wave
-'''
-rtc.write_sqw_pin_mode(rtc.SquareWave_1Hz)
-'''
-@brief Read the value of pin sqw
-@return mode OFF             = 0x01 # Off
-@n           SquareWave_1Hz  = 0x00 # 1Hz square wave
-@n           SquareWave_1kHz = 0x08 # 1kHz square wave
-@n           SquareWave_4kHz = 0x10 # 4kHz square wave
-@n           SquareWave_8kHz = 0x18 # 8kHz square wave
-'''
-#rtc.read_sqw_pin_mode()
-'''
 @brief Set mode of time
 @param mode H24hours, AM, PM
 '''
@@ -58,10 +40,6 @@ rtc.set_mode(rtc.AM)
 @param Second
 '''
 rtc.set_time(year=2021,month=2,date=28,hour=11,minute=59,second=55)
-
-#rtc.disAble32k();#disable the 32k output (default is enable)
-
-#rtc.enAble32k();#enable the 32k output 
 
 def main():
     while True:

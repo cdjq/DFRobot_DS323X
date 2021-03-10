@@ -13,29 +13,28 @@ DFRobot_DS323X	KEYWORD1
 #######################################
 
 begin	KEYWORD2
-getNowTime	KEYWORD2
-year	KEYWORD2
-month	KEYWORD2
-day	KEYWORD2
-hour	KEYWORD2
-minute	KEYWORD2
-second	KEYWORD2
+getYear	KEYWORD2
+getMonth	KEYWORD2
+getDate	KEYWORD2
+getHour	KEYWORD2
+getMinute	KEYWORD2
+getSecond	KEYWORD2
 getDayOfTheWeek	KEYWORD2
 getTemperatureC	KEYWORD2
-lostPower	KEYWORD2
+isLostPower	KEYWORD2
 readSqwPinMode	KEYWORD2
 writeSqwPinMode	KEYWORD2
 setAlarm	KEYWORD2
-isAlarm	KEYWORD2
+isAlarmTrig	KEYWORD2
 setMode	KEYWORD2
 setTime	KEYWORD2
 clearAlarm	KEYWORD2
-disAble32k	KEYWORD2
-enAble32k	KEYWORD2
-enAbleAlarm1Int	KEYWORD2
-disAbleAlarm1Int	KEYWORD2
-enAbleAlarm2Int	KEYWORD2
-disAbleAlarm2Int	KEYWORD2
+disable32k	KEYWORD2
+enable32k	KEYWORD2
+enableAlarm1Int	KEYWORD2
+disableAlarm1Int	KEYWORD2
+enableAlarm2Int	KEYWORD2
+disableAlarm2Int	KEYWORD2
 getAMorPM	KEYWORD2
 dateTime	KEYWORD2
 clearSRAM	KEYWORD2
@@ -46,11 +45,11 @@ readSRAM	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
-eDS323X_OFF	LITERAL1
-eDS323X_SquareWave_1Hz	LITERAL1
-eDS323X_SquareWave_1kHz	LITERAL1
-eDS323X_SquareWave_4kHz	LITERAL1
-eDS323X_SquareWave_8kHz	LITERAL1
+eOFF	LITERAL1
+eSquareWave_1Hz	LITERAL1
+eSquareWave_1kHz	LITERAL1
+eSquareWave_4kHz	LITERAL1
+eSquareWave_8kHz	LITERAL1
 eEverySecond	LITERAL1
 eSecondsMatch	LITERAL1
 eSecondsMinutesMatch	LITERAL1

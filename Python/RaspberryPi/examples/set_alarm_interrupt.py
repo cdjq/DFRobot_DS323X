@@ -45,15 +45,7 @@ rtc.enable_alarm1_int();#@enable Alarm1 interrupt
 @n          SquareWave_8kHz = 0x18 # 8kHz square wave
 '''
 rtc.write_sqw_pin_mode(rtc.OFF)
-'''
-@brief Read the value of pin sqw
-@return mode OFF             = 0x01 # Off
-@n           SquareWave_1Hz  = 0x00 # 1Hz square wave
-@n           SquareWave_1kHz = 0x08 # 1kHz square wave
-@n           SquareWave_4kHz = 0x10 # 4kHz square wave
-@n           SquareWave_8kHz = 0x18 # 8kHz square wave
-'''
-#rtc.read_sqw_pin_mode()
+
 '''
 @brief Set the last compiled time as the current time
 '''
@@ -83,15 +75,6 @@ rtc.set_time(2021,2,28,23,59,55)
 '''
 rtc.set_alarm(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
 rtc.set_alarm(alarmType=rtc.MinutesHoursDayMatch,date=1,hour=0,minute=0,second=5)
-'''
-@brief disable the 32k output (default is enable)
-'''
-#rtc.disAble32k();
-
-'''
-@brief enable the 32k output 
-'''
-#rtc.enAble32k();
 
 IO1 = 21#set interrupt pin
 
