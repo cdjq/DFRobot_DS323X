@@ -47,37 +47,37 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief get year
    *@return year
    */
-  uint16_t year();
+  uint16_t getYear();
   
   /*!
    *@brief get month
    *@return month
    */
-  uint8_t  month();
+  uint8_t getMonth();
   
   /*!
    *@brief get date
    *@return date
    */
-  uint8_t  day();
+  uint8_t getDate();
   
   /*!
    *@brief get hour
    *@return hour
    */
-  uint8_t  hour();
+  uint8_t getHour();
   
   /*!
    *@brief get minute
    *@return minute
    */
-  uint8_t  minute();
+  uint8_t getMinute();
   
   /*!
    *@brief get second
    *@return second
    */
-  uint8_t  second();
+  uint8_t getSecond();
   
   /*!
    *@brief get day of week
@@ -135,7 +135,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n      eSquareWave_4kHz = 0x10 // 4kHz square wave
    *@n      eSquareWave_8kHz = 0x18 // 8kHz square wave
    */
-  eDS323XSqwPinMode_t readSqwPinMode();
+  eSqwPinMode_t readSqwPinMode();
   
   /*!
    *@brief Set the vaule of pin sqw
@@ -145,7 +145,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
    *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
    */
-  void writeSqwPinMode(eDS323XSqwPinMode_t mode);
+  void writeSqwPinMode(eSqwPinMode_t mode);
   
   /*!
    *@brief Set alarm clock
