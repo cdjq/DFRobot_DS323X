@@ -18,9 +18,10 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* Read the time the program was last compiled. <br>
-* Set a alarm clock to trigger at a specified time. <br>
-* Measure ambient temperature. <br>
+* 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
+* 设置闹钟，用户可设置两个闹钟，并在串口或中断引脚读取串口触发flag <br>
+* 测量气温，读取气温的功能仅作参考 <br>
+* 读写SRAM，仅用于DS3232,有236字节的SRAM可供读写 <br>
 
 ## Installation
 
@@ -69,7 +70,7 @@ Download this library into RaspberryPi, and run demo with Python
   @brief get day of week
   @return day of week
   '''
-  def day_of_the_week()
+  def get_day_of_the_week()
   
   '''
   @brief Set time  
