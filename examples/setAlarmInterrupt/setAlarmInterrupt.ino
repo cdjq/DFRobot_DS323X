@@ -56,7 +56,7 @@ void setup(void)
     //rtc.disableAlarm2Int();
     
     /*!
-     *@brief Set alarm clock 
+     *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
      *@n                                  eEverySecond,
      *@n                                  eSecondsMatch,
@@ -64,25 +64,31 @@ void setup(void)
      *@n                                  eSecondsMinutesHoursMatch,
      *@n                                  eSecondsMinutesHoursDateMatch,
      *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
-     *@n
+     *@n                                  }eAlarm1Types;
+     *@param days    Alarm clock Day (day)
+     *@param hours   Alarm clock Hour (hour)
+     *@param mode:   e24hours, eAM, ePM
+     *@param minutes Alarm clock (minute)
+     *@param seconds Alarm clock (second)
+     */
+    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
+    /*!
+     *@brief Set alarm clock
+     *@param alarmType Alarm clock working mode typedef enum{
      *@n                                  eEveryMinute,
      *@n                                  eMinutesMatch,
      *@n                                  eMinutesHoursMatch,
      *@n                                  eMinutesHoursDateMatch,
      *@n                                  eMinutesHoursDayMatch,        //Alarm2
      *@n                                  eUnknownAlarm
-     *@n                                  }eAlarmTypes;
-     *@param days    Alarm clock (day)
-     *@param hours   Alarm clock (hour)
+     *@n                                  }eAlarm2Types;
+     *@param days    Alarm clock Day (day)
+     *@param hours   Alarm clock Hour (hour)
      *@param mode:   e24hours, eAM, ePM
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
      */
-    //Alarm1
-    rtc.setAlarm(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);
-    //Alarm2
-    rtc.setAlarm(rtc.eMinutesHoursDayMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,
-                 /*minute,0-59*/0,/*second,0-59, this argument doesn't work in Alarm2*/0);
+    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
     /*!
      *@brief Judge if it is power-down 
      *@return if return true, power-down, time needs to reset; false, work well
@@ -90,7 +96,7 @@ void setup(void)
     if (rtc.isLostPower())
         rtc.setTime(/*year,1900-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
     #if defined(ESP32) || defined(ESP8266)||defined(ARDUINO_SAM_ZERO)
-    attachInterrupt(digitalPinToInterrupt(D6)/*Query the interrupt number of the D6 pin*/,interEvent,CHANGE);
+    attachInterrupt(digitalPinToInterrupt(D6)/*Query the interrupt number of the D6 pin*/,interrupt,FALLING);
     #else
     /*    The Correspondence Table of AVR Series Arduino Interrupt Pins And Terminal Numbers
     * ---------------------------------------------------------------------------------------
@@ -114,7 +120,7 @@ void setup(void)
     * |no need to set it to input mode with pinMode)|Interrupt No|Interrupt number is a pin digital value, such as P0 interrupt number 0, P1 is 1 |
     * |-------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    attachInterrupt(/*Interrupt No*/0,interrupt,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
+    attachInterrupt(/*Interrupt No*/0,interrupt,FALLING);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
     //UNO(2), Mega2560(2), Leonardo(3), microbit(P0).
     #endif
 }

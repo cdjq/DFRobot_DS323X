@@ -297,14 +297,21 @@ class DFRobot_DS323X:
         return status >> 7
 
     '''
-    @brief Set alarm clock
-    @param alarmType
+    @brief Set alarm1 clock
+    @param alarmType:EverySecond,
+    @n               SecondsMatch,
+    @n               SecondsMinutesMatch,
+    @n               SecondsMinutesHoursMatch,
+    @n               SecondsMinutesHoursDateMatch,
+    @n               SecondsMinutesHoursDayMatch, #Alarm1
+    @n               UnknownAlarm
     @param days      Alarm clock Day (day)
     @param hours     Alarm clock Hour (hour)
+    @param mode:     H24hours, AM, PM
     @param minutes   Alarm clock (minute)
     @param seconds   Alarm clock (second)
     '''
-    def set_alarm(self, alarmType, date, hour, minute, second):
+    def set_alarm1(self, alarmType, date, hour, minute, second):
         dates = self.bin2bcd(date)
         hours = self._mode >> 6|self.bin2bcd(hour)
         minutes = self.bin2bcd(minute)
@@ -312,62 +319,75 @@ class DFRobot_DS323X:
         days = self.bin2bcd(self.day_of_the_week())
         if alarmType >= self.UnknownAlarm:
             return
-        if alarmType < self.EveryMinute:
-            self.write_reg(self._REG_ALM1_SEC, seconds)
-            self.write_reg(self._REG_ALM1_MIN, minutes)
-            self.write_reg(self._REG_ALM1_HOUR, hours)
-            if alarmType == self.SecondsMinutesHoursDateMatch:
-                self.write_reg(self._REG_ALM1_DAY, dates)
-            else:
-                self.write_reg(self._REG_ALM1_DAY, days);
-            if alarmType < self.SecondsMinutesHoursDateMatch:
-                buffer = self.read_reg(self._REG_ALM1_DAY)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM1_DAY, buffer)
-            if alarmType < self.SecondsMinutesHoursMatch:
-                buffer = self.read_reg(self._REG_ALM1_HOUR)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM1_HOUR, buffer)
-            if alarmType < self.SecondsMinutesMatch:
-                buffer = self.read_reg(self._REG_ALM1_MIN)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM1_MIN, buffer)
-            if(alarmType == self.EverySecond):
-                buffer = self.read_reg(self._REG_ALM1_SEC)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM1_SEC, buffer)
-            if(alarmType == self.SecondsMinutesHoursDayMatch):
-                buffer = self.read_reg(self._REG_ALM1_DAY)
-                buffer |= 0x40
-                self.write_reg(self._REG_ALM1_DAY, buffer)
-            else:
-                buffer = self.read_reg(self._REG_CONTROL)
-                buffer &= 0xFE
-                self.write_reg(self._REG_CONTROL, buffer)
+        self.write_reg(self._REG_ALM1_SEC, seconds)
+        self.write_reg(self._REG_ALM1_MIN, minutes)
+        self.write_reg(self._REG_ALM1_HOUR, hours)
+        if alarmType == self.SecondsMinutesHoursDateMatch:
+            self.write_reg(self._REG_ALM1_DAY, dates)
         else:
-            self.write_reg(self._REG_ALM2_MIN, minutes)
-            self.write_reg(self._REG_ALM2_HOUR, hours)
-            if alarmType == self.MinutesHoursDateMatch:
-                self.write_reg(self._REG_ALM2_DAY)
-            elif alarmType == self.MinutesHoursDayMatch:
-                days |= 0x80
-                self.write_reg(self._REG_ALM2_DAY, days)
-            if alarmType < self.MinutesHoursDateMatch:
-                buffer = self.read_reg(self._REG_ALM2_DAY)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM2_DAY, buffer)
-            if alarmType < self.MinutesHoursMatch:
-                buffer = self.read_reg(self._REG_ALM2_HOUR)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM2_HOUR, buffer)
-            if alarmType == self.EveryMinute:
-                buffer = self.read_reg(self._REG_ALM2_MIN,)
-                buffer |= 0x80
-                self.write_reg(self._REG_ALM2_MIN, buffer)
-            else:
-                buffer = self.read_reg(self._REG_CONTROL)
-                buffer &= 0xFD
-                self.write_reg(self._REG_CONTROL, buffer)
+            self.write_reg(self._REG_ALM1_DAY, days);
+        if alarmType < self.SecondsMinutesHoursDateMatch:
+            buffer = self.read_reg(self._REG_ALM1_DAY)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM1_DAY, buffer)
+        if alarmType < self.SecondsMinutesHoursMatch:
+            buffer = self.read_reg(self._REG_ALM1_HOUR)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM1_HOUR, buffer)
+        if alarmType < self.SecondsMinutesMatch:
+            buffer = self.read_reg(self._REG_ALM1_MIN)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM1_MIN, buffer)
+        if(alarmType == self.EverySecond):
+            buffer = self.read_reg(self._REG_ALM1_SEC)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM1_SEC, buffer)
+        if(alarmType == self.SecondsMinutesHoursDayMatch):
+            buffer = self.read_reg(self._REG_ALM1_DAY)
+            buffer |= 0x40
+            self.write_reg(self._REG_ALM1_DAY, buffer)
+        self.clear_alarm()
+        return
+
+    '''
+    @brief Set alarm2 clock
+    @param alarmType:EveryMinute,
+    @n               MinutesMatch,
+    @n               MinutesHoursMatch,
+    @n               MinutesHoursDateMatch,
+    @n               MinutesHoursDayMatch,        #Alarm2
+    @n               UnknownAlarm
+    @param days      Alarm clock Day (day)
+    @param hours     Alarm clock Hour (hour)
+    @param mode:     H24hours, AM, PM
+    @param minutes   Alarm clock (minute)
+    '''
+    def set_alarm2(self, alarmType, date, hour, minute):
+        dates = self.bin2bcd(date)
+        hours = self._mode >> 6|self.bin2bcd(hour)
+        minutes = self.bin2bcd(minute)
+        days = self.bin2bcd(self.day_of_the_week())
+        if alarmType >= self.UnknownAlarm:
+            return
+        self.write_reg(self._REG_ALM2_MIN, minutes)
+        self.write_reg(self._REG_ALM2_HOUR, hours)
+        if alarmType == self.MinutesHoursDateMatch:
+            self.write_reg(self._REG_ALM2_DAY)
+        elif alarmType == self.MinutesHoursDayMatch:
+            days |= 0x80
+            self.write_reg(self._REG_ALM2_DAY, days)
+        if alarmType < self.MinutesHoursDateMatch:
+            buffer = self.read_reg(self._REG_ALM2_DAY)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM2_DAY, buffer)
+        if alarmType < self.MinutesHoursMatch:
+            buffer = self.read_reg(self._REG_ALM2_HOUR)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM2_HOUR, buffer)
+        if alarmType == self.EveryMinute:
+            buffer = self.read_reg(self._REG_ALM2_MIN,)
+            buffer |= 0x80
+            self.write_reg(self._REG_ALM2_MIN, buffer)
         self.clear_alarm()
         return
     

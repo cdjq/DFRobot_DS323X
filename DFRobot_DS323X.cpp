@@ -290,20 +290,15 @@ bool DFRobot_DS323X::isLostPower(void) {
  *@n                                  eSecondsMinutesHoursMatch,
  *@n                                  eSecondsMinutesHoursDateMatch,
  *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
- *@n                                  eEveryMinute,
- *@n                                  eMinutesMatch,
- *@n                                  eMinutesHoursMatch,
- *@n                                  eMinutesHoursDateMatch,
- *@n                                  eMinutesHoursDayMatch,        //Alarm2
  *@n                                  eUnknownAlarm
- *@n                                  }eAlarmTypes;
+ *@n                                  }eAlarm1Types;
  *@param days    Alarm clock Day (day)
  *@param hours   Alarm clock Hour (hour)
  *@param mode:   e24hours, eAM, ePM
  *@param minutes Alarm clock (minute)
  *@param seconds Alarm clock (second)
  */
-void DFRobot_DS323X::setAlarm(eAlarmTypes alarmType, int16_t date,int8_t hour,
+void DFRobot_DS323X::setAlarm1(eAlarm1Types alarmType, int16_t date,int8_t hour,
                                int8_t minute,int8_t second){
     int16_t dates = bin2bcd(date);
     int8_t hours = _mode << 5|bin2bcd(hour);
@@ -313,75 +308,89 @@ void DFRobot_DS323X::setAlarm(eAlarmTypes alarmType, int16_t date,int8_t hour,
     uint8_t buffer;
     if (alarmType >= eUnknownAlarm)
         return;
-    if (alarmType < eEveryMinute){
-        writeReg(DS323X_REG_ALM1_SEC, &seconds, 1);
-        writeReg(DS323X_REG_ALM1_MIN, &minutes, 1);
-        writeReg(DS323X_REG_ALM1_HOUR, &hours, 1);
-        if (alarmType == eSecondsMinutesHoursDateMatch)
-            writeReg(DS323X_REG_ALM1_DAY, &dates, 1);
-        else
-            writeReg(DS323X_REG_ALM1_DAY, &days, 1);
-        if(alarmType<eSecondsMinutesHoursDateMatch){
-            readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
-        }
-        if(alarmType<eSecondsMinutesHoursMatch){
-            readReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
-        }
-        if(alarmType<eSecondsMinutesMatch){
-            readReg(DS323X_REG_ALM1_MIN, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM1_MIN, &buffer, 1);
-        }
-        if(alarmType==eEverySecond){
-            readReg(DS323X_REG_ALM1_SEC, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM1_SEC, &buffer, 1);
-        }
-        if(alarmType==eSecondsMinutesHoursDayMatch){
-            readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
-            buffer |= 0x40;
-            writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
-        }
-        else{
-            readReg(DS323X_REG_CONTROL, &buffer, 1);
-            buffer &= 0xFE;
-            writeReg(DS323X_REG_CONTROL, &buffer, 1);
-        }
+    writeReg(DS323X_REG_ALM1_SEC, &seconds, 1);
+    writeReg(DS323X_REG_ALM1_MIN, &minutes, 1);
+    writeReg(DS323X_REG_ALM1_HOUR, &hours, 1);
+    if (alarmType == eSecondsMinutesHoursDateMatch)
+        writeReg(DS323X_REG_ALM1_DAY, &dates, 1);
+    else
+        writeReg(DS323X_REG_ALM1_DAY, &days, 1);
+    if(alarmType<eSecondsMinutesHoursDateMatch){
+        readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
     }
-    else{
-        writeReg(DS323X_REG_ALM2_MIN, &minutes, 1);
-        writeReg(DS323X_REG_ALM2_HOUR, &hours, 1);
-        if(alarmType == eMinutesHoursDateMatch)
-            writeReg(DS323X_REG_ALM2_DAY, &dates, 1);
-        else if (alarmType == eMinutesHoursDayMatch){
-            days |= 0x80;
-            writeReg(DS323X_REG_ALM2_DAY, &days, 1);
-        }
-        if(alarmType < eMinutesHoursDateMatch){
-            readReg(DS323X_REG_ALM2_DAY, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM2_DAY, &buffer, 1);
-        }
-        if(alarmType < eMinutesHoursMatch){
-            readReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
-        }
-        if(alarmType == eEveryMinute){
-            readReg(DS323X_REG_ALM2_MIN, &buffer, 1);
-            buffer |= 0x80;
-            writeReg(DS323X_REG_ALM2_MIN, &buffer, 1);
-        }
-        else{
-            readReg(DS323X_REG_CONTROL, &buffer, 1);
-            buffer &= 0xFD;
-            writeReg(DS323X_REG_CONTROL, &buffer, 1);
-        }
-    } // of if-then-else use alarm 1 or 2
+    if(alarmType<eSecondsMinutesHoursMatch){
+        readReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM1_HOUR, &buffer, 1);
+    }
+    if(alarmType<eSecondsMinutesMatch){
+        readReg(DS323X_REG_ALM1_MIN, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM1_MIN, &buffer, 1);
+    }
+    if(alarmType==eEverySecond){
+        readReg(DS323X_REG_ALM1_SEC, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM1_SEC, &buffer, 1);
+    }
+    if(alarmType==eSecondsMinutesHoursDayMatch){
+        readReg(DS323X_REG_ALM1_DAY, &buffer, 1);
+        buffer |= 0x40;
+        writeReg(DS323X_REG_ALM1_DAY, &buffer, 1);
+    }
+    clearAlarm(); // Clear the alarm state
+    return;
+}
+
+/*!
+ *@brief Set alarm clock
+ *@param alarmType Alarm clock working mode typedef enum{
+ *@n                                  eEveryMinute,
+ *@n                                  eMinutesMatch,
+ *@n                                  eMinutesHoursMatch,
+ *@n                                  eMinutesHoursDateMatch,
+ *@n                                  eMinutesHoursDayMatch,        //Alarm2
+ *@n                                  eUnknownAlarm
+ *@n                                  }eAlarm2Types;
+ *@param days    Alarm clock Day (day)
+ *@param hours   Alarm clock Hour (hour)
+ *@param mode:   e24hours, eAM, ePM
+ *@param minutes Alarm clock (minute)
+ */
+void DFRobot_DS323X::setAlarm2(eAlarm2Types alarmType, int16_t date,int8_t hour,
+                               int8_t minute){
+    int16_t dates = bin2bcd(date);
+    int8_t hours = _mode << 5|bin2bcd(hour);
+    int8_t minutes = bin2bcd(minute);
+    uint8_t days = bin2bcd(dayOfTheWeek());
+    uint8_t buffer;
+    if (alarmType >= eUnknownAlarm)
+        return;
+    writeReg(DS323X_REG_ALM2_MIN, &minutes, 1);
+    writeReg(DS323X_REG_ALM2_HOUR, &hours, 1);
+    if(alarmType == eMinutesHoursDateMatch)
+        writeReg(DS323X_REG_ALM2_DAY, &dates, 1);
+    else if (alarmType == eMinutesHoursDayMatch){
+        days |= 0x80;
+        writeReg(DS323X_REG_ALM2_DAY, &days, 1);
+    }
+    if(alarmType < eMinutesHoursDateMatch){
+        readReg(DS323X_REG_ALM2_DAY, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM2_DAY, &buffer, 1);
+    }
+    if(alarmType < eMinutesHoursMatch){
+        readReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM2_HOUR, &buffer, 1);
+    }
+    if(alarmType == eEveryMinute){
+        readReg(DS323X_REG_ALM2_MIN, &buffer, 1);
+        buffer |= 0x80;
+        writeReg(DS323X_REG_ALM2_MIN, &buffer, 1);
+    }
     clearAlarm(); // Clear the alarm state
     return;
 }

@@ -75,7 +75,9 @@ public:
         eSecondsMinutesHoursDateMatch, //repeat in every month
         eSecondsMinutesHoursDayMatch,  //repeat in every week
         //Alarm1
+    }eAlarm1Types;
         
+    typedef enum{
         eEveryMinute,                  //repeat in every minute
         eMinutesMatch,                 //repeat in every hour
         eMinutesHoursMatch,            //repeat in every day
@@ -83,7 +85,7 @@ public:
         eMinutesHoursDayMatch,         //repeat in every week
         //Alarm2
         eUnknownAlarm
-    }eAlarmTypes;
+    }eAlarm2Types;
 
     /**
      * @brief Constructor 
@@ -181,14 +183,23 @@ public:
     void getCompileTime(uint8_t comSec = 0);
     
     /*!
-     *@brief Set alarm clock 
+     *@brief Set alarm1 clock 
      *@param alarmType Alarm working mode
      *@param days    Alarm clock (day)
      *@param hours   Alarm clock (hour)
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
      */
-    void setAlarm(eAlarmTypes alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
+    void setAlarm1(eAlarm1Types alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
+    
+    /*!
+     *@brief Set alarm1 clock 
+     *@param alarmType Alarm working mode
+     *@param days    Alarm clock (day)
+     *@param hours   Alarm clock (hour)
+     *@param minutes Alarm clock (minute)
+     */
+    void setAlarm2(eAlarm2Types alarmType,int16_t days,int8_t hours,int8_t minutes);
     
     /*!
      *@brief enable or disable the interrupt of alarm 

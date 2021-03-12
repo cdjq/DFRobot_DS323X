@@ -30,14 +30,24 @@ while not rtc.begin():
 rtc.set_time(2021,2,28,23,59,55)
 
 '''
-@brief Set alarm clock
+@brief Set alarm1 clock
 @param alarmType:EverySecond,
 @n               SecondsMatch,
 @n               SecondsMinutesMatch,
 @n               SecondsMinutesHoursMatch,
 @n               SecondsMinutesHoursDateMatch,
 @n               SecondsMinutesHoursDayMatch, #Alarm1
-@n               EveryMinute,
+@n               UnknownAlarm
+@param days      Alarm clock Day (day)
+@param hours     Alarm clock Hour (hour)
+@param mode:     H24hours, AM, PM
+@param minutes   Alarm clock (minute)
+@param seconds   Alarm clock (second)
+'''
+rtc.set_alarm1(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
+'''
+@brief Set alarm2 clock
+@param alarmType:EveryMinute,
 @n               MinutesMatch,
 @n               MinutesHoursMatch,
 @n               MinutesHoursDateMatch,
@@ -45,11 +55,10 @@ rtc.set_time(2021,2,28,23,59,55)
 @n               UnknownAlarm
 @param days      Alarm clock Day (day)
 @param hours     Alarm clock Hour (hour)
+@param mode:     H24hours, AM, PM
 @param minutes   Alarm clock (minute)
-@param seconds   Alarm clock (second)
 '''
-rtc.set_alarm(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
-rtc.set_alarm(alarmType=rtc.MinutesHoursDayMatch,date=1,hour=0,minute=0,second=5)
+rtc.set_alarm2(alarmType=rtc.MinutesHoursDayMatch,date=1,hour=0,minute=0)
 
 def main():
     while True:
