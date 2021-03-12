@@ -187,7 +187,6 @@ public:
      *@param hours   Alarm clock (hour)
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
-     *@param state   enable Alram clock interrupt, default is true.
      */
     void setAlarm(eAlarmTypes alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
     
