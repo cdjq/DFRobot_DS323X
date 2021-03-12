@@ -125,7 +125,7 @@ Download this library into RaspberryPi, and run demo with Python
   def write_sqw_pin_mode(mode);
   
   '''
-  @brief Set alarm clock
+  @brief Set alarm1 clock
   @param alarmType:EverySecond,
   @n               SecondsMatch,
   @n               SecondsMinutesMatch,
@@ -141,7 +141,7 @@ Download this library into RaspberryPi, and run demo with Python
   def set_alarm1(alarmType, date, hour, minute, second)
   
   '''
-  @brief Set alarm clock
+  @brief Set alarm2 clock
   @param alarmType:EveryMinute,
   @n               MinutesMatch,
   @n               MinutesHoursMatch,

@@ -148,7 +148,7 @@ To use this library, first download the library file, paste it into the \Arduino
   void writeSqwPinMode(eSqwPinMode_t mode);
   
   /*!
-   *@brief Set alarm clock
+   *@brief Set alarm1 clock
    *@param alarmType Alarm clock working mode typedef enum{
    *@n                                  eEverySecond,
    *@n                                  eSecondsMatch,
@@ -168,7 +168,7 @@ To use this library, first download the library file, paste it into the \Arduino
                 int8_t minutes,int8_t seconds);
   
   /*!
-   *@brief Set alarm clock
+   *@brief Set alarm2 clock
    *@param alarmType Alarm clock working mode typedef enum{
    *@n                                  eEveryMinute,
    *@n                                  eMinutesMatch,
