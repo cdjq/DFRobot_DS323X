@@ -132,7 +132,17 @@ Download this library into RaspberryPi, and run demo with Python
   @n               SecondsMinutesHoursMatch,
   @n               SecondsMinutesHoursDateMatch,
   @n               SecondsMinutesHoursDayMatch, #Alarm1
-  @n               EveryMinute,
+  @n               UnknownAlarm
+  @param days      Alarm clock Day (day)
+  @param hours     Alarm clock Hour (hour)
+  @param minutes   Alarm clock (minute)
+  @param seconds   Alarm clock (second)
+  '''
+  def set_alarm1(alarmType, date, hour, minute, second)
+  
+  '''
+  @brief Set alarm clock
+  @param alarmType:EveryMinute,
   @n               MinutesMatch,
   @n               MinutesHoursMatch,
   @n               MinutesHoursDateMatch,
@@ -141,9 +151,8 @@ Download this library into RaspberryPi, and run demo with Python
   @param days      Alarm clock Day (day)
   @param hours     Alarm clock Hour (hour)
   @param minutes   Alarm clock (minute)
-  @param seconds   Alarm clock (second)
   '''
-  def set_alarm(alarmType, date, hour, minute, second, state = True)
+  def set_alarm2(alarmType, date, hour, minute)
   
   '''
   @brief check if alarm flag has been trigger

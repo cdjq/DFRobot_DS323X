@@ -156,21 +156,34 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n                                  eSecondsMinutesHoursMatch,
    *@n                                  eSecondsMinutesHoursDateMatch,
    *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
-   *@n                                  eEveryMinute,
-   *@n                                  eMinutesMatch,
-   *@n                                  eMinutesHoursMatch,
-   *@n                                  eMinutesHoursDateMatch,
-   *@n                                  eMinutesHoursDayMatch,        //Alarm2
    *@n                                  eUnknownAlarm
-   *@n                                  }eAlarmTypes;
+   *@n                                  }eAlarm1Types;
    *@param days    Alarm clock Day (day)
    *@param hours   Alarm clock Hour (hour)
    *@param mode:   e24hours, eAM, ePM
    *@param minutes Alarm clock (minute)
    *@param seconds Alarm clock (second)
    */
-  void setAlarm(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
+  void setAlarm1(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
                 int8_t minutes,int8_t seconds);
+  
+  /*!
+   *@brief Set alarm clock
+   *@param alarmType Alarm clock working mode typedef enum{
+   *@n                                  eEveryMinute,
+   *@n                                  eMinutesMatch,
+   *@n                                  eMinutesHoursMatch,
+   *@n                                  eMinutesHoursDateMatch,
+   *@n                                  eMinutesHoursDayMatch,        //Alarm2
+   *@n                                  eUnknownAlarm
+   *@n                                  }eAlarm2Types;
+   *@param days    Alarm clock Day (day)
+   *@param hours   Alarm clock Hour (hour)
+   *@param mode:   e24hours, eAM, ePM
+   *@param minutes Alarm clock (minute)
+   */
+  void setAlarm2(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
+                int8_t minutes);
   
   /*!
    *@brief Judge if the alarm clock is triggered 
