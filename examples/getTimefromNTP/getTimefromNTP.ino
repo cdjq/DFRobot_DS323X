@@ -2,7 +2,6 @@
  * @file getTimefromNTP.ino
  * @brief Get time from ntpServer and show current time ,only work on ESP32
  * @n Experiment phenomenon: read data every second and print it on serial port. 
- * @n                        This demo only works on mpython
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
@@ -17,8 +16,8 @@
 
 DFRobot_DS323X rtc;
 
-const char* ssid       = "dfrobotOffice";//wlan information
-const char* password   = "dfrobot2011";
+const char* ssid       = "WIFI_ID";//wlan information
+const char* password   = "WIFI_PASSWORD";
 
 const char* ntpServer = "ntp.ntsc.ac.cn";//local ntp server
 const long  gmtOffset_sec = 8*3600;

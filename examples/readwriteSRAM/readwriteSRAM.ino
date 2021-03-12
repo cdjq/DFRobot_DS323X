@@ -1,7 +1,8 @@
 /*!
- * @file readwriteSRAM.ino
+ * @file readWriteSRAM.ino
  * @brief read and write data in SRAM, only work on DS3232 
- * @n Experiment phenomenon: read data every 1 seconds and print it on serial port. 
+ * @n Experiment phenomenon: There are 236 bytes of SRAM available for reading and writing 
+ * @n                        The address of SRAM is 0x14~0xFF
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
