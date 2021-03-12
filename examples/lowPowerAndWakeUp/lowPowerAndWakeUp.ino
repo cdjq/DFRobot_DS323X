@@ -36,7 +36,7 @@ void setup(void)
      *@n          eDS323X_SquareWave_4kHz = 0x10 // 4kHz square wave
      *@n          eDS323X_SquareWave_8kHz = 0x18 // 8kHz square wave
      */
-    rtc.writeSqwPinMode(eDS323X_OFF);
+    rtc.writeSqwPinMode(rtc.eOFF);
     rtc.enableAlarm1Int();
     //rtc.disableAlarm1Int();
     //rtc.enableAlarm2Int();
@@ -63,9 +63,10 @@ void setup(void)
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
      */
-    rtc.setAlarm(eSecondsMatch,/*date,0-30*/0,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);
+    rtc.setAlarm(rtc.eSecondsMatch,/*date,0-30*/0,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);
     
     rtc.setTime(/*year,1900-2100*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
+    #if defined(ESP32) || defined(ESP8266)||defined(ARDUINO_SAM_ZERO)
     attachInterrupt(digitalPinToInterrupt(D6)/*Query the interrupt number of the D6 pin*/,interEvent,CHANGE);
     #else
     /*    The Correspondence Table of AVR Series Arduino Interrupt Pins And Terminal Numbers
@@ -90,7 +91,7 @@ void setup(void)
     * |no need to set it to input mode with pinMode)|Interrupt No|Interrupt number is a pin digital value, such as P0 interrupt number 0, P1 is 1 |
     * |-------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    attachInterrupt(/*Interrupt No*/0,interEvent,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
+    attachInterrupt(/*Interrupt No*/0,interrupt,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
     //UNO(2), Mega2560(2), Leonardo(3), microbit(P0).
     #endif
     
@@ -118,7 +119,7 @@ void loop() {
             Serial.print('/');
             Serial.print(rtc.getDate(), DEC);
             Serial.print(" (");
-            Serial.print(rtc.getDayOfTheWeek());
+            Serial.print(rtc.getDayOfWeek());
             Serial.print(") ");
             Serial.print(rtc.getHour(), DEC);
             Serial.print(':');

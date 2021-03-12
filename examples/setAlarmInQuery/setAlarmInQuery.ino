@@ -46,8 +46,8 @@ void setup(void)
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
      */
-    rtc.setAlarm(eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
-    rtc.setAlarm(eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/5);//Alarm2
+    rtc.setAlarm(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
+    rtc.setAlarm(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/5);//Alarm2
     if (rtc.isLostPower())
         rtc.setTime(/*year,1901-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,\
                     /*second,0-59, this argument doesn't work in Alarm2*/55);//Set Set initial time .
@@ -70,7 +70,7 @@ void loop() {
     Serial.print('/');
     Serial.print(rtc.getDate(), DEC);
     Serial.print(" (");
-    Serial.print(rtc.getDayOfTheWeek());
+    Serial.print(rtc.getDayOfWeek());
     Serial.print(") ");
     Serial.print(rtc.getHour(), DEC);
     Serial.print(':');

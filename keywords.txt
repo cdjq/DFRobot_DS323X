@@ -19,7 +19,7 @@ getDate	KEYWORD2
 getHour	KEYWORD2
 getMinute	KEYWORD2
 getSecond	KEYWORD2
-getDayOfTheWeek	KEYWORD2
+getDayOfWeek	KEYWORD2
 getTemperatureC	KEYWORD2
 isLostPower	KEYWORD2
 readSqwPinMode	KEYWORD2

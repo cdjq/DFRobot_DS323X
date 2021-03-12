@@ -67,7 +67,7 @@ void loop()
     Serial.print('/');
     Serial.print(rtc.getDate(), DEC);
     Serial.print(" (");
-    Serial.print(rtc.getDayOfTheWeek());
+    Serial.print(rtc.getDayOfWeek());
     Serial.print(") ");
     Serial.print(rtc.getHour(), DEC);
     Serial.print(':');

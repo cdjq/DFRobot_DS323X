@@ -33,20 +33,15 @@ void setup(void)
 }
 
 void loop() {
-    /*! 
-     *@brief Get current time data 
-     *@return Current time data
-     */
-    rtc.getNowTime();
     Serial.print(rtc.getYear(), DEC);//year
     Serial.print('/');
-    Serial.print(rtc.geMonth(), DEC);//month
+    Serial.print(rtc.getMonth(), DEC);//month
     Serial.print('/');
     Serial.print(rtc.getDate(), DEC);//date
     Serial.print(" (");
-    Serial.print(rtc.getDayOfTheWeek());//day of week
+    Serial.print(rtc.getDayOfWeek());//day of week
     Serial.print(") ");
-    Serial.print(rtc.gethour(), DEC);//hour
+    Serial.print(rtc.getHour(), DEC);//hour
     Serial.print(':');
     Serial.print(rtc.getMinute(), DEC);//minute
     Serial.print(':');

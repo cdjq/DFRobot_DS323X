@@ -33,7 +33,7 @@ void setup(void)
      *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
      *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
      */
-    rtc.writeSqwPinMode(eOFF);
+    rtc.writeSqwPinMode(rtc.eOFF);
     
     /*!
      *@brief enable Alarm1 interrupt
@@ -79,9 +79,9 @@ void setup(void)
      *@param seconds Alarm clock (second)
      */
     //Alarm1
-    rtc.setAlarm(eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);
+    rtc.setAlarm(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);
     //Alarm2
-    rtc.setAlarm(eMinutesHoursDayMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,
+    rtc.setAlarm(rtc.eMinutesHoursDayMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,
                  /*minute,0-59*/0,/*second,0-59, this argument doesn't work in Alarm2*/0);
     /*!
      *@brief Judge if it is power-down 
@@ -114,7 +114,7 @@ void setup(void)
     * |no need to set it to input mode with pinMode)|Interrupt No|Interrupt number is a pin digital value, such as P0 interrupt number 0, P1 is 1 |
     * |-------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    attachInterrupt(/*Interrupt No*/0,interEvent,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
+    attachInterrupt(/*Interrupt No*/0,interrupt,CHANGE);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
     //UNO(2), Mega2560(2), Leonardo(3), microbit(P0).
     #endif
 }
@@ -125,7 +125,7 @@ void loop() {
     Serial.print('/');
     Serial.print(rtc.getDate(), DEC);
     Serial.print(" (");
-    Serial.print(rtc.getDayOfTheWeek());
+    Serial.print(rtc.getDayOfWeek());
     Serial.print(") ");
     Serial.print(rtc.getHour(), DEC);
     Serial.print(':');
