@@ -38,11 +38,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@return True means IIC communication succeeds, false means it fails. 
    */
   bool begin(void);
-  /*!
-   *@brief Get current time data
-   */
-  void getNowTime();
-  
+
   /*!
    *@brief get year
    *@return year
