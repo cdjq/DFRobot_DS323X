@@ -2,7 +2,7 @@
  * @file setAlarmInterrupt.ino
  * @brief Set alarm, and use interrput pin to trigger it
  * @n Experiment phenomenon: set the alarm clock to trigger at a specified time 
- * @n                        connect SQW pin with DIGITALPIN2
+ * @n                        connect int pin with DIGITALPIN2
  * @n                        print information on serial port after the alarm clock is triggered.
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
@@ -27,7 +27,7 @@ void setup(void)
     }
     /*!
      *@brief Set the value of pin sqw
-     *@param mode eOFF             = 0x01 // Not output square wave, enter interrupt mode
+     *@param mode eOFF    = 0x1C // Not output square wave, enter interrupt mode
      *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
      *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
      *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -67,9 +67,8 @@ void setup(void)
      *@n                                  }eAlarm1Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
+     *@param seconds Alarm clock Second (second)
      */
     rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
     /*!
@@ -84,9 +83,7 @@ void setup(void)
      *@n                                  }eAlarm2Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
      */
     rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
     /*!

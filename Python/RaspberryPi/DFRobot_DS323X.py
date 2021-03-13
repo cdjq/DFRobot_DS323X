@@ -82,7 +82,7 @@ class DFRobot_DS323X:
     m = 0
     y = 0
     days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
-    days_of_the_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    day_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     hour_of_am = [" ", " ", ",AM", ",PM"] 
 
     def __init__(self, bus):
@@ -150,7 +150,7 @@ class DFRobot_DS323X:
         
         self.write_reg(self._REG_CONTROL, ctrl);
     
-    def day_of_the_week(self):
+    def day_of_week(self):
         day = self.date2days(self._y, self._m, self._d)
         return (day + 6) % 7
     
@@ -158,8 +158,8 @@ class DFRobot_DS323X:
     @brief get day of week
     @return day of week
     '''
-    def get_day_of_the_week(self):
-        return self.days_of_the_week[self.day_of_the_week()]
+    def get_day_of_week(self):
+        return self.day_of_week[self.day_of_week()]
 
     '''
     @brief Set mode of time
@@ -169,13 +169,13 @@ class DFRobot_DS323X:
         self._mode = mode
 
     '''
-    @brief Set time  
-    @param Year
-    @param Month
-    @param Date
+    @brief Set time into rtc and take effect immediately
+    @param year, 1900~2100
+    @param month, 1~12
+    @param date, 1~31
     @param hour:1-12 in 12hours,0-23 in 24hours
-    @param Minute 
-    @param Second
+    @param hour, 0~59
+    @param minute, 0~59
     '''
     def set_time(self, year, month, date, hour, minute, second):
         if year >=2000:
@@ -188,7 +188,7 @@ class DFRobot_DS323X:
         self.hh = self.bin2bcd(hour) | (self._mode << 5)
         self.mm = self.bin2bcd(minute)
         self.ss = self.bin2bcd(second)
-        #data = [self.ss, self.mm, self.hh, self.day_of_the_week(), self.d, self.m, self.y]
+        #data = [self.ss, self.mm, self.hh, self.day_of_week(), self.d, self.m, self.y]
         self.write_reg(self._REG_RTC_SEC, self.ss)
         self.write_reg(self._REG_RTC_MIN, self.mm)
         self.write_reg(self._REG_RTC_HOUR, self.hh)
@@ -200,8 +200,8 @@ class DFRobot_DS323X:
         self.write_reg(self._REG_STATUS, statreg)
     
     '''
-    @brief get time mode of now
-    @return time mode
+    @brief output AM or PM of time 
+    @return AM or PM, 24 hours mode return null
     '''
     def get_AM_or_PM(self):
         buffer = self.read_reg(self._REG_RTC_HOUR)
@@ -272,7 +272,8 @@ class DFRobot_DS323X:
         return self._ss
     
     '''
-    @brief get temperature of sensor, unit:℃
+    @brief get temperature of sensor
+    @return temperature, unit:℃
     '''
     def get_temperature_C(self):
         buf1 = self.read_reg(self._REG_TEMPERATURE1)
@@ -281,6 +282,7 @@ class DFRobot_DS323X:
     
     '''
     @brief get temperature of sensor, unit:℉
+    @return temperature, unit:℉
     '''
     def get_temperature_F(self):
         buf1 = self.read_reg(self._REG_TEMPERATURE1)
@@ -307,16 +309,15 @@ class DFRobot_DS323X:
     @n               UnknownAlarm
     @param days      Alarm clock Day (day)
     @param hours     Alarm clock Hour (hour)
-    @param mode:     H24hours, AM, PM
-    @param minutes   Alarm clock (minute)
-    @param seconds   Alarm clock (second)
+    @param minutes   Alarm clock Minute (minute)
+    @param seconds   Alarm clock Second (second)
     '''
     def set_alarm1(self, alarmType, date, hour, minute, second):
         dates = self.bin2bcd(date)
         hours = self._mode >> 6|self.bin2bcd(hour)
         minutes = self.bin2bcd(minute)
         seconds = self.bin2bcd(second)
-        days = self.bin2bcd(self.day_of_the_week())
+        days = self.bin2bcd(self.day_of_week())
         if alarmType >= self.UnknownAlarm:
             return
         self.write_reg(self._REG_ALM1_SEC, seconds)
@@ -359,14 +360,13 @@ class DFRobot_DS323X:
     @n               UnknownAlarm
     @param days      Alarm clock Day (day)
     @param hours     Alarm clock Hour (hour)
-    @param mode:     H24hours, AM, PM
-    @param minutes   Alarm clock (minute)
+    @param minutes   Alarm clock Minute (minute)
     '''
     def set_alarm2(self, alarmType, date, hour, minute):
         dates = self.bin2bcd(date)
         hours = self._mode >> 6|self.bin2bcd(hour)
         minutes = self.bin2bcd(minute)
-        days = self.bin2bcd(self.day_of_the_week())
+        days = self.bin2bcd(self.day_of_week())
         if alarmType >= self.UnknownAlarm:
             return
         self.write_reg(self._REG_ALM2_MIN, minutes)
@@ -457,24 +457,25 @@ class DFRobot_DS323X:
 
     '''
     @brief write data into the SRAM
-    @param reg, address of SRAM
+    @param addr, address of SRAM
     @param data
     '''
-    def write_SRAM(self, reg, data):
-        self.write_reg(reg, data)
+    def write_SRAM(self, addr, data):
+        self.write_reg(addr, data)
 
     '''
     @brief read data of the SRAM
-    @param reg, address of SRAM
+    @param addr, address of SRAM
     '''
-    def read_SRAM(self, reg):
-        return self.read_reg(reg)
+    def read_SRAM(self, addr):
+        return self.read_reg(addr)
 
     '''
     @brief clear the SRAM
+    @param addr, address of SRAM
     '''
-    def clear_SRAM(self, reg):
-        self.write_reg(reg, 0x00)
+    def clear_SRAM(self, addr):
+        self.write_reg(addr, 0x00)
 
     def write_reg(self, reg, buff):
         self.i2cbus.write_byte_data(self.i2c_addr, reg, buff)

@@ -136,13 +136,13 @@ public:
     void setMode(ehours mode = e24hours)  { _mode = mode; }
     
     /*!
-     *@brief Set time  
-     *@param Year
-     *@param Month
-     *@param Date
+     *@brief Set time into rtc and take effect immediately
+     *@param year, 1900~2100
+     *@param month, 1~12
+     *@param date, 1~31
      *@param hour:1-12 in 12hours,0-23 in 24hours
-     *@param Minute 
-     *@param Second
+     *@param hour, 0~59
+     *@param minute, 0~59
      */
     void setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
     
@@ -238,12 +238,12 @@ public:
     
     /*!
      *@brief write, read and clear the SRAM
-     *@param reg 0x14~0xFF
+     *@param addr 0x14~0xFF
      *@param data uint8_t HEX
      */
-    void writeSRAM(uint8_t reg, uint8_t data);
-    uint8_t readSRAM(uint8_t reg);
-    void clearSRAM(uint8_t reg);
+    void writeSRAM(uint8_t addr, uint8_t data);
+    uint8_t readSRAM(uint8_t addr);
+    void clearSRAM(uint8_t addr);
     
 
 protected:
@@ -265,7 +265,7 @@ private:
     uint8_t _deviceAddr = DS323X_IIC_ADDRESS;
     uint8_t rtc_bcd[7];
     uint8_t bcd[7];
-    uint8_t  dayOfTheWeek() const ;
+    uint8_t  dayOfWeek() const ;
     ehours _mode;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;

@@ -2,8 +2,7 @@
 '''
 @file get_time_from_NTP.py
 
-@brief Through the example, you can get the accurate time from NTP server:
-@n     Experiment phenomenon: read data every 1 seconds and print it on terminal .
+@brief Get the accurate time from NTP server
 
 @Copyright Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
 @licence   The MIT License (MIT)
@@ -42,9 +41,9 @@ rtc.set_time(year, month, date, hour, minute, second)
 def main():
     while True:
         if rtc.is_lost_power() == 1:
-            print("RTC lost power, plrase reset the time!")
+            print("RTC lost power, please reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
-        rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
+        rtc.get_day_of_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         print(" ")
         time.sleep(1)
 

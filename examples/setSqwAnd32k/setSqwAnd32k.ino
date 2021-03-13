@@ -1,6 +1,6 @@
 /*!
  * @file setSqwAnd32k.ino
- * @brief Set the vaule of pin sqw and 32k output mode
+ * @brief Set the mode of pin sqw and 32k output
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)

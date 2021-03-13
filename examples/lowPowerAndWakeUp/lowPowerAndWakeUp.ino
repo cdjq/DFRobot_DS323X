@@ -30,7 +30,7 @@ void setup(void)
     }
     /*!
      *@brief Set the value of pin sqw
-     *@param mode eDS323X_OFF             = 0x01 // Not output square wave, enter interrupt mode
+     *@param mode eDS323X_OFF  = 0x1C // Not output square wave, enter interrupt mode
      *@n          eDS323X_SquareWave_1Hz  = 0x00 // 1Hz square wave
      *@n          eDS323X_SquareWave_1kHz = 0x08 // 1kHz square wave
      *@n          eDS323X_SquareWave_4kHz = 0x10 // 4kHz square wave
@@ -54,9 +54,8 @@ void setup(void)
      *@n                                  }eAlarm1Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
+     *@param seconds Alarm clock Second (second)
      */
     rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
     /*!
@@ -71,9 +70,7 @@ void setup(void)
      *@n                                  }eAlarm2Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
      */
     rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
     

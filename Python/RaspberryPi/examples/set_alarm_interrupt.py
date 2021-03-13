@@ -64,9 +64,8 @@ rtc.set_time(2021,2,28,23,59,55)
 @n               UnknownAlarm
 @param days      Alarm clock Day (day)
 @param hours     Alarm clock Hour (hour)
-@param mode:     H24hours, AM, PM
-@param minutes   Alarm clock (minute)
-@param seconds   Alarm clock (second)
+@param minutes   Alarm clock Minute (minute)
+@param seconds   Alarm clock Second (second)
 '''
 rtc.set_alarm1(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
 '''
@@ -79,8 +78,7 @@ rtc.set_alarm1(alarmType=rtc.SecondsMatch,date=1,hour=0,minute=0,second=5)
 @n               UnknownAlarm
 @param days      Alarm clock Day (day)
 @param hours     Alarm clock Hour (hour)
-@param mode:     H24hours, AM, PM
-@param minutes   Alarm clock (minute)
+@param minutes   Alarm clock Minute(minute)
 '''
 rtc.set_alarm2(alarmType=rtc.MinutesHoursDayMatch,date=1,hour=0,minute=0)
 
@@ -93,16 +91,16 @@ def IO1_callback(channel):#callback function
  
 GPIO.setup(IO1, GPIO.IN)
 '''
-@brief 当IO1从低电平变为高电平，发生RISING电平跳变时，运行IO1_callback方法
+@brief 当IO1从低电平变为高电平，发生FALLING电平跳变时，运行IO1_callback方法
 '''
 GPIO.add_event_detect(IO1, GPIO.FALLING, callback = IO1_callback)
 
 def main():
     while True:
         if rtc.is_lost_power() == 1:
-            print("RTC lost power, plrase reset the time!")
+            print("RTC lost power, please reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
-        rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
+        rtc.get_day_of_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         
         print(" ")
         time.sleep(1)

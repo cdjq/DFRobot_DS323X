@@ -2,7 +2,7 @@
 '''
 @file get_time_and_temp.py
 
-@brief Through the example, you can read and write data on SRAM:
+@brief Through the example, you can read and write data on DS3232's SRAM
 @n     Experiment phenomenon: There are 236 bytes of SRAM available for reading and writing 
 @n                            The address of SRAM is 0x14~0xFF
 

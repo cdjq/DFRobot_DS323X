@@ -1,6 +1,6 @@
 /*!
  * @file setAlarmInQuery.ino
- * @brief Set alarm clock 
+ * @brief Set alarm clock and trigger it in query
  * @n Experiment phenomenon: set the alarm clock to trigger at a sepcified time
  * @n           Trigger when the set time of clock is the same with the RTC time
  *
@@ -36,9 +36,8 @@ void setup(void)
      *@n                                  }eAlarm1Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
+     *@param seconds Alarm clock Second (second)
      */
     rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/11);//Alarm1
     /*!
@@ -53,9 +52,7 @@ void setup(void)
      *@n                                  }eAlarm2Types;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
-     *@param mode:   e24hours, eAM, ePM
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param minutes Alarm clock Minute (minute)
      */
     rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/1,/*minute,0-59*/0);//Alarm2
     if (rtc.isLostPower())

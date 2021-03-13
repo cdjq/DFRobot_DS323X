@@ -1,7 +1,7 @@
 /*!
  * @file getTimeAndTemperature.ino
- * @brief Show current time 
- * @n Experiment phenomenon: read data every 1 seconds and print it on serial port. 
+ * @brief Show current time and temperature of chip
+ * @n Experiment phenomenon: Set time by yourself. Then get time from serial port.
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
@@ -64,6 +64,6 @@ void loop() {
      *@return If retrun true, power down, needs to reset time; false, work well.
      */
     if (rtc.isLostPower()) {
-        Serial.println("RTC lost power, plrase reset the time!");
+        Serial.println("RTC lost power, please reset the time!");
     }
 }

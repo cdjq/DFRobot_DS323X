@@ -81,7 +81,7 @@ DFRobot_DS323X::eSqwPinMode_t DFRobot_DS323X::readSqwPinMode(){
 
 /*!
  *@brief Set the vaule of pin sqw
- *@param mode eOFF             = 0x01 // Off
+ *@param mode eOFF             = 0x1C // Off
  *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
  *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
  *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -126,7 +126,7 @@ void DFRobot_DS323X::getCompileTime (uint8_t comTime){
         min += 1;
     }
     mm = conv2d(buff + 3) + min;
-    uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfTheWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
+    uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
     writeReg(DS323X_REG_RTC_SEC, buffer, 7);
     uint8_t statreg;
     readReg(DS323X_REG_STATUS, &statreg, 1);
@@ -134,7 +134,7 @@ void DFRobot_DS323X::getCompileTime (uint8_t comTime){
     writeReg(DS323X_REG_STATUS, &statreg, 1);
 }
 
-uint8_t DFRobot_DS323X::dayOfTheWeek() const {
+uint8_t DFRobot_DS323X::dayOfWeek() const {
   uint16_t day = date2days(_y, _m, _d); // compute the number of days
   return (day + 6) % 7;                 // Jan 1, 2000 is a Saturday
 } 
@@ -144,17 +144,17 @@ uint8_t DFRobot_DS323X::dayOfTheWeek() const {
  *@return day of week
  */
 const char* DFRobot_DS323X::getDayOfWeek(){
-    return daysOfTheWeek[dayOfTheWeek()];
+    return daysOfTheWeek[dayOfWeek()];
 }
 
 /*!
- *@brief Set time  
- *@param Year
- *@param Month
- *@param Date
+ *@brief Set time into rtc and take effect immediately
+ *@param year, 1900~2100
+ *@param month, 1~12
+ *@param date, 1~31
  *@param hour:1-12 in 12hours,0-23 in 24hours
- *@param Minute 
- *@param Second
+ *@param hour, 0~59
+ *@param minute, 0~59
  */
 void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
     if (year >=2000){
@@ -169,7 +169,7 @@ void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t
     hh = (_mode << 5|bin2bcd(hour));
     mm = minute;
     ss = second;
-    uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfTheWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
+    uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
     writeReg(DS323X_REG_RTC_SEC, buffer, 7);
     uint8_t statreg;
     readReg(DS323X_REG_STATUS, &statreg, 1);
@@ -304,7 +304,7 @@ void DFRobot_DS323X::setAlarm1(eAlarm1Types alarmType, int16_t date,int8_t hour,
     int8_t hours = _mode << 5|bin2bcd(hour);
     int8_t minutes = bin2bcd(minute);
     int8_t seconds = bin2bcd(second);
-    uint8_t days = bin2bcd(dayOfTheWeek());
+    uint8_t days = bin2bcd(dayOfWeek());
     uint8_t buffer;
     if (alarmType >= eUnknownAlarm)
         return;
@@ -364,7 +364,7 @@ void DFRobot_DS323X::setAlarm2(eAlarm2Types alarmType, int16_t date,int8_t hour,
     int16_t dates = bin2bcd(date);
     int8_t hours = _mode << 5|bin2bcd(hour);
     int8_t minutes = bin2bcd(minute);
-    uint8_t days = bin2bcd(dayOfTheWeek());
+    uint8_t days = bin2bcd(dayOfWeek());
     uint8_t buffer;
     if (alarmType >= eUnknownAlarm)
         return;

@@ -40,37 +40,37 @@ To use this library, first download the library file, paste it into the \Arduino
   bool begin(void);
 
   /*!
-   *@brief get year
+   *@brief get year of now time
    *@return year
    */
   uint16_t getYear();
   
   /*!
-   *@brief get month
+   *@brief get month of now time
    *@return month
    */
   uint8_t getMonth();
   
   /*!
-   *@brief get date
+   *@brief get date of now time
    *@return date
    */
   uint8_t getDate();
   
   /*!
-   *@brief get hour
+   *@brief get hour of now time
    *@return hour
    */
   uint8_t getHour();
   
   /*!
-   *@brief get minute
+   *@brief get minute of now time
    *@return minute
    */
   uint8_t getMinute();
   
   /*!
-   *@brief get second
+   *@brief get second of now time
    *@return second
    */
   uint8_t getSecond();
@@ -79,28 +79,28 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief get day of week
    *@return day of week
    */
-  uint8_t getDayOfWeek();
+  const char* getDayOfWeek();
   
   /*!
-   *@brief Set mode
+   *@brief Set mode of time
    *@param ehours:e24hours, eAM, ePM. default is e24hours
    */
   void setMode(ehours mode = e24hours);
   
   /*!
-   *@brief Set time  
-   *@param Year
-   *@param Month
-   *@param Date
+   *@brief Set time into rtc and take effect immediately
+   *@param year, 1900~2100
+   *@param month, 1~12
+   *@param date, 1~31
    *@param hour:1-12 in 12hours,0-23 in 24hours
-   *@param Minute 
-   *@param Second
+   *@param hour, 0~59
+   *@param minute, 0~59
    */
   void setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
   
   /*!
    *@brief Set the last compiled time as the current time
-   *@param comSec  Compensation time , default is 0s
+   *@param comSec, 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
    */
   void getCompileTime(uint8_t comSec);
   
@@ -156,9 +156,8 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n                                  }eAlarm1Types;
    *@param days    Alarm clock Day (day)
    *@param hours   Alarm clock Hour (hour)
-   *@param mode:   e24hours, eAM, ePM
-   *@param minutes Alarm clock (minute)
-   *@param seconds Alarm clock (second)
+   *@param minutes Alarm clock Minute (minute)
+   *@param seconds Alarm clock Second (second)
    */
   void setAlarm1(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
                 int8_t minutes,int8_t seconds);
@@ -175,8 +174,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n                                  }eAlarm2Types;
    *@param days    Alarm clock Day (day)
    *@param hours   Alarm clock Hour (hour)
-   *@param mode:   e24hours, eAM, ePM
-   *@param minutes Alarm clock (minute)
+   *@param minutes Alarm clock Minute (minute)
    */
   void setAlarm2(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
                 int8_t minutes);
@@ -186,6 +184,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@return true, triggered; false, not trigger
    */
   bool isAlarmTrig();
+  
   /*!
    *@brief Clear trigger flag
    */
@@ -200,21 +199,23 @@ To use this library, first download the library file, paste it into the \Arduino
   void disableAlarm2Int();
   
   /*!
-   *@brief enable the 32k output 
+   *@brief enable the 32k pin output 
    */
   void enable32k();
   
   /*!
-   *@brief disable the 32k output 
+   *@brief disable the 32k pin output 
    */
   void disable32k();
     
   /*!
-   *@brief write, read and clear the SRAM, only work on DS3232
+   *@brief write, read and clear the SRAM
+   *@param addr 0x14~0xFF
+   *@param data uint8_t HEX
    */
-  void writeSRAM(uint8_t reg, uint8_t data);
-  uint8_t readSRAM(uint8_t reg);
-  void clearSRAM(uint8_t reg);
+  void writeSRAM(uint8_t addr, uint8_t data);
+  uint8_t readSRAM(uint8_t addr);
+  void clearSRAM(uint8_t addr);
 ```
 
 ## Compatibility

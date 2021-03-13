@@ -2,8 +2,7 @@
 '''
 @file get_time_and_temp.py
 
-@brief Through the example, you can get the time and temperature:
-@n     Experiment phenomenon: read data every 1 second and print it on terminal .
+@brief Get the time and temperature of chip
 
 @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
 @licence   The MIT License (MIT)
@@ -31,13 +30,13 @@ while not rtc.begin():
 rtc.set_mode(rtc.AM)
 
 '''
-@brief Set time  
-@param Year
-@param Month
-@param Date
+@brief Set time into rtc and take effect immediately
+@param year, 1900~2100
+@param month, 1~12
+@param date, 1~31
 @param hour:1-12 in 12hours,0-23 in 24hours
-@param Minute 
-@param Second
+@param hour, 0~59
+@param minute, 0~59
 '''
 rtc.set_time(year=2021,month=2,date=28,hour=11,minute=59,second=55)
 
@@ -46,9 +45,9 @@ def main():
         temp = rtc.get_temperature_C()
         #temp = rtc.get_temperature_F()
         if rtc.is_lost_power() == 1:
-            print("RTC lost power, plrase reset the time!")
+            print("RTC lost power, please reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
-        rtc.get_day_of_the_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
+        rtc.get_day_of_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         
         print(temp)
         print(" ")

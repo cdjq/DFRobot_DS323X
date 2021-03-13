@@ -19,9 +19,9 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 ## Summary
 
 * 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
-* 设置闹钟，用户可设置两个闹钟，并在串口或中断引脚读取串口触发flag <br>
-* 测量气温，读取气温的功能仅作参考 <br>
-* 读写SRAM，仅用于DS3232,有236字节的SRAM可供读写 <br>
+* 设置闹钟，用户可设置两个闹钟，可以在中断引脚获取下降沿脉冲来触发闹钟 <br>
+* 测量芯片温度，误差为±0.5℃ <br>
+* 读写DS3232芯片236字节SRAM <br>
 
 ## Installation
 
@@ -70,16 +70,16 @@ Download this library into RaspberryPi, and run demo with Python
   @brief get day of week
   @return day of week
   '''
-  def get_day_of_the_week()
+  def get_day_of_week()
   
   '''
-  @brief Set time  
-  @param Year
-  @param Month
-  @param Date
+  @brief Set time into rtc and take effect immediately
+  @param year, 1900~2100
+  @param month, 1~12
+  @param date, 1~31
   @param hour:1-12 in 12hours,0-23 in 24hours
-  @param Minute 
-  @param Second
+  @param hour, 0~59
+  @param minute, 0~59
   '''
   def set_time(year, month, date, hour, minute, second)
   
@@ -135,8 +135,8 @@ Download this library into RaspberryPi, and run demo with Python
   @n               UnknownAlarm
   @param days      Alarm clock Day (day)
   @param hours     Alarm clock Hour (hour)
-  @param minutes   Alarm clock (minute)
-  @param seconds   Alarm clock (second)
+  @param minutes   Alarm clock Minute (minute)
+  @param seconds   Alarm clock Second (second)
   '''
   def set_alarm1(alarmType, date, hour, minute, second)
   
@@ -150,7 +150,7 @@ Download this library into RaspberryPi, and run demo with Python
   @n               UnknownAlarm
   @param days      Alarm clock Day (day)
   @param hours     Alarm clock Hour (hour)
-  @param minutes   Alarm clock (minute)
+  @param minutes   Alarm clock Minute (minute)
   '''
   def set_alarm2(alarmType, date, hour, minute)
   
@@ -181,6 +181,15 @@ Download this library into RaspberryPi, and run demo with Python
   @brief disable the 32k output (default is enable)
   '''
   def disable_32k()
+  '''
+  @brief clear, write and read data on the SRAM of DS3232
+  @param addr, address of SRAM
+  @param data
+  '''
+  def clear_SRAM(addr)
+  def write_SRAM(addr, data)
+  def read_SRAM(addr)
+  
 ```
 
 ## Compatibility
