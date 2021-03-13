@@ -19,9 +19,9 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 ## Summary
 
 * 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
-* 设置闹钟，用户可设置两个闹钟，并在串口或中断引脚读取串口触发flag <br>
-* 测量气温，读取气温的功能仅作参考 <br>
-* 读写SRAM，仅用于DS3232,有236字节的SRAM可供读写 <br>
+* 设置闹钟，用户可设置两个闹钟，闹钟可触发中断引脚下降沿脉冲信号 <br>
+* 测量气温，读取芯片温度，误差±0.5摄氏度 <br>
+* 读写DS3232芯片内部236字节SRAM<br>
 
 ## Installation
 
