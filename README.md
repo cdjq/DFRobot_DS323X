@@ -31,7 +31,7 @@ To use this library, first download the library file, paste it into the \Arduino
 
 ```C++
 
-  DFRobot_DS323X(TwoWire *pWire = &Wire){_pWire = pWire;};
+  DFRobot_DS323X(TwoWire *pWire = &Wire);
   ~DFRobot_DS323X();
   /*!
    *@brief Init chip 
