@@ -291,14 +291,14 @@ bool DFRobot_DS323X::isLostPower(void) {
  *@n                                  eSecondsMinutesHoursDateMatch,
  *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
  *@n                                  eUnknownAlarm
- *@n                                  }eAlarm1Types;
+ *@n                                  }eAlarm1Types_t;
  *@param days    Alarm clock Day (day)
  *@param hours   Alarm clock Hour (hour)
  *@param mode:   e24hours, eAM, ePM
  *@param minutes Alarm clock (minute)
  *@param seconds Alarm clock (second)
  */
-void DFRobot_DS323X::setAlarm1(eAlarm1Types alarmType, int16_t date,int8_t hour,
+void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute,int8_t second){
     int16_t dates = bin2bcd(date);
     int8_t hours = _mode << 5|bin2bcd(hour);
@@ -353,13 +353,13 @@ void DFRobot_DS323X::setAlarm1(eAlarm1Types alarmType, int16_t date,int8_t hour,
  *@n                                  eMinutesHoursDateMatch,
  *@n                                  eMinutesHoursDayMatch,        //Alarm2
  *@n                                  eUnknownAlarm
- *@n                                  }eAlarm2Types;
+ *@n                                  }eAlarm2Types_t;
  *@param days    Alarm clock Day (day)
  *@param hours   Alarm clock Hour (hour)
  *@param mode:   e24hours, eAM, ePM
  *@param minutes Alarm clock (minute)
  */
-void DFRobot_DS323X::setAlarm2(eAlarm2Types alarmType, int16_t date,int8_t hour,
+void DFRobot_DS323X::setAlarm2(eAlarm2Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute){
     int16_t dates = bin2bcd(date);
     int8_t hours = _mode << 5|bin2bcd(hour);

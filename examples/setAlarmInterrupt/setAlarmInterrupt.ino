@@ -64,7 +64,7 @@ void setup(void)
      *@n                                  eSecondsMinutesHoursMatch,
      *@n                                  eSecondsMinutesHoursDateMatch,
      *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
-     *@n                                  }eAlarm1Types;
+     *@n                                  }eAlarm1Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
@@ -80,7 +80,7 @@ void setup(void)
      *@n                                  eMinutesHoursDateMatch,
      *@n                                  eMinutesHoursDayMatch,        //Alarm2
      *@n                                  eUnknownAlarm
-     *@n                                  }eAlarm2Types;
+     *@n                                  }eAlarm2Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)

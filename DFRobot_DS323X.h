@@ -65,7 +65,7 @@ public:
         e24hours = 0,
         eAM = 2,
         ePM = 3
-    }ehours;
+    }eHours_t;
     
     typedef enum{
         eEverySecond,                  //repeat in every second
@@ -75,7 +75,7 @@ public:
         eSecondsMinutesHoursDateMatch, //repeat in every month
         eSecondsMinutesHoursDayMatch,  //repeat in every week
         //Alarm1
-    }eAlarm1Types;
+    }eAlarm1Types_t;
         
     typedef enum{
         eEveryMinute,                  //repeat in every minute
@@ -85,7 +85,7 @@ public:
         eMinutesHoursDayMatch,         //repeat in every week
         //Alarm2
         eUnknownAlarm
-    }eAlarm2Types;
+    }eAlarm2Types_t;
 
     /**
      * @brief Constructor 
@@ -131,9 +131,9 @@ public:
     
     /*!
      *@brief Set mode
-     *@param ehours:e24hours, eAM, ePM. default is e24hours
+     *@param eHours_t:e24hours, eAM, ePM. default is e24hours
      */
-    void setMode(ehours mode = e24hours)  { _mode = mode; }
+    void setMode(eHours_t mode = e24hours)  { _mode = mode; }
     
     /*!
      *@brief Set time into rtc and take effect immediately
@@ -190,7 +190,7 @@ public:
      *@param minutes Alarm clock (minute)
      *@param seconds Alarm clock (second)
      */
-    void setAlarm1(eAlarm1Types alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
+    void setAlarm1(eAlarm1Types_t alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
     
     /*!
      *@brief Set alarm1 clock 
@@ -199,7 +199,7 @@ public:
      *@param hours   Alarm clock (hour)
      *@param minutes Alarm clock (minute)
      */
-    void setAlarm2(eAlarm2Types alarmType,int16_t days,int8_t hours,int8_t minutes);
+    void setAlarm2(eAlarm2Types_t alarmType,int16_t days,int8_t hours,int8_t minutes);
     
     /*!
      *@brief enable or disable the interrupt of alarm 
@@ -266,7 +266,7 @@ private:
     uint8_t rtc_bcd[7];
     uint8_t bcd[7];
     uint8_t  dayOfWeek() const ;
-    ehours _mode;
+    eHours_t _mode;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;
     const char* daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 

@@ -2,8 +2,7 @@
 '''
 @file set_alarm_interrupt.py
 
-@brief Through the example, you can set alarm clock in interrupt:
-@n     Experiment phenomenon: read data every 1 seconds and print it on terminal .
+@brief Set alarm, and use interrput pin to trigger it
 
 @Copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
 @licence   The MIT License (MIT)

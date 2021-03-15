@@ -83,9 +83,9 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Set mode of time
-   *@param ehours:e24hours, eAM, ePM. default is e24hours
+   *@param eHours_t:e24hours, eAM, ePM. default is e24hours
    */
-  void setMode(ehours mode = e24hours);
+  void setMode(eHours_t mode = e24hours);
   
   /*!
    *@brief Set time into rtc and take effect immediately
@@ -153,13 +153,13 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n                                  eSecondsMinutesHoursDateMatch,
    *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
    *@n                                  eUnknownAlarm
-   *@n                                  }eAlarm1Types;
+   *@n                                  }eAlarm1Types_t;
    *@param days    Alarm clock Day (day)
    *@param hours   Alarm clock Hour (hour)
    *@param minutes Alarm clock Minute (minute)
    *@param seconds Alarm clock Second (second)
    */
-  void setAlarm1(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
+  void setAlarm1(const uint8_t alarmType,int16_t days,int8_t hours,eHours_t mode,
                 int8_t minutes,int8_t seconds);
   
   /*!
@@ -171,12 +171,12 @@ To use this library, first download the library file, paste it into the \Arduino
    *@n                                  eMinutesHoursDateMatch,
    *@n                                  eMinutesHoursDayMatch,        //Alarm2
    *@n                                  eUnknownAlarm
-   *@n                                  }eAlarm2Types;
+   *@n                                  }eAlarm2Types_t;
    *@param days    Alarm clock Day (day)
    *@param hours   Alarm clock Hour (hour)
    *@param minutes Alarm clock Minute (minute)
    */
-  void setAlarm2(const uint8_t alarmType,int16_t days,int8_t hours,ehours mode,
+  void setAlarm2(const uint8_t alarmType,int16_t days,int8_t hours,eHours_t mode,
                 int8_t minutes);
   
   /*!
