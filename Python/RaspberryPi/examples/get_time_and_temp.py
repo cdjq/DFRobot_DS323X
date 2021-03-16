@@ -25,16 +25,16 @@ while not rtc.begin():
 
 '''
 @brief Set mode of time
-@param mode H24hours, AM, PM
+@param mode H24hours, H12hours
 '''
-rtc.set_mode(rtc.AM)
+rtc.set_mode(rtc.H12hours)
 
 '''
 @brief Set time into rtc and take effect immediately
 @param year, 1900~2100
 @param month, 1~12
 @param date, 1~31
-@param hour:1-12 in 12hours,0-23 in 24hours
+@param hour: 0~23
 @param hour, 0~59
 @param minute, 0~59
 '''
@@ -46,7 +46,7 @@ def main():
         #temp = rtc.get_temperature_F()
         if rtc.is_lost_power() == 1:
             print("RTC lost power, please reset the time!")
-        print("{0}/{1}/{2},{3},{4}:{5}:{6}{7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
+        print("{0}/{1}/{2},{3},{4}:{5}:{6} {7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
         rtc.get_day_of_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
         
         print(temp)

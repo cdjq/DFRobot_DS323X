@@ -63,7 +63,7 @@ uint8_t DFRobot_DS323X::bin2bcd (uint8_t val){
 
 /*!
  *@brief Read the value of pin sqw
- *@return eOFF             = 0x1C // Off
+ *@return eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode 
  *@n      eSquareWave_1Hz  = 0x00 // 1Hz square wave
  *@n      eSquareWave_1kHz = 0x08 // 1kHz square wave
  *@n      eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -81,7 +81,7 @@ DFRobot_DS323X::eSqwPinMode_t DFRobot_DS323X::readSqwPinMode(){
 
 /*!
  *@brief Set the vaule of pin sqw
- *@param mode eOFF             = 0x1C // Off
+ *@param mode eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode 
  *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
  *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
  *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -152,7 +152,7 @@ const char* DFRobot_DS323X::getDayOfWeek(){
  *@param year, 1900~2100
  *@param month, 1~12
  *@param date, 1~31
- *@param hour:1-12 in 12hours,0-23 in 24hours
+ *@param hour: 0~23
  *@param hour, 0~59
  *@param minute, 0~59
  */
@@ -166,7 +166,19 @@ void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t
         m = month;
     }
     d = date;
-    hh = (_mode << 5|bin2bcd(hour));
+    if (_mode == 0 ){
+        hh = (_mode << 5|bin2bcd(hour));
+    }else{
+        if (hour == 0){
+            hh = 0x52;
+        }else if (hour >0 && hour < 12){
+            hh = (0x40|bin2bcd(hour));
+        }else if (hour == 12){
+            hh = 0x72;
+        }else if (hour >12 && hour < 24){
+            hh = (0x60|bin2bcd(hour - 12));
+        }
+    }
     mm = minute;
     ss = second;
     uint8_t buffer[] = {bin2bcd(ss),bin2bcd(mm),hh,dayOfWeek(),bin2bcd(d),bin2bcd(m),bin2bcd(y)};
@@ -179,14 +191,19 @@ void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t
 
 /*!
  *@brief output AM or PM of time 
- *@return AM or PM, 24 hours mode return null
+ *@return AM or PM, 24 hours mode return empty string 
  */
-const char* DFRobot_DS323X::getAMorPM(){
-    uint8_t buffer[1];
-    readReg(DS323X_REG_RTC_HOUR, buffer, 1);
-    buffer[0] = buffer[0] << 1;
-    buffer[0] = buffer[0] >> 6;
-    return hourOfAM[buffer[0]];
+String DFRobot_DS323X::getAMorPM(){
+    uint8_t buffer;
+    readReg(DS323X_REG_RTC_HOUR, &buffer, 1);
+    buffer = buffer << 1;
+    buffer = buffer >> 6;
+    switch (buffer) {
+        case 0: return ""; break;
+        case 1: return ""; break;
+        case 2: return "AM"; break;
+        case 3: return "PM"; break;
+    }
 }
 
 /*!
@@ -273,7 +290,7 @@ float DFRobot_DS323X::getTemperatureC(){
 
 /*!
  *@brief Judge if it is power-down 
- *@return If retrun true, power down, time needs to reset; false, work well. 
+ *@return If return true, power down, time needs to reset; false, work well. 
  */
 bool DFRobot_DS323X::isLostPower(void) {
     uint8_t status;
@@ -290,7 +307,7 @@ bool DFRobot_DS323X::isLostPower(void) {
  *@n                                  eSecondsMinutesHoursMatch,
  *@n                                  eSecondsMinutesHoursDateMatch,
  *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
- *@n                                  eUnknownAlarm
+ *@n                                  eUnknownAlarm1
  *@n                                  }eAlarm1Types_t;
  *@param days    Alarm clock Day (day)
  *@param hours   Alarm clock Hour (hour)
@@ -301,12 +318,25 @@ bool DFRobot_DS323X::isLostPower(void) {
 void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute,int8_t second){
     int16_t dates = bin2bcd(date);
-    int8_t hours = _mode << 5|bin2bcd(hour);
+    int8_t hours;
+    if (_mode == 0 ){
+        hours = (_mode << 5|bin2bcd(hour));
+    }else{
+        if (hour == 0){
+            hours = 0x52;
+        }else if (hour >0 && hour < 12){
+            hours = (0x40|bin2bcd(hour));
+        }else if (hour == 12){
+            hours = 0x72;
+        }else if (hour >12 && hour < 24){
+            hours = (0x60|bin2bcd(hour - 12));
+        }
+    }
     int8_t minutes = bin2bcd(minute);
     int8_t seconds = bin2bcd(second);
     uint8_t days = bin2bcd(dayOfWeek());
     uint8_t buffer;
-    if (alarmType >= eUnknownAlarm)
+    if (alarmType >= eUnknownAlarm1)
         return;
     writeReg(DS323X_REG_ALM1_SEC, &seconds, 1);
     writeReg(DS323X_REG_ALM1_MIN, &minutes, 1);
@@ -352,7 +382,7 @@ void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hou
  *@n                                  eMinutesHoursMatch,
  *@n                                  eMinutesHoursDateMatch,
  *@n                                  eMinutesHoursDayMatch,        //Alarm2
- *@n                                  eUnknownAlarm
+ *@n                                  eUnknownAlarm2
  *@n                                  }eAlarm2Types_t;
  *@param days    Alarm clock Day (day)
  *@param hours   Alarm clock Hour (hour)
@@ -362,11 +392,24 @@ void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hou
 void DFRobot_DS323X::setAlarm2(eAlarm2Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute){
     int16_t dates = bin2bcd(date);
-    int8_t hours = _mode << 5|bin2bcd(hour);
+    int8_t hours;
+    if (_mode == 0 ){
+        hours = (_mode << 5|bin2bcd(hour));
+    }else{
+        if (hour == 0){
+            hours = 0x52;
+        }else if (hour >0 && hour < 12){
+            hours = (0x40|bin2bcd(hour));
+        }else if (hour == 12){
+            hours = 0x72;
+        }else if (hour >12 && hour < 24){
+            hours = (0x60|bin2bcd(hour - 12));
+        }
+    }
     int8_t minutes = bin2bcd(minute);
     uint8_t days = bin2bcd(dayOfWeek());
     uint8_t buffer;
-    if (alarmType >= eUnknownAlarm)
+    if (alarmType >= eUnknownAlarm2)
         return;
     writeReg(DS323X_REG_ALM2_MIN, &minutes, 1);
     writeReg(DS323X_REG_ALM2_HOUR, &hours, 1);
@@ -439,10 +482,14 @@ void DFRobot_DS323X::disableAlarm2Int(){
  *@brief Judge if the alarm clock is triggered
  *@return true, triggered; false, not trigger
  */
-uint8_t DFRobot_DS323X::isAlarmTrig() {
+bool DFRobot_DS323X::isAlarmTrig() {
     uint8_t status;
     readReg(DS323X_REG_STATUS, &status, 1);
-    return status&3; // Alarm if either of 2 LSBits set
+    if (status&3 != 0){ // Alarm if either of 2 LSBits set
+        return false;
+    }else{
+        return true;
+    }
 }
 
 /*!

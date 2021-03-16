@@ -58,34 +58,35 @@ void setup(void)
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
-     *@n                                  eEverySecond,
-     *@n                                  eSecondsMatch,
-     *@n                                  eSecondsMinutesMatch,
-     *@n                                  eSecondsMinutesHoursMatch,
-     *@n                                  eSecondsMinutesHoursDateMatch,
-     *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
+     *@n                                  eEverySecond,                 //repeat in every second
+     *@n                                  eSecondsMatch,                //repeat in every minute
+     *@n                                  eSecondsMinutesMatch,         //repeat in every hour
+     *@n                                  eSecondsMinutesHoursMatch,    //repeat in every day
+     *@n                                  eSecondsMinutesHoursDateMatch,//repeat in every month
+     *@n                                  eSecondsMinutesHoursDayMatch, //repeat in every week  //Alarm1
+     *@n                                  eUnknownAlarm1
      *@n                                  }eAlarm1Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      *@param seconds Alarm clock Second (second)
      */
-    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
+    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-31*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
-     *@n                                  eEveryMinute,
-     *@n                                  eMinutesMatch,
-     *@n                                  eMinutesHoursMatch,
-     *@n                                  eMinutesHoursDateMatch,
-     *@n                                  eMinutesHoursDayMatch,        //Alarm2
-     *@n                                  eUnknownAlarm
+     *@n                                  eEveryMinute,                 //repeat in every minute
+     *@n                                  eMinutesMatch,                //repeat in every hour
+     *@n                                  eMinutesHoursMatch,           //repeat in every day
+     *@n                                  eMinutesHoursDateMatch,       //repeat in every month
+     *@n                                  eMinutesHoursDayMatch,        //repeat in every week  //Alarm2
+     *@n                                  eUnknownAlarm2
      *@n                                  }eAlarm2Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      */
-    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
+    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-31*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
     /*!
      *@brief Judge if it is power-down 
      *@return if return true, power-down, time needs to reset; false, work well

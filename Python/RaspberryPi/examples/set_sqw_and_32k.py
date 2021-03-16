@@ -25,7 +25,7 @@ while not rtc.begin():
 
 '''
 @brief Set the vaule of pin sqw
-@param mode OFF             = 0x1C # Not output square wave, enter interrupt mode
+@param mode SquareWave_OFF  = 0x1C # Not output square wave, enter interrupt mode
 @n          SquareWave_1Hz  = 0x00 # 1Hz square wave
 @n          SquareWave_1kHz = 0x08 # 1kHz square wave
 @n          SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -34,7 +34,7 @@ while not rtc.begin():
 rtc.write_sqw_pin_mode(rtc.SquareWave_1Hz)
 '''
 @brief Read the value of pin sqw
-@return mode OFF             = 0x1C # Off
+@return mode SquareWave_OFF  = 0x1C # Not output square wave, enter interrupt mode
 @n           SquareWave_1Hz  = 0x00 # 1Hz square wave
 @n           SquareWave_1kHz = 0x08 # 1kHz square wave
 @n           SquareWave_4kHz = 0x10 # 4kHz square wave

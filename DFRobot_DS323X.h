@@ -54,7 +54,7 @@ class DFRobot_DS323X
 public:
 
     typedef enum{
-        eOFF             = 0x1C, // Not output square wave, enter interrupt mode 
+        eSquareWave_OFF  = 0x1C, // Not output square wave, enter interrupt mode 
         eSquareWave_1Hz  = 0x00, // 1Hz square wave
         eSquareWave_1kHz = 0x08, // 1kHz square wave
         eSquareWave_4kHz = 0x10, // 4kHz square wave
@@ -63,8 +63,7 @@ public:
 
     typedef enum{
         e24hours = 0,
-        eAM = 2,
-        ePM = 3
+        e12hours = 1
     }eHours_t;
     
     typedef enum{
@@ -75,6 +74,7 @@ public:
         eSecondsMinutesHoursDateMatch, //repeat in every month
         eSecondsMinutesHoursDayMatch,  //repeat in every week
         //Alarm1
+        eUnknownAlarm1
     }eAlarm1Types_t;
         
     typedef enum{
@@ -84,7 +84,7 @@ public:
         eMinutesHoursDateMatch,        //repeat in every month
         eMinutesHoursDayMatch,         //repeat in every week
         //Alarm2
-        eUnknownAlarm
+        eUnknownAlarm2
     }eAlarm2Types_t;
 
     /**
@@ -99,48 +99,48 @@ public:
      */
     bool begin(void);
     /*!
-     *@brief Get year
+     *@brief Get year of now time
      *@return Year
      */
     uint16_t getYear();
     /*!
-     *@brief Get month
+     *@brief Get month of now time
      *@return Month
      */
     uint8_t  getMonth();
     /*!
-     *@brief Get date
+     *@brief Get date of now time
      *@return Date
      */
     uint8_t  getDate(); 
     /*!
-     *@brief Get hour
+     *@brief Get hour of now time
      *@return Hour
      */
     uint8_t  getHour();
     /*!
-     *@brief Get minute
+     *@brief Get minute of now time
      *@return Minute
      */
     uint8_t  getMinute();
     /*!
-     *@brief Get second
+     *@brief Get second of now time
      *@return Second
      */
     uint8_t  getSecond();
     
     /*!
-     *@brief Set mode
-     *@param eHours_t:e24hours, eAM, ePM. default is e24hours
+     *@brief Set hour system of time
+     *@param eHours_t mode:e24hours, e12hours. default is e24hours
      */
-    void setMode(eHours_t mode = e24hours)  { _mode = mode; }
+    void setHourSystem(eHours_t mode)  { _mode = mode; }
     
     /*!
      *@brief Set time into rtc and take effect immediately
      *@param year, 1900~2100
      *@param month, 1~12
      *@param date, 1~31
-     *@param hour:1-12 in 12hours,0-23 in 24hours
+     *@param hour: 0~23
      *@param hour, 0~59
      *@param minute, 0~59
      */
@@ -160,19 +160,19 @@ public:
     
     /*!
      *@brief Judge if it is power-down 
-     *@return If retrun true, power down, time needs to reset; false, work well. 
+     *@return true 表示rtc曾经断电，需要重新设置时间;false 表示rtc工作正常
      */
     bool isLostPower(void);
     
     /*!
      *@brief Read the value of pin sqw
-     *@return Explanation of the readings in enumeration variable eDS323XSqwPinMode_t
+     *@return Explanation of the readings in enumeration variable eSqwPinMode_t
      */
     eSqwPinMode_t readSqwPinMode();
     
     /*!
      *@brief Set the vaule of pin sqw
-     *@param dt Explanation of the witten value in enumeration variable eDS323XSqwPinMode_t
+     *@param dt Explanation of the witten value in enumeration variable eSqwPinMode_t
      */
     void writeSqwPinMode(eSqwPinMode_t mode);
     
@@ -185,19 +185,19 @@ public:
     /*!
      *@brief Set alarm1 clock 
      *@param alarmType Alarm working mode
-     *@param days    Alarm clock (day)
-     *@param hours   Alarm clock (hour)
-     *@param minutes Alarm clock (minute)
-     *@param seconds Alarm clock (second)
+     *@param days    Alarm clock (0-31)
+     *@param hours   Alarm clock (0-23)
+     *@param minutes Alarm clock (0-59)
+     *@param seconds Alarm clock (0-59)
      */
     void setAlarm1(eAlarm1Types_t alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
     
     /*!
      *@brief Set alarm1 clock 
      *@param alarmType Alarm working mode
-     *@param days    Alarm clock (day)
-     *@param hours   Alarm clock (hour)
-     *@param minutes Alarm clock (minute)
+     *@param days    Alarm clock (0-31)
+     *@param hours   Alarm clock (0-23)
+     *@param minutes Alarm clock (0-59)
      */
     void setAlarm2(eAlarm2Types_t alarmType,int16_t days,int8_t hours,int8_t minutes);
     
@@ -211,15 +211,15 @@ public:
     
     /*!
      *@brief output AM or PM of time 
-     *@return AM or PM, 24 hours mode return null
+     *@return AM or PM, 24 hours mode return empty string 
      */
-    const char* getAMorPM();
+    String getAMorPM();
     
     /*!
      *@brief Judge if the alarm clock is triggered
      *@return true, triggered; false, not trigger
      */
-    uint8_t isAlarmTrig();
+    bool isAlarmTrig();
     
     /*!
      *@brief Clear alarm flag 
@@ -266,11 +266,10 @@ private:
     uint8_t rtc_bcd[7];
     uint8_t bcd[7];
     uint8_t  dayOfWeek() const ;
-    eHours_t _mode;
+    eHours_t _mode = 0;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;
     const char* daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 
-    const char* hourOfAM[4]PROGMEM = {"", "", "AM", "PM"}; 
 };
 
 #endif

@@ -22,15 +22,14 @@ import time
 
 class DFRobot_DS323X:
     
-    OFF                = 0x1C
+    SquareWave_OFF     = 0x1C
     SquareWave_1Hz     = 0x00
     SquareWave_1kHz    = 0x08
     SquareWave_4kHz    = 0x10
     SquareWave_8kHz    = 0x18
     
     H24hours            = 0
-    AM                 = 2
-    PM                 = 3
+    H12hours            = 1
     
     EverySecond                  = 0
     SecondsMatch                 = 1
@@ -38,14 +37,15 @@ class DFRobot_DS323X:
     SecondsMinutesHoursMatch     = 3
     SecondsMinutesHoursDateMatch = 4
     SecondsMinutesHoursDayMatch  = 5
+    UnknownAlarm1                 = 6
     
-    EveryMinute                  = 6
-    MinutesMatch                 = 7
-    MinutesHoursMatch            = 8
-    MinutesHoursDateMatch        = 9
-    MinutesHoursDayMatch         = 10
+    EveryMinute                  = 0
+    MinutesMatch                 = 1
+    MinutesHoursMatch            = 2
+    MinutesHoursDateMatch        = 3
+    MinutesHoursDayMatch         = 4
 
-    UnknownAlarm                 = 11
+    UnknownAlarm2                 = 5
 
     _IIC_ADDRESS        = 0x68
 
@@ -82,8 +82,7 @@ class DFRobot_DS323X:
     m = 0
     y = 0
     days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
-    day_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    hour_of_am = [" ", " ", ",AM", ",PM"] 
+    day_of_the_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
     def __init__(self, bus):
         _deviceAddr = self._IIC_ADDRESS
@@ -121,7 +120,7 @@ class DFRobot_DS323X:
 
     '''
     @brief Read the value of pin sqw
-    @return mode OFF             = 0x1C # Off
+    @return mode SquareWave_OFF  = 0x1C # Not output square wave, enter interrupt mode
     @n           SquareWave_1Hz  = 0x00 # 1Hz square wave
     @n           SquareWave_1kHz = 0x08 # 1kHz square wave
     @n           SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -131,12 +130,12 @@ class DFRobot_DS323X:
         mode = self.read_reg(self._REG_CONTROL)
         mode &= 0x1C;
         if (mode & 0x04):
-            mode = OFF
+            mode = SquareWave_OFF
         return mode
 
     '''
     @brief Set the vaule of pin sqw
-    @param mode OFF             = 0x1C # Not output square wave, enter interrupt mode
+    @param mode SquareWave_OFF  = 0x1C # Not output square wave, enter interrupt mode
     @n          SquareWave_1Hz  = 0x00 # 1Hz square wave
     @n          SquareWave_1kHz = 0x08 # 1kHz square wave
     @n          SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -159,7 +158,7 @@ class DFRobot_DS323X:
     @return day of week
     '''
     def get_day_of_week(self):
-        return self.day_of_week[self.day_of_week()]
+        return self.day_of_the_week[self.day_of_week()]
 
     '''
     @brief Set mode of time
@@ -173,7 +172,7 @@ class DFRobot_DS323X:
     @param year, 1900~2100
     @param month, 1~12
     @param date, 1~31
-    @param hour:1-12 in 12hours,0-23 in 24hours
+    @param hour: 0~23
     @param hour, 0~59
     @param minute, 0~59
     '''
@@ -185,7 +184,17 @@ class DFRobot_DS323X:
             self.y = self.bin2bcd(year - 1900)
             self.m = month
         self.d = self.bin2bcd(date)
-        self.hh = self.bin2bcd(hour) | (self._mode << 5)
+        if self._mode == 0:
+            self.hh = (self._mode << 5|self.bin2bcd(hour))
+        else:
+            if hour == 0:
+                self.hh = 0x52;
+            elif hour >0 and hour < 12:
+                self.hh = (0x40|self.bin2bcd(hour))
+            elif hour == 12:
+                self.hh = 0x72
+            elif hour >12 and hour < 24:
+                self.hh = (0x60|self.bin2bcd(hour - 12));
         self.mm = self.bin2bcd(minute)
         self.ss = self.bin2bcd(second)
         #data = [self.ss, self.mm, self.hh, self.day_of_week(), self.d, self.m, self.y]
@@ -201,13 +210,17 @@ class DFRobot_DS323X:
     
     '''
     @brief output AM or PM of time 
-    @return AM or PM, 24 hours mode return null
+    @return AM or PM, 24 hours mode return empty string
     '''
     def get_AM_or_PM(self):
         buffer = self.read_reg(self._REG_RTC_HOUR)
         buffer = buffer & 0x60
-        buffer = buffer >> 5
-        return self.hour_of_am[buffer]
+        if (buffer >> 5) <= 1:
+            return " "
+        elif (buffer >> 5) == 2:
+            return "AM"
+        elif (buffer >> 5) == 3:
+            return "PM"
     
     '''
     @brief get year of now time
@@ -292,7 +305,7 @@ class DFRobot_DS323X:
     
     '''
     @brief check if rtc has been lost power
-    @return If retrun true, power down, time needs to reset; false, work well.
+    @return True, 表示rtc曾经断电，需要重新设置时间;False 表示rtc工作正常
     '''
     def is_lost_power(self):
         status = self.read_reg(self._REG_STATUS)
@@ -300,13 +313,13 @@ class DFRobot_DS323X:
 
     '''
     @brief Set alarm1 clock
-    @param alarmType:EverySecond,
-    @n               SecondsMatch,
-    @n               SecondsMinutesMatch,
-    @n               SecondsMinutesHoursMatch,
-    @n               SecondsMinutesHoursDateMatch,
-    @n               SecondsMinutesHoursDayMatch, #Alarm1
-    @n               UnknownAlarm
+    @param alarmType:EverySecond,                   #repeat in every second
+    @n               SecondsMatch,                  #repeat in every minute
+    @n               SecondsMinutesMatch,           #repeat in every hour
+    @n               SecondsMinutesHoursMatch,      #repeat in every day
+    @n               SecondsMinutesHoursDateMatch,  #repeat in every month
+    @n               SecondsMinutesHoursDayMatch,   #repeat in every week  #Alarm1
+    @n               UnknownAlarm1
     @param days      Alarm clock Day (day)
     @param hours     Alarm clock Hour (hour)
     @param minutes   Alarm clock Minute (minute)
@@ -314,11 +327,21 @@ class DFRobot_DS323X:
     '''
     def set_alarm1(self, alarmType, date, hour, minute, second):
         dates = self.bin2bcd(date)
-        hours = self._mode >> 6|self.bin2bcd(hour)
+        if self._mode == 0:
+            hours = (self._mode << 5|self.bin2bcd(hour))
+        else:
+            if hour == 0:
+                hours = 0x52;
+            elif hour >0 and hour < 12:
+                hours = (0x40|self.bin2bcd(hour))
+            elif hour == 12:
+                hours = 0x72
+            elif hour >12 and hour < 24:
+                hours = (0x60|self.bin2bcd(hour - 12))
         minutes = self.bin2bcd(minute)
         seconds = self.bin2bcd(second)
         days = self.bin2bcd(self.day_of_week())
-        if alarmType >= self.UnknownAlarm:
+        if alarmType >= self.UnknownAlarm1:
             return
         self.write_reg(self._REG_ALM1_SEC, seconds)
         self.write_reg(self._REG_ALM1_MIN, minutes)
@@ -352,22 +375,32 @@ class DFRobot_DS323X:
 
     '''
     @brief Set alarm2 clock
-    @param alarmType:EveryMinute,
-    @n               MinutesMatch,
-    @n               MinutesHoursMatch,
-    @n               MinutesHoursDateMatch,
-    @n               MinutesHoursDayMatch,        #Alarm2
-    @n               UnknownAlarm
+    @param alarmType:EveryMinute,           //repeat in every minute
+    @n               MinutesMatch,          //repeat in every hour
+    @n               MinutesHoursMatch,     //repeat in every day
+    @n               MinutesHoursDateMatch, //repeat in every month
+    @n               MinutesHoursDayMatch,  //repeat in every week  #Alarm2
+    @n               UnknownAlarm2
     @param days      Alarm clock Day (day)
     @param hours     Alarm clock Hour (hour)
     @param minutes   Alarm clock Minute (minute)
     '''
     def set_alarm2(self, alarmType, date, hour, minute):
         dates = self.bin2bcd(date)
-        hours = self._mode >> 6|self.bin2bcd(hour)
+        if self._mode == 0:
+            hours = (self._mode << 5|self.bin2bcd(hour))
+        else:
+            if hour == 0:
+                hours = 0x52;
+            elif hour >0 and hour < 12:
+                hours = (0x40|self.bin2bcd(hour))
+            elif hour == 12:
+                hours = 0x72
+            elif hour >12 and hour < 24:
+                hours = (0x60|self.bin2bcd(hour - 12))
         minutes = self.bin2bcd(minute)
         days = self.bin2bcd(self.day_of_week())
-        if alarmType >= self.UnknownAlarm:
+        if alarmType >= self.UnknownAlarm2:
             return
         self.write_reg(self._REG_ALM2_MIN, minutes)
         self.write_reg(self._REG_ALM2_HOUR, hours)
@@ -486,7 +519,7 @@ class DFRobot_DS323X:
 
     def scan(self):
         try:
-            self.i2cbus.read_byte(self.i2c_addr)
+            self.i2cbus.write_quick(self.i2c_addr)
             return True
         except:
             print("I2C init fail")

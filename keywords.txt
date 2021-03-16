@@ -26,7 +26,7 @@ readSqwPinMode	KEYWORD2
 writeSqwPinMode	KEYWORD2
 setAlarm	KEYWORD2
 isAlarmTrig	KEYWORD2
-setMode	KEYWORD2
+setHourSystem	KEYWORD2
 setTime	KEYWORD2
 clearAlarm	KEYWORD2
 disable32k	KEYWORD2
@@ -36,7 +36,6 @@ disableAlarm1Int	KEYWORD2
 enableAlarm2Int	KEYWORD2
 disableAlarm2Int	KEYWORD2
 getAMorPM	KEYWORD2
-dateTime	KEYWORD2
 clearSRAM	KEYWORD2
 writeSRAM	KEYWORD2
 readSRAM	KEYWORD2
@@ -45,7 +44,7 @@ readSRAM	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
-eOFF	LITERAL1
+eSquareWave_OFF	LITERAL1
 eSquareWave_1Hz	LITERAL1
 eSquareWave_1kHz	LITERAL1
 eSquareWave_4kHz	LITERAL1
@@ -56,12 +55,12 @@ eSecondsMinutesMatch	LITERAL1
 eSecondsMinutesHoursMatch	LITERAL1
 eSecondsMinutesHoursDateMatch	LITERAL1
 eSecondsMinutesHoursDayMatch	LITERAL1
+eUnknownAlarm1	LITERAL1
 eEveryMinute	LITERAL1
 eMinutesMatch	LITERAL1
 eMinutesHoursMatch	LITERAL1
 eMinutesHoursDateMatch	LITERAL1
 eMinutesHoursDayMatch	LITERAL1
-eUnknownAlarm	LITERAL1
+eUnknownAlarm2	LITERAL1
 e24hours	LITERAL1
-eAM	LITERAL1
-ePM	LITERAL1
+e12hours	LITERAL1

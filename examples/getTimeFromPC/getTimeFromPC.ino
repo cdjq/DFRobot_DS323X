@@ -23,7 +23,7 @@ void setup(void)
         Serial.println("Failed to init chip, please check if the chip connection is fine. ");
         delay(1000);
     }
-    //rtc.setMode();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
+    //rtc.setHourSystem();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set the last compiled time as the current time
      *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒

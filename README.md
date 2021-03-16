@@ -82,17 +82,17 @@ To use this library, first download the library file, paste it into the \Arduino
   const char* getDayOfWeek();
   
   /*!
-   *@brief Set mode of time
-   *@param eHours_t:e24hours, eAM, ePM. default is e24hours
+   *@brief Set hour system of time
+   *@param eHours_t:e24hours, e12hours. default is e24hours
    */
-  void setMode(eHours_t mode = e24hours);
+  void setHourSystem(eHours_t mode = e24hours);
   
   /*!
    *@brief Set time into rtc and take effect immediately
    *@param year, 1900~2100
    *@param month, 1~12
    *@param date, 1~31
-   *@param hour:1-12 in 12hours,0-23 in 24hours
+   *@param hour: 0~23
    *@param hour, 0~59
    *@param minute, 0~59
    */
@@ -107,9 +107,9 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief output AM or PM of time 
-   *@return AM or PM, 24hours is null
+   *@return AM or PM, 24hours is empty string 
    */
-  const char* getAMorPM();
+  String getAMorPM();
   
   /*!
    *@brief Get current temperature 
@@ -125,7 +125,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Read the value of pin sqw
-   *@return eOFF             = 0x1C // Off
+   *@return eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode 
    *@n      eSquareWave_1Hz  = 0x00 // 1Hz square wave
    *@n      eSquareWave_1kHz = 0x08 // 1kHz square wave
    *@n      eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -135,7 +135,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Set the vaule of pin sqw
-   *@param mode eOFF             = 0x1C // Off
+   *@param mode eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode 
    *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
    *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
    *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
@@ -146,18 +146,18 @@ To use this library, first download the library file, paste it into the \Arduino
   /*!
    *@brief Set alarm1 clock
    *@param alarmType Alarm clock working mode typedef enum{
-   *@n                                  eEverySecond,
-   *@n                                  eSecondsMatch,
-   *@n                                  eSecondsMinutesMatch,
-   *@n                                  eSecondsMinutesHoursMatch,
-   *@n                                  eSecondsMinutesHoursDateMatch,
-   *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
-   *@n                                  eUnknownAlarm
+   *@n                                  eEverySecond,                   //repeat in every second
+   *@n                                  eSecondsMatch,                  //repeat in every minute
+   *@n                                  eSecondsMinutesMatch,           //repeat in every hour
+   *@n                                  eSecondsMinutesHoursMatch,      //repeat in every day
+   *@n                                  eSecondsMinutesHoursDateMatch,  //repeat in every month
+   *@n                                  eSecondsMinutesHoursDayMatch,   //repeat in every week  //Alarm1
+   *@n                                  eUnknownAlarm1
    *@n                                  }eAlarm1Types_t;
-   *@param days    Alarm clock Day (day)
-   *@param hours   Alarm clock Hour (hour)
-   *@param minutes Alarm clock Minute (minute)
-   *@param seconds Alarm clock Second (second)
+   *@param days    Alarm clock Day (0-31)
+   *@param hours   Alarm clock Hour (0-23)
+   *@param minutes Alarm clock Minute (0-59)
+   *@param seconds Alarm clock Second (0-59)
    */
   void setAlarm1(const uint8_t alarmType,int16_t days,int8_t hours,eHours_t mode,
                 int8_t minutes,int8_t seconds);
@@ -165,16 +165,16 @@ To use this library, first download the library file, paste it into the \Arduino
   /*!
    *@brief Set alarm2 clock
    *@param alarmType Alarm clock working mode typedef enum{
-   *@n                                  eEveryMinute,
-   *@n                                  eMinutesMatch,
-   *@n                                  eMinutesHoursMatch,
-   *@n                                  eMinutesHoursDateMatch,
-   *@n                                  eMinutesHoursDayMatch,        //Alarm2
-   *@n                                  eUnknownAlarm
+   *@n                                  eEveryMinute,           //repeat in every minute
+   *@n                                  eMinutesMatch,          //repeat in every hour
+   *@n                                  eMinutesHoursMatch,     //repeat in every day
+   *@n                                  eMinutesHoursDateMatch, //repeat in every month
+   *@n                                  eMinutesHoursDayMatch,  //repeat in every week      //Alarm2
+   *@n                                  eUnknownAlarm2
    *@n                                  }eAlarm2Types_t;
-   *@param days    Alarm clock Day (day)
-   *@param hours   Alarm clock Hour (hour)
-   *@param minutes Alarm clock Minute (minute)
+   *@param days    Alarm clock Day (0-31)
+   *@param hours   Alarm clock Hour (0-23)
+   *@param minutes Alarm clock Minute (0-59)
    */
   void setAlarm2(const uint8_t alarmType,int16_t days,int8_t hours,eHours_t mode,
                 int8_t minutes);

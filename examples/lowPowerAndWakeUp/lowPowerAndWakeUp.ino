@@ -41,7 +41,7 @@ void setup(void)
     //rtc.disableAlarm1Int();
     //rtc.enableAlarm2Int();
     rtc.disableAlarm2Int();
-    //rtc.setMode();    //Set time mode, default is the 24 hours mode, e24hours, eAM, ePM.
+    //rtc.setHourSystem();    //Set time mode, default is the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
@@ -51,6 +51,7 @@ void setup(void)
      *@n                                  eSecondsMinutesHoursMatch,
      *@n                                  eSecondsMinutesHoursDateMatch,
      *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
+     *@n                                  eUnknownAlarm1
      *@n                                  }eAlarm1Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)
@@ -66,7 +67,7 @@ void setup(void)
      *@n                                  eMinutesHoursMatch,
      *@n                                  eMinutesHoursDateMatch,
      *@n                                  eMinutesHoursDayMatch,        //Alarm2
-     *@n                                  eUnknownAlarm
+     *@n                                  eUnknownAlarm2
      *@n                                  }eAlarm2Types_t;
      *@param days    Alarm clock Day (day)
      *@param hours   Alarm clock Hour (hour)

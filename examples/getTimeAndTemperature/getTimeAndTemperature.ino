@@ -27,8 +27,8 @@ void setup(void)
      *@brief Set time mode
      *@param eHours_t:e24hours, eAM, ePM. default is e24hours
      */
-    //rtc.setMode();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
-    rtc.setTime(/*year,1900-2100*/2021, /*mouth,1-12*/2, /*date,1-31*/24, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
+    rtc.setHourSystem(rtc.e12hours);
+    rtc.setTime(/*year,1900-2100*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
 
 }
 
