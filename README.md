@@ -107,7 +107,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief output AM or PM of time 
-   *@return AM or PM, 24hours is empty string 
+   *@return AM or PM, 24hours return empty string 
    */
   String getAMorPM();
   
@@ -119,7 +119,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Judge if it is power-down 
-   *@return If retrun true, power down, user needs to reset time; false, work well. 
+   *@return true 表示rtc曾经断电，需要重新设置时间;false 表示rtc工作正常 
    */
   bool isLostPower(void);
   
@@ -199,13 +199,9 @@ To use this library, first download the library file, paste it into the \Arduino
   void disableAlarm2Int();
   
   /*!
-   *@brief enable the 32k pin output 
+   *@brief enable or disable the 32k pin output 
    */
   void enable32k();
-  
-  /*!
-   *@brief disable the 32k pin output 
-   */
   void disable32k();
     
   /*!
