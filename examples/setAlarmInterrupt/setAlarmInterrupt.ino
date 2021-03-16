@@ -27,7 +27,7 @@ void setup(void)
     }
     /*!
      *@brief Set the value of pin sqw
-     *@param mode eOFF    = 0x1C // Not output square wave, enter interrupt mode
+     *@param mode eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode
      *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
      *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
      *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave

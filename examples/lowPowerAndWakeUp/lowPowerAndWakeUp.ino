@@ -30,11 +30,11 @@ void setup(void)
     }
     /*!
      *@brief Set the value of pin sqw
-     *@param mode eDS323X_OFF  = 0x1C // Not output square wave, enter interrupt mode
-     *@n          eDS323X_SquareWave_1Hz  = 0x00 // 1Hz square wave
-     *@n          eDS323X_SquareWave_1kHz = 0x08 // 1kHz square wave
-     *@n          eDS323X_SquareWave_4kHz = 0x10 // 4kHz square wave
-     *@n          eDS323X_SquareWave_8kHz = 0x18 // 8kHz square wave
+     *@param mode eSquareWave_OFF  = 0x1C // Not output square wave, enter interrupt mode
+     *@n          eSquareWave_1Hz  = 0x00 // 1Hz square wave
+     *@n          eSquareWave_1kHz = 0x08 // 1kHz square wave
+     *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
+     *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
      */
     rtc.writeSqwPinMode(rtc.eOFF);
     rtc.enableAlarm1Int();
