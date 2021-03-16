@@ -150,7 +150,7 @@ public:
      *@brief get day of week
      *@return day of week
      */
-    const char* getDayOfWeek();
+    String getDayOfWeek();
     
     /*!
      *@brief Get current temperature, 
@@ -269,7 +269,7 @@ private:
     eHours_t _mode = 0;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;
-    const char* daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 
+    String daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 
 };
 
 #endif

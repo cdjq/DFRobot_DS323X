@@ -74,7 +74,7 @@ DFRobot_DS323X::eSqwPinMode_t DFRobot_DS323X::readSqwPinMode(){
     readReg(DS323X_REG_CONTROL, &mode, 1);
     mode &= 0x1C;
     if (mode & 0x04){
-        mode = eOFF;
+        mode = eSquareWave_OFF;
     }
     return static_cast<eSqwPinMode_t>(mode);
 }
@@ -143,7 +143,7 @@ uint8_t DFRobot_DS323X::dayOfWeek() const {
  *@brief get day of week
  *@return day of week
  */
-const char* DFRobot_DS323X::getDayOfWeek(){
+String DFRobot_DS323X::getDayOfWeek(){
     return daysOfTheWeek[dayOfWeek()];
 }
 

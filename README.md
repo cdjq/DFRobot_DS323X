@@ -79,7 +79,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief get day of week
    *@return day of week
    */
-  const char* getDayOfWeek();
+  String getDayOfWeek();
   
   /*!
    *@brief Set hour system of time
