@@ -153,8 +153,8 @@ String DFRobot_DS323X::getDayOfWeek(){
  *@param month, 1~12
  *@param date, 1~31
  *@param hour: 0~23
- *@param hour, 0~59
  *@param minute, 0~59
+ *@param second, 0~59
  */
 void DFRobot_DS323X::setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second){
     if (year >=2000){
@@ -309,11 +309,10 @@ bool DFRobot_DS323X::isLostPower(void) {
  *@n                                  eSecondsMinutesHoursDayMatch, //Alarm1
  *@n                                  eUnknownAlarm1
  *@n                                  }eAlarm1Types_t;
- *@param days    Alarm clock Day (day)
- *@param hours   Alarm clock Hour (hour)
- *@param mode:   e24hours, eAM, ePM
- *@param minutes Alarm clock (minute)
- *@param seconds Alarm clock (second)
+ *@param days    1-31
+ *@param hours   0-23
+ *@param minutes 0-59
+ *@param seconds 0-59
  */
 void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute,int8_t second){
@@ -384,10 +383,9 @@ void DFRobot_DS323X::setAlarm1(eAlarm1Types_t alarmType, int16_t date,int8_t hou
  *@n                                  eMinutesHoursDayMatch,        //Alarm2
  *@n                                  eUnknownAlarm2
  *@n                                  }eAlarm2Types_t;
- *@param days    Alarm clock Day (day)
- *@param hours   Alarm clock Hour (hour)
- *@param mode:   e24hours, eAM, ePM
- *@param minutes Alarm clock (minute)
+ *@param days    1-31
+ *@param hours   0-23
+ *@param minutes 0-59
  */
 void DFRobot_DS323X::setAlarm2(eAlarm2Types_t alarmType, int16_t date,int8_t hour,
                                int8_t minute){

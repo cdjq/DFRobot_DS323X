@@ -141,8 +141,8 @@ public:
      *@param month, 1~12
      *@param date, 1~31
      *@param hour: 0~23
-     *@param hour, 0~59
      *@param minute, 0~59
+     *@param second, 0~59
      */
     void setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
     
@@ -185,19 +185,19 @@ public:
     /*!
      *@brief Set alarm1 clock 
      *@param alarmType Alarm working mode
-     *@param days    Alarm clock (0-31)
-     *@param hours   Alarm clock (0-23)
-     *@param minutes Alarm clock (0-59)
-     *@param seconds Alarm clock (0-59)
+     *@param days     (1-31)
+     *@param hours    (0-23)
+     *@param minutes  (0-59)
+     *@param seconds  (0-59)
      */
     void setAlarm1(eAlarm1Types_t alarmType,int16_t days,int8_t hours,int8_t minutes,int8_t seconds);
     
     /*!
      *@brief Set alarm1 clock 
      *@param alarmType Alarm working mode
-     *@param days    Alarm clock (0-31)
-     *@param hours   Alarm clock (0-23)
-     *@param minutes Alarm clock (0-59)
+     *@param days     (1-31)
+     *@param hours    (0-23)
+     *@param minutes  (0-59)
      */
     void setAlarm2(eAlarm2Types_t alarmType,int16_t days,int8_t hours,int8_t minutes);
     

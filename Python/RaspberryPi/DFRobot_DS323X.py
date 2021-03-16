@@ -172,9 +172,9 @@ class DFRobot_DS323X:
     @param year, 1900~2100
     @param month, 1~12
     @param date, 1~31
-    @param hour: 0~23
-    @param hour, 0~59
+    @param hour, 0~23
     @param minute, 0~59
+    @param second, 0~59
     '''
     def set_time(self, year, month, date, hour, minute, second):
         if year >=2000:
@@ -320,10 +320,10 @@ class DFRobot_DS323X:
     @n               SecondsMinutesHoursDateMatch,  #repeat in every month
     @n               SecondsMinutesHoursDayMatch,   #repeat in every week  #Alarm1
     @n               UnknownAlarm1
-    @param days      Alarm clock Day (day)
-    @param hours     Alarm clock Hour (hour)
-    @param minutes   Alarm clock Minute (minute)
-    @param seconds   Alarm clock Second (second)
+    @param days    1-31
+    @param hours   0-23
+    @param minutes 0-59
+    @param seconds 0-59
     '''
     def set_alarm1(self, alarmType, date, hour, minute, second):
         dates = self.bin2bcd(date)
@@ -381,9 +381,9 @@ class DFRobot_DS323X:
     @n               MinutesHoursDateMatch, //repeat in every month
     @n               MinutesHoursDayMatch,  //repeat in every week  #Alarm2
     @n               UnknownAlarm2
-    @param days      Alarm clock Day (day)
-    @param hours     Alarm clock Hour (hour)
-    @param minutes   Alarm clock Minute (minute)
+    @param days    1-31
+    @param hours   0-23
+    @param minutes 0-59
     '''
     def set_alarm2(self, alarmType, date, hour, minute):
         dates = self.bin2bcd(date)

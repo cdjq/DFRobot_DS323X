@@ -92,9 +92,9 @@ To use this library, first download the library file, paste it into the \Arduino
    *@param year, 1900~2100
    *@param month, 1~12
    *@param date, 1~31
-   *@param hour: 0~23
-   *@param hour, 0~59
+   *@param hour, 0~23
    *@param minute, 0~59
+   *@param second, 0~59
    */
   void setTime(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
   

@@ -34,9 +34,9 @@ rtc.set_mode(rtc.H12hours)
 @param year, 1900~2100
 @param month, 1~12
 @param date, 1~31
-@param hour: 0~23
-@param hour, 0~59
+@param hour, 0~23
 @param minute, 0~59
+@param second, 0~59
 '''
 rtc.set_time(year=2021,month=2,date=28,hour=11,minute=59,second=55)
 
