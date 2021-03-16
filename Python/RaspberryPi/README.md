@@ -73,6 +73,12 @@ Download this library into RaspberryPi, and run demo with Python
   def get_day_of_week()
   
   '''
+  @brief Set mode of time
+  @param mode H24hours,H12hours
+  '''
+  def set_hour_system(self, mode = H24hours)
+  
+  '''
   @brief Set time into rtc and take effect immediately
   @param year, 1900~2100
   @param month, 1~12

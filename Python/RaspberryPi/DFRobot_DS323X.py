@@ -162,9 +162,9 @@ class DFRobot_DS323X:
 
     '''
     @brief Set mode of time
-    @param mode H24hours, AM, PM
+    @param mode H24hours,H12hours
     '''
-    def set_mode(self, mode = H24hours):
+    def set_hour_system(self, mode = H24hours):
         self._mode = mode
 
     '''

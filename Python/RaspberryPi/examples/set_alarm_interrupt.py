@@ -49,7 +49,7 @@ rtc.enable_alarm2_int();#@enable Alarm2 interrupt
 '''
 @brief Set the last compiled time as the current time
 '''
-#rtc.set_mode(rtc.PM)
+#rtc.set_hour_system(rtc.H12hours)
 rtc.set_time(2021,2,28,23,59,55)
 
 '''

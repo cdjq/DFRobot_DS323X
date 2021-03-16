@@ -27,7 +27,7 @@ while not rtc.begin():
 @brief Set mode of time
 @param mode H24hours, H12hours
 '''
-rtc.set_mode(rtc.H12hours)
+rtc.set_hour_system(rtc.H12hours)
 
 '''
 @brief Set time into rtc and take effect immediately
