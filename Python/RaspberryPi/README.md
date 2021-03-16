@@ -77,9 +77,9 @@ Download this library into RaspberryPi, and run demo with Python
   @param year, 1900~2100
   @param month, 1~12
   @param date, 1~31
-  @param hour:1-12 in 12hours,0-23 in 24hours
-  @param hour, 0~59
+  @param hour, 0-23
   @param minute, 0~59
+  @param second, 0~59
   '''
   def set_time(year, month, date, hour, minute, second)
   
@@ -101,12 +101,13 @@ Download this library into RaspberryPi, and run demo with Python
   
   '''
   @brief check if rtc has been lost power
+  @return True, 表示rtc曾经断电，需要重新设置时间;False 表示rtc工作正常
   '''
   def is_lost_power()
   
   '''
   @brief Read the value of pin sqw
-  @return mode OFF             = 0x1C # Off
+  @return mode SquareWave_OFF  = 0x1C # Off
   @n           SquareWave_1Hz  = 0x00 # 1Hz square wave
   @n           SquareWave_1kHz = 0x08 # 1kHz square wave
   @n           SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -116,7 +117,7 @@ Download this library into RaspberryPi, and run demo with Python
   
   '''
   @brief Set the vaule of pin sqw
-  @param mode OFF             = 0x1C # Not output square wave, enter interrupt mode
+  @param mode SquareWave_OFF  = 0x1C # Not output square wave, enter interrupt mode
   @n          SquareWave_1Hz  = 0x00 # 1Hz square wave
   @n          SquareWave_1kHz = 0x08 # 1kHz square wave
   @n          SquareWave_4kHz = 0x10 # 4kHz square wave
@@ -133,10 +134,10 @@ Download this library into RaspberryPi, and run demo with Python
   @n               SecondsMinutesHoursDateMatch,
   @n               SecondsMinutesHoursDayMatch, #Alarm1
   @n               UnknownAlarm
-  @param days      Alarm clock Day (day)
-  @param hours     Alarm clock Hour (hour)
-  @param minutes   Alarm clock Minute (minute)
-  @param seconds   Alarm clock Second (second)
+  @param days    1-31
+  @param hours   0-23
+  @param minutes 0-59
+  @param seconds 0-59
   '''
   def set_alarm1(alarmType, date, hour, minute, second)
   
@@ -148,9 +149,9 @@ Download this library into RaspberryPi, and run demo with Python
   @n               MinutesHoursDateMatch,
   @n               MinutesHoursDayMatch,        #Alarm2
   @n               UnknownAlarm
-  @param days      Alarm clock Day (day)
-  @param hours     Alarm clock Hour (hour)
-  @param minutes   Alarm clock Minute (minute)
+  @param days    1-31
+  @param hours   0-23
+  @param minutes 0-59
   '''
   def set_alarm2(alarmType, date, hour, minute)
   
@@ -173,14 +174,11 @@ Download this library into RaspberryPi, and run demo with Python
   def disable_alarm2_int()
   
   '''
-  @brief enable the 32k output 
+  @brief enable or disable the 32k output 
   '''
   def enable_32k()
-  
-  '''
-  @brief disable the 32k output (default is enable)
-  '''
   def disable_32k()
+  
   '''
   @brief clear, write and read data on the SRAM of DS3232
   @param addr, address of SRAM
