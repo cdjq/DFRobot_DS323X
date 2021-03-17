@@ -240,14 +240,15 @@ public:
      *@brief write, read and clear the SRAM
      *@param addr 0x14~0xFF
      *@param data uint8_t HEX
+     *@return true 表示写入成功，false表示写入失败
      */
-    void writeSRAM(uint8_t addr, uint8_t data);
+    bool writeSRAM(uint8_t addr, uint8_t data);
     uint8_t readSRAM(uint8_t addr);
-    void clearSRAM(uint8_t addr);
+    bool clearSRAM(uint8_t addr);
     
 
 protected:
-    virtual void writeReg(uint8_t reg, const void* pBuf, size_t size);
+    virtual bool writeReg(uint8_t reg, const void* pBuf, size_t size);
     virtual uint8_t readReg(uint8_t reg, const void* pBuf, size_t size);
     
     static uint8_t bcd2bin(uint8_t val);

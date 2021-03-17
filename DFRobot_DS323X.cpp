@@ -524,9 +524,10 @@ void DFRobot_DS323X::disable32k(){
  *@brief write data into the SRAM
  *@param addr 0x14~0xFF
  *@param data uint8_t HEX
+ *@return true 表示写入成功，false表示写入失败
  */
-void DFRobot_DS323X::writeSRAM(uint8_t reg, uint8_t data){
-    writeReg(reg, &data, 1);
+bool DFRobot_DS323X::writeSRAM(uint8_t reg, uint8_t data){
+    return writeReg(reg, &data, 1);
 }
 
 /*!
@@ -543,13 +544,14 @@ uint8_t DFRobot_DS323X::readSRAM(uint8_t reg){
 /*!
  *@brief clear the SRAM
  *@param addr 0x14~0xFF
+ *@return true 表示写入成功，false表示写入失败
  */
-void DFRobot_DS323X::clearSRAM(uint8_t reg){
+bool DFRobot_DS323X::clearSRAM(uint8_t reg){
     uint8_t buf = 0x00;
-    writeReg(reg, &buf, 1);
+    return writeReg(reg, &buf, 1);
 }
 
-void DFRobot_DS323X::writeReg(uint8_t reg, const void* pBuf, size_t size)
+bool DFRobot_DS323X::writeReg(uint8_t reg, const void* pBuf, size_t size)
 {
     if(pBuf == NULL){
         DBG("pBuf ERROR!! : null pointer");
@@ -561,7 +563,11 @@ void DFRobot_DS323X::writeReg(uint8_t reg, const void* pBuf, size_t size)
     for(uint16_t i = 0; i < size; i++){
         _pWire->write(_pBuf[i]);
     }
-    _pWire->endTransmission();
+    if( _pWire->endTransmission() != 0){
+        return 0;
+    }else{
+        return 1;
+    }
 }
 
 uint8_t DFRobot_DS323X::readReg(uint8_t reg, const void* pBuf, size_t size)

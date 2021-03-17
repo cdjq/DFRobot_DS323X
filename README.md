@@ -208,10 +208,11 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief write, read and clear the SRAM
    *@param addr 0x14~0xFF
    *@param data uint8_t HEX
+   *@return true 表示写入成功，false表示写入失败
    */
-  void writeSRAM(uint8_t addr, uint8_t data);
+  bool writeSRAM(uint8_t addr, uint8_t data);
   uint8_t readSRAM(uint8_t addr);
-  void clearSRAM(uint8_t addr);
+  bool clearSRAM(uint8_t addr);
 ```
 
 ## Compatibility

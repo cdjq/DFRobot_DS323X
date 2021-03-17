@@ -28,17 +28,19 @@ void setup(void)
     /*!
      *@brief clear the SRAM
      *@param addr 0x14~0xFF
+     *@return true 表示写入成功，false表示写入失败
      */
     for (uint8_t addr = 0x14; addr < 0x1F; addr++){
-        rtc.clearSRAM(addr);
+        while (rtc.clearSRAM(addr) != true){}
     }
     /*!
      *@brief write data into the SRAM
      *@param addr 0x14~0xFF
      *@param data uint8_t HEX
+     *@return true 表示写入成功，false表示写入失败
      */
     for (uint8_t addr = 0x14; addr < 0x1F; addr++){
-        rtc.writeSRAM(addr,buffer[i]);
+        while (rtc.writeSRAM(addr,buffer[i]) != true){}
         i++;
     }
     delay(1000);
