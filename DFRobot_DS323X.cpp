@@ -37,10 +37,14 @@ bool DFRobot_DS323X::begin(void)
     _pWire->begin();
     delay(100);
     _pWire->beginTransmission(_deviceAddr);
-    if(_pWire->endTransmission() == 0)
+    if(_pWire->endTransmission() == 0){
+        uint8_t buf[7] = {0,0,0,0,0,0,0};
+        writeReg(DS323X_REG_ALM1_SEC, buf, 7);
         return true;
-    else
+    }
+    else{
         return false;
+    }
 }
 
 /*!
@@ -478,16 +482,15 @@ void DFRobot_DS323X::disableAlarm2Int(){
 
 /*!
  *@brief Judge if the alarm clock is triggered
- *@return true, triggered; false, not trigger
+ *@return eNoTrigger          // No alarm is triggered
+ *@n      eAlarm1Trigger      // Alarm1 is triggered
+ *@n      eAlarm2Trigger      // Alarm2 is triggered
+ *@n      eAllTrigger         // All alarms are triggered
  */
-bool DFRobot_DS323X::isAlarmTrig() {
+DFRobot_DS323X::eTrigger_t DFRobot_DS323X::isAlarmTrig() {
     uint8_t status;
     readReg(DS323X_REG_STATUS, &status, 1);
-    if (status&3 != 0){ // Alarm if either of 2 LSBits set
-        return false;
-    }else{
-        return true;
-    }
+    return static_cast<eTrigger_t>(status&3);
 }
 
 /*!

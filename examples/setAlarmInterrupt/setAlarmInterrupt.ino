@@ -33,7 +33,7 @@ void setup(void)
      *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
      *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
      */
-    rtc.writeSqwPinMode(rtc.eOFF);
+    rtc.writeSqwPinMode(rtc.eSquareWave_OFF);
     
     /*!
      *@brief enable Alarm1 interrupt

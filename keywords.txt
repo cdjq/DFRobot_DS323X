@@ -21,10 +21,12 @@ getMinute	KEYWORD2
 getSecond	KEYWORD2
 getDayOfWeek	KEYWORD2
 getTemperatureC	KEYWORD2
+getCompileTime	KEYWORD2
 isLostPower	KEYWORD2
 readSqwPinMode	KEYWORD2
 writeSqwPinMode	KEYWORD2
-setAlarm	KEYWORD2
+setAlarm1	KEYWORD2
+setAlarm2	KEYWORD2
 isAlarmTrig	KEYWORD2
 setHourSystem	KEYWORD2
 setTime	KEYWORD2

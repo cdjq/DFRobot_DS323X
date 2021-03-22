@@ -36,7 +36,7 @@ void setup(void)
      *@n          eSquareWave_4kHz = 0x10 // 4kHz square wave
      *@n          eSquareWave_8kHz = 0x18 // 8kHz square wave
      */
-    rtc.writeSqwPinMode(rtc.eOFF);
+    rtc.writeSqwPinMode(rtc.eSquareWave_OFF);
     rtc.enableAlarm1Int();
     //rtc.disableAlarm1Int();
     //rtc.enableAlarm2Int();
@@ -58,7 +58,7 @@ void setup(void)
      *@param minutes Alarm clock Minute (minute)
      *@param seconds Alarm clock Second (second)
      */
-    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
+    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/15);//Alarm1
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
@@ -73,7 +73,7 @@ void setup(void)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      */
-    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
+    //rtc.setAlarm2(rtc.eEveryMinute,/*date,0-30*/1,/*hour,1-12 in 12hours,0-23 in 24hours*/0,/*minute,0-59*/0);//Alarm2
     
     rtc.setTime(/*year,1900-2100*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,/*second,0-59*/55);//Set Set initial time .
     #if defined(ESP32) || defined(ESP8266)||defined(ARDUINO_SAM_ZERO)
@@ -101,7 +101,7 @@ void setup(void)
     * |no need to set it to input mode with pinMode)|Interrupt No|Interrupt number is a pin digital value, such as P0 interrupt number 0, P1 is 1 |
     * |-------------------------------------------------------------------------------------------------------------------------------------------|
     */
-    attachInterrupt(/*Interrupt No*/2,interrupt,FALLING);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
+    attachInterrupt(/*Interrupt No*/0,interrupt,FALLING);//Open the external interrupt 0, connect INT1/2 to the digital pin of the main control: 
     //UNO(2), Mega2560(2), Leonardo(3), microbit(P0).
     #endif
     
@@ -114,13 +114,27 @@ void setup(void)
     
 }
 void loop() {
-    /*!
-     *@brief Judge if the alarm clock is triggered
-     *@return true, triggered; false, not triggered
-     */
     if(alarmFlag == 1){
-        Serial.println("Alarm is up");
-        rtc.clearAlarm();
+        /*!
+         *@brief Judge if the alarm clock is triggered
+         *@return eNoTrigger          // No alarm is triggered
+         *@n      eAlarm1Trigger      // Alarm1 is triggered
+         *@n      eAlarm2Trigger      // Alarm2 is triggered
+         *@n      eAllTrigger         // All alarms are triggered
+         */
+        if (rtc.isAlarmTrig() == rtc.eAlarm1Trigger){ // If the alarm bit is set
+            Serial.println("Alarm1 clock is triggered.");
+            /*!
+             *@brief Clear trigger flag
+             */
+            rtc.clearAlarm();
+        }else if (rtc.isAlarmTrig() == rtc.eAlarm2Trigger){
+            Serial.println("Alarm2 clock is triggered.");
+            rtc.clearAlarm();
+        }else if (rtc.isAlarmTrig() == rtc.eAllTrigger){
+            Serial.println("Both Alarm clocks are triggered.");
+            rtc.clearAlarm();
+        }
         alarmFlag = 0;
         while (t < 10){
             Serial.print(rtc.getYear(), DEC);

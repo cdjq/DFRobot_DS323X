@@ -40,7 +40,7 @@ void setup(void)
      *@param minutes Alarm clock Minute (minute)
      *@param seconds Alarm clock Second (second)
      */
-    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/11);//Alarm1
+    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/0);//Alarm1
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
@@ -55,7 +55,7 @@ void setup(void)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      */
-    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,0-23*/1,/*minute,0-59*/0);//Alarm2
+    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
     if (rtc.isLostPower())
         rtc.setTime(/*year,1901-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,\
                     /*second,0-59*/55);//Set Set initial time .
@@ -63,13 +63,22 @@ void setup(void)
 void loop() {
     /*!
      *@brief Judge if the alarm clock is triggered
-     *@return true, triggered; false, not triggered
+     *@return eNoTrigger          // No alarm is triggered
+     *@n      eAlarm1Trigger      // Alarm1 is triggered
+     *@n      eAlarm2Trigger      // Alarm2 is triggered
+     *@n      eAllTrigger         // All alarms are triggered
      */
-    if (rtc.isAlarmTrig()){ // If the alarm bit is set
-        Serial.println("Alarm clock is triggered.");
+    if (rtc.isAlarmTrig() == rtc.eAlarm1Trigger){ // If the alarm bit is set
+        Serial.println("Alarm1 clock is triggered.");
         /*!
          *@brief Clear trigger flag
          */
+        rtc.clearAlarm();
+    }else if (rtc.isAlarmTrig() == rtc.eAlarm2Trigger){
+        Serial.println("Alarm2 clock is triggered.");
+        rtc.clearAlarm();
+    }else if (rtc.isAlarmTrig() == rtc.eAllTrigger){
+        Serial.println("Both Alarm clocks are triggered.");
         rtc.clearAlarm();
     }
     Serial.print(rtc.getYear(), DEC);

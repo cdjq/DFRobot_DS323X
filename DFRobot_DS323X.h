@@ -67,6 +67,13 @@ public:
     }eHours_t;
     
     typedef enum{
+        eNoTrigger = 0,
+        eAlarm1Trigger = 1,
+        eAlarm2Trigger = 2,
+        eAllTrigger = 3
+    }eTrigger_t;
+    
+    typedef enum{
         eEverySecond,                  //repeat in every second
         eSecondsMatch,                 //repeat in every minute
         eSecondsMinutesMatch,          //repeat in every hour
@@ -217,9 +224,9 @@ public:
     
     /*!
      *@brief Judge if the alarm clock is triggered
-     *@return true, triggered; false, not trigger
+     *@return Explanation of the readings in enumeration variable eTrigger_t
      */
-    bool isAlarmTrig();
+    eTrigger_t isAlarmTrig();
     
     /*!
      *@brief Clear alarm flag 

@@ -63,8 +63,14 @@ def main():
             print("RTC lost power, please reset the time!")
         print("{0}/{1}/{2},{3},{4}:{5}:{6} {7}".format(rtc.get_year(),rtc.get_month(),rtc.get_date(),\
         rtc.get_day_of_week(),rtc.get_hour(),rtc.get_minute(),rtc.get_second(),rtc.get_AM_or_PM()))#print now time
-        if rtc.is_alarm_trig() != 0:
-            print("Alarm clock is triggered.")
+        if rtc.is_alarm_trig() == 1:
+            print("Alarm1 clock is triggered.")
+            rtc.clear_alarm()
+        elif rtc.is_alarm_trig() == 2:
+            print("Alarm2 clock is triggered.")
+            rtc.clear_alarm()
+        elif rtc.is_alarm_trig() == 3:
+            print("All Alarms clock are triggered.")
             rtc.clear_alarm()
         print(" ")
         time.sleep(1)

@@ -31,6 +31,11 @@ class DFRobot_DS323X:
     H24hours            = 0
     H12hours            = 1
     
+    NoTrigger = 0
+    Alarm1Trigger = 1
+    Alarm2Trigger = 2
+    AllTrigger = 3
+    
     EverySecond                  = 0
     SecondsMatch                 = 1
     SecondsMinutesMatch          = 2

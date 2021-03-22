@@ -180,10 +180,13 @@ To use this library, first download the library file, paste it into the \Arduino
                 int8_t minutes);
   
   /*!
-   *@brief Judge if the alarm clock is triggered 
-   *@return true, triggered; false, not trigger
+   *@brief Judge which alarm clock is triggered 
+   *@return eNoTrigger          // No alarm is triggered
+   *@n      eAlarm1Trigger      // Alarm1 is triggered
+   *@n      eAlarm2Trigger      // Alarm2 is triggered
+   *@n      eAllTrigger         // All alarms are triggered
    */
-  bool isAlarmTrig();
+  eTriger_t isAlarmTrig();
   
   /*!
    *@brief Clear trigger flag
