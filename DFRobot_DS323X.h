@@ -274,7 +274,7 @@ private:
     uint8_t rtc_bcd[7];
     uint8_t bcd[7];
     uint8_t  dayOfWeek() const ;
-    eHours_t _mode = 0;
+    eHours_t _mode = e24hours;
     uint8_t  _ss,_mm,_hh,_d,_m;
     uint16_t _y;
     String daysOfTheWeek[7]PROGMEM = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"}; 

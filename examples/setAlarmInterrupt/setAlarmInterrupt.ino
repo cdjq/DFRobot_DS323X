@@ -86,7 +86,7 @@ void setup(void)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      */
-    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-31*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
+    rtc.setAlarm2(rtc.eEveryMinute,/*date,0-31*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
     /*!
      *@brief Judge if it is power-down 
      *@return if return true, power-down, time needs to reset; false, work well

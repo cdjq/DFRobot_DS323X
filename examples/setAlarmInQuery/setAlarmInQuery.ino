@@ -40,7 +40,7 @@ void setup(void)
      *@param minutes Alarm clock Minute (minute)
      *@param seconds Alarm clock Second (second)
      */
-    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/0);//Alarm1
+    rtc.setAlarm1(rtc.eSecondsMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0,/*second,0-59*/10);//Alarm1
     /*!
      *@brief Set alarm clock
      *@param alarmType Alarm clock working mode typedef enum{
@@ -55,7 +55,7 @@ void setup(void)
      *@param hours   Alarm clock Hour (hour)
      *@param minutes Alarm clock Minute (minute)
      */
-    rtc.setAlarm2(rtc.eMinutesHoursDateMatch,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
+    rtc.setAlarm2(rtc.eEveryMinute,/*date,0-30*/1,/*hour,0-23*/0,/*minute,0-59*/0);//Alarm2
     if (rtc.isLostPower())
         rtc.setTime(/*year,1901-2099*/2021, /*mouth,1-12*/2, /*date,1-31*/28, /*hour,0-23*/23,/*minute,0-59*/59,\
                     /*second,0-59*/55);//Set Set initial time .

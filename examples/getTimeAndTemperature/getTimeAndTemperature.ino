@@ -24,7 +24,7 @@ void setup(void)
         delay(1000);
     }
     /*!
-     *@brief Set time mode
+     *@brief 设置时间输出格式
      *@param eHours_t:e24hours, e12hours. default is e24hours
      */
     rtc.setHourSystem(rtc.e12hours);
@@ -58,7 +58,7 @@ void loop() {
     Serial.print(rtc.getTemperatureC());
     Serial.println(" C");
     delay(1000);
-	
+
     /*!
      *@brief Judge if it is power-down
      *@return If retrun true, power down, needs to reset time; false, work well.

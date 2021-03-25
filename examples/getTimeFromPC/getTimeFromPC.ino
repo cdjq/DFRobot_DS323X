@@ -50,13 +50,6 @@ void loop() {
     /*if rtc works in 24hours mode,this function doesn't print anything*/
     Serial.print(rtc.getAMorPM());
     Serial.println();
-    Serial.print("Temperature: ");
-    /*!
-     *@brief Get current temperature
-     *@return Current temperautre, unit: ℃ 
-     */
-    Serial.print(rtc.getTemperatureC());
-    Serial.println(" C");
     delay(1000);
     /*!
      *@brief Judge if it is power-down

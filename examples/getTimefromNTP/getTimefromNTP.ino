@@ -73,7 +73,6 @@ void loop()
     Serial.print(rtc.getMinute(), DEC);
     Serial.print(':');
     Serial.print(rtc.getSecond(), DEC);
-    Serial.print(' ');
+    Serial.println(' ');
     delay(1000);
-    
 }
