@@ -167,7 +167,7 @@ public:
     
     /*!
      *@brief Judge if it is power-down 
-     *@return true 表示rtc曾经断电，需要重新设置时间;false 表示rtc工作正常
+     *@return true True means rtc lost power before and need to reset time;False means rtc operates well
      */
     bool isLostPower(void);
     
@@ -185,7 +185,7 @@ public:
     
     /*!
      *@brief Set the last compiled time as the current time
-     *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
+     *@param comSec Compensation time, the value obtained by subtracting the PC system time from the serial port printing time after the first upload，unit: s.
      */
     void getCompileTime(uint8_t comSec = 0);
     
@@ -247,7 +247,7 @@ public:
      *@brief write, read and clear the SRAM
      *@param addr 0x14~0xFF
      *@param data uint8_t HEX
-     *@return true 表示写入成功，false表示写入失败
+     *@return true means write is successful, false means write is failed
      */
     bool writeSRAM(uint8_t addr, uint8_t data);
     uint8_t readSRAM(uint8_t addr);
