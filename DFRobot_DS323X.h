@@ -37,7 +37,7 @@
 #define DS323X_REG_STATUS           0x0F  // Status register
 #define DS323X_REG_AGE_OFFSET       0X10
 #define DS323X_REG_TEMPERATURE      0x11  // temperature register
-//Open this macro to see the detailed running process of the program 
+//Enable this macro to see the detailed running process of the program 
 //#define ENABLE_DBG
 
 #ifdef ENABLE_DBG
@@ -167,7 +167,7 @@ public:
     
     /*!
      *@brief Judge if it is power-down 
-     *@return true True means rtc lost power before and need to reset time;False means rtc operates well
+     *@return true True means rtc has lost power before and need to reset time;False means rtc operates well
      */
     bool isLostPower(void);
     
