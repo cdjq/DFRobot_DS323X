@@ -1,7 +1,7 @@
 /*!
  * @file getTimeAndTemperature.ino
  * @brief Show current time and temperature of chip
- * @n Experiment phenomenon: 由用户自行设置初始时间，并从芯片获取实时时间和温度
+ * @n Experiment phenomenon: Set original time by users themselves and get real time and temperature from the chip
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
@@ -24,7 +24,7 @@ void setup(void)
         delay(1000);
     }
     /*!
-     *@brief 设置时间输出格式
+     *@brief Set time output format
      *@param eHours_t:e24hours, e12hours. default is e24hours
      */
     rtc.setHourSystem(rtc.e12hours);
