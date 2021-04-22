@@ -18,14 +18,14 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* <br> Get real time, the initial time need to be set by users, we can get compile time, NTP time or set it by ourselves, the minimum unit: s
-* <br>Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock
+* Get real-time, the initial time need to be set by users, we can get compile-time, NTP time or set it by ourselves, the minimum unit: s <br> 
+* Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock <br>
 * Measure the chip temperature, error: ±0.5℃ <br>
 * Read and write DS3232 chip 236-bit SRAM <br> 
 
 ## Installation
 
-Download this library into RaspberryPi, and run demo with Python
+Download this library into RaspberryPi, and run the demo with Python
 ## Methods
 
 ```Python
@@ -43,13 +43,13 @@ Download this library into RaspberryPi, and run demo with Python
   def get_year()
   
   '''
-  @brief get month of now time
+  @brief get the month of now time
   @return month
   '''
   def get_month()
   
   '''
-  @brief get date of now time
+  @brief get the date of now time
   @return date
   '''
   def get_date()
@@ -67,14 +67,14 @@ Download this library into RaspberryPi, and run demo with Python
   def get_second()
   
   '''
-  @brief get day of week
+  @brief get the day of week
   @return day of week
   '''
   def get_day_of_week()
   
   '''
   @brief Set mode of time
-  @param mode H24hours,H12hours
+  @param mode H24hours, H12hours
   '''
   def set_hour_system(self, mode = H24hours)
   
@@ -107,7 +107,7 @@ Download this library into RaspberryPi, and run demo with Python
   
   '''
   @brief check if rtc has been lost power
-  @return True, 表示rtc曾经断电，需要重新设置时间;False 表示rtc工作正常
+  @return True means rtc was powered off before and need to reset time;False means rtc opearates well
   '''
   def is_lost_power()
   
