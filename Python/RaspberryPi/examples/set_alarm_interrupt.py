@@ -90,7 +90,7 @@ def IO1_callback(channel):#callback function
  
 GPIO.setup(IO1, GPIO.IN)
 '''
-@brief When IO1 changes to high level from low level and a FALLING level transition occurs, run IO1_callback method 
+@brief When IO1 changes to high level from low level and a FALLING level transition occurs, way to run IO1_callback 
 '''
 GPIO.add_event_detect(IO1, GPIO.FALLING, callback = IO1_callback)
 
