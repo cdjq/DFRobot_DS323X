@@ -1,6 +1,7 @@
 /*!
  * @file getTimeFromPC.ino
- * @brief get time when the PC compile。 由第一次上传后串口打印的时间减去PC系统时间所得的值作为补偿时间传入函数中，再次上传，将编译时间写入模块中
+ * @brief get time when the PC compile。 The value obtained by subtracting the PC system time from the serial port printing time after the first upload is passed into the function as 
+ * @n the compensation time, upload again and write the compiled time into the module.
  * @n Experiment phenomenon: You need to close the IDE and recompile, otherwise the correct system time cannot be obtained。 
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -26,7 +27,7 @@ void setup(void)
     //rtc.setHourSystem();//Set time mode, default in the 24 hours mode, e24hours, eAM, ePM.
     /*!
      *@brief Set the last compiled time as the current time
-     *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
+     *@param comSec Compensation time, the value obtained by subtracting the PC system time from the serial port printing time, unit: s.
      */
     rtc.getCompileTime(/*comSec*/0);//Set the last compiled time as the current time
 
