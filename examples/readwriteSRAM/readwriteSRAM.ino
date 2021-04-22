@@ -28,7 +28,7 @@ void setup(void)
     /*!
      *@brief clear the SRAM
      *@param addr 0x14~0xFF
-     *@return true 表示写入成功，false表示写入失败
+     *@return true means write is successful, false means write is failed
      */
     for (uint8_t addr = 0x14; addr < 0x1F; addr++){
         while (rtc.clearSRAM(addr) != true){}
@@ -37,7 +37,7 @@ void setup(void)
      *@brief write data into the SRAM
      *@param addr 0x14~0xFF
      *@param data uint8_t HEX
-     *@return true 表示写入成功，false表示写入失败
+     *@return true means write is successful, false means write is failed
      */
     for (uint8_t addr = 0x14; addr < 0x1F; addr++){
         while (rtc.writeSRAM(addr,buffer[i]) != true){}
