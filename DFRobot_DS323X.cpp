@@ -102,7 +102,7 @@ void DFRobot_DS323X::writeSqwPinMode(eSqwPinMode_t mode){
 
 /*!
  *@brief Set the last compiled time as the current time
- *@param comSec 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
+ *@param comSec Compensation time，the value obtained by subtracting the PC system time from the serial port printing time after the first upload, unit：s
  */
 void DFRobot_DS323X::getCompileTime (uint8_t comTime){
     char buff[11];
