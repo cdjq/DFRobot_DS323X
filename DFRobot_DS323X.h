@@ -167,7 +167,7 @@ public:
     
     /*!
      *@brief Judge if it is power-down 
-     *@return true True means rtc has lost power before and need to reset time;False means rtc operates well
+     *@return true True means rtc has lost power before and needs to reset time;False means rtc operates well
      */
     bool isLostPower(void);
     
