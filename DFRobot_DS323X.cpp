@@ -527,7 +527,7 @@ void DFRobot_DS323X::disable32k(){
  *@brief write data into the SRAM
  *@param addr 0x14~0xFF
  *@param data uint8_t HEX
- *@return true 表示写入成功，false表示写入失败
+ *@return true means write is successful, false means write is failed
  */
 bool DFRobot_DS323X::writeSRAM(uint8_t reg, uint8_t data){
     return writeReg(reg, &data, 1);
@@ -547,7 +547,7 @@ uint8_t DFRobot_DS323X::readSRAM(uint8_t reg){
 /*!
  *@brief clear the SRAM
  *@param addr 0x14~0xFF
- *@return true 表示写入成功，false表示写入失败
+ *@return true means write is successful, false means write is failed
  */
 bool DFRobot_DS323X::clearSRAM(uint8_t reg){
     uint8_t buf = 0x00;
