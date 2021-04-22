@@ -101,7 +101,7 @@ To use this library, first download the library file, paste it into the \Arduino
   /*!
    *@brief Set the last compiled time as the current time
    *@param comSec, Compensation time, the value obtained by subtracting the PC system time from the serial port printing time after the first upload，unit: s.
-   */
+   */the first upload，unit: s.
   void getCompileTime(uint8_t comSec);
   
   
