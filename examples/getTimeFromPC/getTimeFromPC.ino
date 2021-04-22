@@ -1,6 +1,6 @@
 /*!
  * @file getTimeFromPC.ino
- * @brief get time when the PC compile。 The value obtained by subtracting the PC system time from the serial port printing time after the first upload is passed into the
+ * @brief get time when the PC compile. Pass the value obtained by subtracting the PC system time from the serial port printing time after the first upload into the
  * @n function as the compensation time, upload again and write the compiled time into the module.
  * @n Experiment phenomenon: You need to close the IDE and recompile, otherwise the correct system time cannot be obtained。 
  *
