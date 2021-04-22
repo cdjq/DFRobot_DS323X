@@ -310,7 +310,7 @@ class DFRobot_DS323X:
     
     '''
     @brief check if rtc has been lost power
-    @return True means rtc was powered off before and need to reset time;False means rtc opearates well
+    @return True means rtc lost power before and need to reset time; False means rtc operates well
     '''
     def is_lost_power(self):
         status = self.read_reg(self._REG_STATUS)
@@ -462,8 +462,8 @@ class DFRobot_DS323X:
         self.write_reg(self._REG_CONTROL, conReg)
     
     '''
-    @brief check if alarm flag has been trigger
-    @return True, triggered; False, not trigger 
+    @brief check if alarm flag has been triggered
+    @return True, triggered; False, not triggered 
     '''
     def is_alarm_trig(self):
         staReg = self.read_reg(self._REG_STATUS)
@@ -486,7 +486,7 @@ class DFRobot_DS323X:
         self.write_reg(self._REG_STATUS, staReg)
     
     '''
-    @brief disable the 32k output (default is enable)
+    @brief disable the 32k output (default is enabled)
     '''
     def disable_32k(self):
         staReg = self.read_reg(self._REG_STATUS)
