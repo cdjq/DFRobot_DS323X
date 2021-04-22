@@ -5,7 +5,7 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 
 ## Product Link （链接到英文商城）
-    SKU：产品名称
+    SKU：Product name
    
 ## Table of Contents
 
@@ -162,12 +162,12 @@ Download this library into RaspberryPi, and run demo with Python
   def set_alarm2(alarmType, date, hour, minute)
   
   '''
-  @brief check if alarm flag has been trigger
+  @brief check if alarm flag has been triggered
   '''
   def is_alarm_trig()
   
   '''
-  @brief clear alarm flag trigger
+  @brief clear alarm flag triggered
   '''
   def clear_alarm()
   
