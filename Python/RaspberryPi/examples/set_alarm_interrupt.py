@@ -90,7 +90,7 @@ def IO1_callback(channel):#callback function
  
 GPIO.setup(IO1, GPIO.IN)
 '''
-@brief 当IO1从低电平变为高电平，发生FALLING电平跳变时，运行IO1_callback方法
+@brief When IO1 changes to high level from low level and a FALLING level transition occurs, run IO1_callback method 
 '''
 GPIO.add_event_detect(IO1, GPIO.FALLING, callback = IO1_callback)
 
