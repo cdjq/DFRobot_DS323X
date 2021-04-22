@@ -106,7 +106,7 @@ Download this library into RaspberryPi, and run the demo with Python
   def get_temperature_F()
   
   '''
-  @brief check if rtc has been lost power
+  @brief check if rtc has lost power
   @return True means rtc has lost power before and need to reset time;False means rtc opearates well
   '''
   def is_lost_power()
