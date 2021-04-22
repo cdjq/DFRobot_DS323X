@@ -18,7 +18,7 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* Get current time, the initial time need to be set by users, we can get compiled time, NTP time or set it by ourselves, the minimum unit: s <br>
+* Get real-time, the initial time need to be set by users, we can get compiled time, NTP time or set it by ourselves, the minimum unit: s <br>
 * Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock <br>
 * Measure the chip temperature, error: ±0.5℃ <br>
 * Read and write 236 bytes of SRAM inside DS3232 chip<br>
