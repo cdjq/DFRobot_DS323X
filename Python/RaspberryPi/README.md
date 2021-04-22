@@ -18,10 +18,10 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* Get real-time, the initial time need to be set by users, we can get compile-time, NTP time or set it by ourselves, the minimum unit: s <br> 
+* Get current time, the initial time need to be set by users, we can get compiled time, NTP time or set it by ourselves, the minimum unit: s <br> 
 * Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock <br>
 * Measure the chip temperature, error: ±0.5℃ <br>
-* Read and write DS3232 chip 236-bit SRAM <br> 
+* Read and write 236 bytes of SRAM inside DS3232 chip <br> 
 
 ## Installation
 
@@ -107,7 +107,7 @@ Download this library into RaspberryPi, and run the demo with Python
   
   '''
   @brief check if rtc has been lost power
-  @return True means rtc was powered off before and need to reset time;False means rtc opearates well
+  @return True means rtc has lost power before and need to reset time;False means rtc opearates well
   '''
   def is_lost_power()
   
