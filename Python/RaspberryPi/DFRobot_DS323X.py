@@ -167,7 +167,7 @@ class DFRobot_DS323X:
 
     '''
     @brief Set mode of time
-    @param mode H24hours,H12hours
+    @param mode H24hours, H12hours
     '''
     def set_hour_system(self, mode = H24hours):
         self._mode = mode
@@ -310,7 +310,7 @@ class DFRobot_DS323X:
     
     '''
     @brief check if rtc has been lost power
-    @return True means rtc lost power before and need to reset time; False means rtc operates well
+    @return True means rtc has lost power before and need to reset time; False means rtc operates well
     '''
     def is_lost_power(self):
         status = self.read_reg(self._REG_STATUS)
