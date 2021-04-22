@@ -310,7 +310,7 @@ class DFRobot_DS323X:
     
     '''
     @brief check if rtc has been lost power
-    @return True, 表示rtc曾经断电，需要重新设置时间;False 表示rtc工作正常
+    @return True means rtc was powered off before and need to reset time;False means rtc opearates well
     '''
     def is_lost_power(self):
         status = self.read_reg(self._REG_STATUS)
