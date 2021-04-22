@@ -1,7 +1,7 @@
 # DFRobot_DS323X
-DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It can provide ±5%ppm accuracy (no more than 0.432s error) within the whole temperature range and life span, and is compatible with 2.5-5.5V wide voltage range. The current comsuption of the module is as low as 2uA when powered by batteries. This module can be used to measure ambient temperature with ±3℃ accuracy.   <br>
+DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It can provide ±5%ppm accuracy (no more than 0.432s error) within the whole temperature range and lifespan, and is compatible with 2.5-5.5V wide voltage range. The current comsumption of the module is as low as 2uA when powered by batteries. This module can be used to measure ambient temperature with ±3℃ accuracy.   <br>
 
-![正反面svg效果图](https://github.com/ouki-wang/DFRobot_Sensor/raw/master/resources/images/SEN0245svg1.png)
+![Front and back svg renderings](https://github.com/ouki-wang/DFRobot_Sensor/raw/master/resources/images/SEN0245svg1.png)
 
 
 ## Product Link （链接到英文商城）
@@ -18,10 +18,10 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
-* 设置闹钟，用户可设置两个闹钟，可以在中断引脚获取下降沿脉冲来触发闹钟 <br>
-* 测量芯片温度，误差为±0.5℃ <br>
-* 读写DS3232芯片236字节SRAM <br>
+* <br> Get real time, the initial time need to be set by users, we can get compile time, NTP time or set it by ourselves, the minimum unit: s
+* <br>Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock
+* Measure the chip temperature, error: ±0.5℃ <br>
+* Read and write DS3232 chip 236-bit SRAM <br> 
 
 ## Installation
 
