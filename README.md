@@ -1,5 +1,5 @@
 # DFRobot_DS323X
-DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It can provide ±5%ppm accuracy (no more than 0.432s error) within the whole temperature range and life span, and is compatible with 2.5-5.5V wide voltage range. The current comsuption of the module is as low as 2uA when powered by batteries. This module can be used to measure ambient temperature with ±3℃ accuracy. and it has 25 times seismic resistance of the later as well as better temperature stability.   <br>
+DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It can provide ±5%ppm accuracy (no more than 0.432s error) within the whole temperature range and lifespan, and is compatible with 2.5-5.5V wide voltage range. The current comsumption of the module is as low as 2uA when powered by batteries. This module can be used to measure ambient temperature with ±3℃ accuracy. and it has 25 times seismic resistance of the latter as well as better temperature stability.   <br>
 
 ![正反面svg效果图](https://github.com/ouki-wang/DFRobot_Sensor/raw/master/resources/images/SEN0245svg1.png)
 
@@ -18,10 +18,10 @@ DS323X is a low-cost, extremely accurate, I2C real-time clock(RTC) module. It ca
 
 ## Summary
 
-* 获取实时时间，初始时间需要用户自行设置，可以获取编译时间，NTP时间或者自行设置时刻，最小单位为秒 <br>
-* 设置闹钟，用户可设置两个闹钟，闹钟可触发中断引脚下降沿脉冲信号 <br>
-* 测量气温，读取芯片温度，误差±0.5摄氏度 <br>
-* 读写DS3232芯片内部236字节SRAM<br>
+* Get current time, the initial time need to be set by users, we can get compiled time, NTP time or set it by ourselves, the minimum unit: s <br>
+* Set the alarm clock, users can set two alarm clocks, can get the falling edge pulse at the interrupt pin to trigger the alarm clock <br>
+* Measure the chip temperature, error: ±0.5℃ <br>
+* Read and write 236 bytes of SRAM inside DS3232 chip<br>
 
 ## Installation
 
@@ -100,7 +100,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Set the last compiled time as the current time
-   *@param comSec, 补偿时间，由第一次上传后串口打印的时间减去PC系统时间所得的值，单位：秒
+   *@param comSec, Compensation time, the value obtained by subtracting the PC system time from the serial port printing time after the first upload，unit: s.
    */
   void getCompileTime(uint8_t comSec);
   
@@ -119,7 +119,7 @@ To use this library, first download the library file, paste it into the \Arduino
   
   /*!
    *@brief Judge if it is power-down 
-   *@return true 表示rtc曾经断电，需要重新设置时间;false 表示rtc工作正常 
+   *@return True means rtc lost power before and need to reset time;False means rtc operates well
    */
   bool isLostPower(void);
   
@@ -211,7 +211,7 @@ To use this library, first download the library file, paste it into the \Arduino
    *@brief write, read and clear the SRAM
    *@param addr 0x14~0xFF
    *@param data uint8_t HEX
-   *@return true 表示写入成功，false表示写入失败
+   *@return true means write is successful，false means write is failed
    */
   bool writeSRAM(uint8_t addr, uint8_t data);
   uint8_t readSRAM(uint8_t addr);
